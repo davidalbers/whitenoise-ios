@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -50,7 +50,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wbu-g0-c5I">
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wbu-g0-c5I">
                                         <rect key="frame" x="262" y="0.0" width="51" height="31"/>
                                         <connections>
                                             <action selector="wavesEnabledAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="9ct-ej-jlX"/>
@@ -67,7 +67,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29n-hf-HH1">
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="29n-hf-HH1">
                                         <rect key="frame" x="262" y="0.0" width="51" height="31"/>
                                         <connections>
                                             <action selector="fadeEnabledAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="362-tn-Auf"/>
@@ -76,28 +76,24 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tJZ-Ca-IS3">
-                                <rect key="frame" x="32" y="206" width="311" height="30"/>
+                                <rect key="frame" x="32" y="206" width="311" height="20.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N13-yx-OI6">
-                                        <rect key="frame" x="0.0" y="0.0" width="261" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N13-yx-OI6">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-iM-JDk">
-                                        <rect key="frame" x="261" y="0.0" width="50" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="24s-GC-oQG"/>
-                                        </constraints>
-                                        <state key="normal" title="Add"/>
-                                        <connections>
-                                            <action selector="timerAddedAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ng2-Cg-6bD"/>
-                                        </connections>
-                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUN-ON-2Ih">
+                                        <rect key="frame" x="270" y="0.0" width="41" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="uCr-8a-xkC">
-                                <rect key="frame" x="0.0" y="244" width="375" height="150"/>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="900" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCr-8a-xkC">
+                                <rect key="frame" x="0.0" y="234.5" width="375" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="o8K-2R-Dj0"/>
                                 </constraints>
@@ -105,6 +101,13 @@
                                     <!--2017-04-26 00:19:18 +0000-->
                                 </date>
                             </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-iM-JDk">
+                                <rect key="frame" x="32" y="392.5" width="311" height="30"/>
+                                <state key="normal" title="Set"/>
+                                <connections>
+                                    <action selector="timerAddedAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ng2-Cg-6bD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -116,6 +119,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="dSd-Ve-HPr" secondAttribute="bottom" constant="16" id="I35-2t-Phr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Kbj-h9-MQe" secondAttribute="trailing" constant="16" id="JSQ-RO-P9J"/>
                             <constraint firstItem="MOl-FR-NRg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="16" id="LTZ-gA-mcl"/>
+                            <constraint firstItem="4OI-iM-JDk" firstAttribute="top" secondItem="uCr-8a-xkC" secondAttribute="bottom" constant="8" id="M82-2Q-gQr"/>
                             <constraint firstItem="Kbj-h9-MQe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="16" id="MzR-Hs-PeY"/>
                             <constraint firstItem="do3-pt-RCn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="P2I-eY-YCw"/>
                             <constraint firstItem="do3-pt-RCn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="16" id="VAH-PY-Ea5"/>
@@ -124,6 +128,8 @@
                             <constraint firstItem="MOl-FR-NRg" firstAttribute="top" secondItem="do3-pt-RCn" secondAttribute="bottom" constant="32" id="gbY-pY-jnU"/>
                             <constraint firstItem="uCr-8a-xkC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="gdC-1f-Wzi"/>
                             <constraint firstItem="uCr-8a-xkC" firstAttribute="top" secondItem="tJZ-Ca-IS3" secondAttribute="bottom" constant="8" id="iZw-ti-jIp"/>
+                            <constraint firstItem="4OI-iM-JDk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="16" id="nJG-Ui-Vbl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4OI-iM-JDk" secondAttribute="trailing" constant="16" id="oLc-7s-KtT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MOl-FR-NRg" secondAttribute="trailing" constant="16" id="vrt-85-3d8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="do3-pt-RCn" secondAttribute="trailing" constant="16" id="xTu-Fr-WHB"/>
                             <constraint firstItem="Kbj-h9-MQe" firstAttribute="top" secondItem="MOl-FR-NRg" secondAttribute="bottom" constant="16" id="y4a-8P-cT9"/>
@@ -131,6 +137,9 @@
                     </view>
                     <connections>
                         <outlet property="playButton" destination="dSd-Ve-HPr" id="Gqc-Ky-qGd"/>
+                        <outlet property="timerButton" destination="4OI-iM-JDk" id="H2K-Hd-L3z"/>
+                        <outlet property="timerLabel" destination="pUN-ON-2Ih" id="FzH-Hw-bcm"/>
+                        <outlet property="timerPicker" destination="uCr-8a-xkC" id="q7G-of-TiV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -30,6 +30,10 @@ class MainPresenter {
     var tickInterval: Float = 0.1
     let resetVolumeIncrement: Float = 0.1
     var timerDisplayed: Bool = false
+    var timeLeftSecs: Double = 0
+    var prevTime: Int = 0
+    var timerActive: Bool = false
+
 
     init(viewController: ViewController) {
         self.viewController = viewController
@@ -76,6 +80,8 @@ class MainPresenter {
     }
     
     public func tick() {
+        decrementTimerTime()
+    
         if (fadeEnabled) {
             applyFadeVolume()
         }
@@ -86,6 +92,26 @@ class MainPresenter {
             applyResetVolume()
         }
         viewController.setVolume(volume: volume)
+    }
+    
+    private func decrementTimerTime() {
+        if (!timerActive) {
+            return
+        }
+        
+        if (Int(timeLeftSecs) != 0) {
+            timeLeftSecs -= Double(tickInterval)
+            
+            if (Int(timeLeftSecs) != prevTime) {
+                prevTime = Int(timeLeftSecs)
+                viewController.setTimerText(text: getTimerText())
+            }
+        } else {
+            viewController.pause()
+            timerDisplayed = false
+            viewController.setTimerText(text: getTimerText())
+            timerActive = false
+        }
     }
     
     public func resetVolume() {
@@ -128,6 +154,38 @@ class MainPresenter {
         if (volume >= maxVolume) {
             volume = maxVolume
             resettingVolume = false
+        }
+    }
+    
+    public func addDeleteTimer() {
+        timerDisplayed = !timerDisplayed
+        if (timerDisplayed) {
+            timerActive = true
+            timeLeftSecs = viewController.getTimerPickerTime()
+            viewController.addTimer(timerText: getTimerText())
+        } else {
+            timerActive = false
+            timeLeftSecs = 0
+            viewController.cancelTimer(timerText: getTimerText())
+        }
+    }
+    
+    private func getTimerText() -> String {
+        if (timerDisplayed) {
+            return secondsToFormattedTime(time: timeLeftSecs)
+        } else {
+            return "None"
+        }
+    }
+    
+    private func secondsToFormattedTime(time: Double) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        if (hours != 0) {
+            return String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+        } else {
+            return String(format:"%02i:%02i", minutes, seconds)
         }
     }
     

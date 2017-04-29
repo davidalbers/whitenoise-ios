@@ -15,6 +15,9 @@ class ViewController: UIViewController {
     var timer: Timer?
     
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var timerPicker: UIDatePicker!
+    @IBOutlet weak var timerButton: UIButton!
+    @IBOutlet weak var timerLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +37,8 @@ class ViewController: UIViewController {
     
   
     private func makePlayer() -> AVAudioPlayer? {
-        let url = Bundle.main.url(forResource: presenter?.getColor().rawValue, withExtension: "mp3")!
+        let url = Bundle.main.url(forResource: presenter?.getColor().rawValue,
+                                  withExtension: "mp3")!
         let player = try? AVAudioPlayer(contentsOf: url)
 
         player?.numberOfLoops = -1
@@ -42,6 +46,7 @@ class ViewController: UIViewController {
     }
     
     public func resetPlayer(restart: Bool) {
+        print("reset player")
         player?.pause()
         player = makePlayer()
         if (restart) {
@@ -51,21 +56,44 @@ class ViewController: UIViewController {
     
     public func play() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-        playButton.isSelected = true
+        timer = Timer.scheduledTimer(timeInterval: 0.1,
+                                     target: self,
+                                     selector: #selector(self.update),
+                                     userInfo: nil,
+                                     repeats: true)
         player?.play()
         playButton.setTitle("Pause", for: .normal)
     }
     
     public func pause() {
+        print("pause player")
         timer?.invalidate()
-        playButton.isSelected = false
         player?.pause()
         playButton.setTitle("Play", for: .normal)
     }
     
     public func setVolume(volume: Float) {
         player?.setVolume(volume, fadeDuration: 10)
+    }
+    
+    public func getTimerPickerTime() -> Double {
+       return timerPicker.countDownDuration
+    }
+    
+    public func cancelTimer(timerText: String) {
+        timerPicker.isEnabled = true
+        timerButton.setTitle("Set", for: .normal)
+        setTimerText(text: timerText)
+    }
+    
+    public func addTimer(timerText: String) {
+        timerPicker.isEnabled = false
+        timerButton.setTitle("Clear", for: .normal)
+        setTimerText(text: timerText)
+    }
+    
+    public func setTimerText(text: String) {
+        timerLabel.text = text
     }
     
     @IBAction func playPausePressed(_ sender: UIButton) {
@@ -97,6 +125,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func timerAddedAction(_ sender: UIButton) {
+        presenter?.addDeleteTimer()
     }
 }
 
