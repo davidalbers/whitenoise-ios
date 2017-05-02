@@ -46,7 +46,6 @@ class ViewController: UIViewController {
     }
     
     public func resetPlayer(restart: Bool) {
-        print("reset player")
         player?.pause()
         player = makePlayer()
         if (restart) {
@@ -56,7 +55,7 @@ class ViewController: UIViewController {
     
     public func play() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 0.1,
+        timer = Timer.scheduledTimer(timeInterval: MainPresenter.tickInterval,
                                      target: self,
                                      selector: #selector(self.update),
                                      userInfo: nil,
@@ -66,14 +65,14 @@ class ViewController: UIViewController {
     }
     
     public func pause() {
-        print("pause player")
         timer?.invalidate()
         player?.pause()
         playButton.setTitle("Play", for: .normal)
     }
     
     public func setVolume(volume: Float) {
-        player?.setVolume(volume, fadeDuration: 10)
+        print(volume)
+        player?.setVolume(volume, fadeDuration: 0)
     }
     
     public func getTimerPickerTime() -> Double {

@@ -18,17 +18,17 @@ class MainPresenter {
     var isPlaying: Bool = false
     var currentColor: NoiseColors = .White
     var viewController: ViewController
-    var volume: Float = 0.0
-    var increasing: Bool = false
+    var volume: Float = 0.2
     let minVolume: Float = 0.2
     var maxVolume: Float = 1.0
-    let volumeIncrement: Float = 0.025
+    static let tickInterval: Double = 0.03
+    var increasing: Bool = false
+    let volumeIncrement: Float
     var wavesEnabled: Bool = false
     var fadeEnabled: Bool = false
     var resettingVolume: Bool = false
     var fadeTime: Int = 10
-    var tickInterval: Float = 0.1
-    let resetVolumeIncrement: Float = 0.1
+    let resetVolumeIncrement: Float
     var timerDisplayed: Bool = false
     var timeLeftSecs: Double = 0
     var prevTime: Int = 0
@@ -37,6 +37,8 @@ class MainPresenter {
 
     init(viewController: ViewController) {
         self.viewController = viewController
+        volumeIncrement = Float(MainPresenter.tickInterval / 5)
+        resetVolumeIncrement = Float(MainPresenter.tickInterval)
     }
     
     public func changeColor(color: NoiseColors) {
@@ -74,6 +76,10 @@ class MainPresenter {
         fadeEnabled = enabled
         if (fadeEnabled) {
             resettingVolume = false;
+            fadeTime = Int(timeLeftSecs)
+            if (fadeTime == 0) {
+                fadeTime = 10
+            }
         } else {
             resetVolume()
         }
@@ -100,7 +106,7 @@ class MainPresenter {
         }
         
         if (Int(timeLeftSecs) != 0) {
-            timeLeftSecs -= Double(tickInterval)
+            timeLeftSecs -= Double(MainPresenter.tickInterval)
             
             if (Int(timeLeftSecs) != prevTime) {
                 prevTime = Int(timeLeftSecs)
@@ -109,13 +115,16 @@ class MainPresenter {
         } else {
             viewController.pause()
             timerDisplayed = false
-            viewController.setTimerText(text: getTimerText())
+            viewController.cancelTimer(timerText: getTimerText())
             timerActive = false
+            isPlaying = false
+            fadeTime = 10
         }
     }
     
     public func resetVolume() {
         maxVolume = 1.0
+        volume = 0.2
         viewController.setVolume(volume: volume)
         resettingVolume = true
         increasing = false
@@ -137,7 +146,8 @@ class MainPresenter {
     }
     
     public func applyFadeVolume() {
-        let volumeDelta = (1.0 - minVolume) / (Float(fadeTime) * 1.0 / tickInterval)
+        let volumeDelta = (1.0 - minVolume) /
+            (Float(fadeTime) * 1.0 / Float(MainPresenter.tickInterval))
         if (maxVolume > minVolume) {
             maxVolume -= volumeDelta
             if (volume > maxVolume) {
@@ -150,7 +160,6 @@ class MainPresenter {
         if (volume < maxVolume) {
             volume += resetVolumeIncrement
         }
-        print("Resetting volume to \(volume)")
         if (volume >= maxVolume) {
             volume = maxVolume
             resettingVolume = false
@@ -162,6 +171,9 @@ class MainPresenter {
         if (timerDisplayed) {
             timerActive = true
             timeLeftSecs = viewController.getTimerPickerTime()
+            if (fadeEnabled) {
+                fadeTime = Int(timeLeftSecs)
+            }
             viewController.addTimer(timerText: getTimerText())
         } else {
             timerActive = false
