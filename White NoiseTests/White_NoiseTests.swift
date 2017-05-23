@@ -10,14 +10,35 @@ import XCTest
 @testable import White_Noise
 
 class White_NoiseTests: XCTestCase {
-    var viewController: ViewController!
+    var viewController: ViewControllerMock!
     var presenter: MainPresenter!
+    
+    class ViewControllerMock : ViewController {
+        
+        public var playCalled : Bool = false
+        public var getTimeCalled : Bool = false
+        public var addTimerCalled : Bool = false
+        let timerPickerTime : Double = 60.0
+        public var timerText : String = ""
+        
+        override func play() {
+            playCalled = true
+        }
+        override func getTimerPickerTime() -> Double {
+            getTimeCalled = true
+            return timerPickerTime
+        }
+        
+        override func addTimer(timerText: String) {
+            addTimerCalled = true
+            self.timerText = timerText
+        }
+    }
     
     override func setUp() {
         super.setUp()
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        viewController = storyboard.instantiateInitialViewController()
-            as! ViewController
+        
+        viewController = ViewControllerMock()
         presenter = MainPresenter(viewController: viewController)
         presenter.volume = 1.0
         presenter.resettingVolume = false
@@ -47,11 +68,41 @@ class White_NoiseTests: XCTestCase {
     }
     
     func testFadeAndWave() {
-        
+        presenter.enableWavyVolume(enabled: true)
+        presenter.enableFadeVolume(enabled: true)
+        presenter.increasing = false
+        presenter.volume = 0.5
+        presenter.tick()
+        XCTAssert(isVolumeEqual(volume1: 0.5 - presenter.volumeIncrement,
+                                volume2: presenter.volume))
+        XCTAssert(!isVolumeEqual(volume1: 0.5, volume2: presenter.maxVolume))
     }
     
     func isVolumeEqual(volume1: Float, volume2: Float) -> Bool {
         return volume2 < volume1 + 0.00001 && volume2 > volume1 - 0.00001
+    }
+    
+    func testChangeColor() {
+        presenter.changeColor(color: MainPresenter.NoiseColors.Pink);
+        XCTAssert(presenter.getColor() == MainPresenter.NoiseColors.Pink)
+    }
+    
+    func testPlay() {
+        presenter.isPlaying = false
+        presenter.playPause()
+        
+        XCTAssertTrue(viewController.playCalled)
+        XCTAssert(presenter.isPlaying)
+    }
+    
+    func testAddTimer() {
+        presenter.addDeleteTimer()
+        XCTAssert(presenter.timerDisplayed)
+        XCTAssert(presenter.timerActive)
+        XCTAssert(viewController.addTimerCalled)
+        XCTAssert(viewController.getTimeCalled)
+        print(viewController.timerText)
+        XCTAssert(viewController.timerText == "01:00")
     }
     
 //    func testPerformanceExample() {

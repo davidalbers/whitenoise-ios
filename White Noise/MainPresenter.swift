@@ -55,12 +55,21 @@ class MainPresenter {
     
     public func playPause() {
         if (isPlaying) {
-            viewController.pause()
+            pause()
         } else {
-            resetVolume()
-            viewController.play()
+            play()
         }
-        isPlaying = !isPlaying
+    }
+    
+    public func pause() {
+        viewController.pause()
+        isPlaying = false
+    }
+    
+    public func play() {
+        resetVolume()
+        viewController.play()
+        isPlaying = true
     }
     
     public func enableWavyVolume(enabled: Bool) {

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 class ViewController: UIViewController {
     lazy var player: AVAudioPlayer? = self.makePlayer()
@@ -62,8 +63,21 @@ class ViewController: UIViewController {
                                      repeats: true)
         player?.play()
         playButton.setTitle("Pause", for: .normal)
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        weak var weakSelf = self
+        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            weakSelf?.presenter?.pause()
+            return .success
+        }
+        
+        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            weakSelf?.presenter?.play()
+            return .success
+        }
+
     }
-    
+
     public func pause() {
         timer?.invalidate()
         player?.pause()
