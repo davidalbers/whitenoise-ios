@@ -42,6 +42,7 @@
 		C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pink.mp3; sourceTree = "<group>"; };
 		C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = brown.mp3; sourceTree = "<group>"; };
 		C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		C79C62CC1EE77EC800D6B9E2 /* White Noise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "White Noise.entitlements"; sourceTree = "<group>"; };
 		C7D786041E9A943E004448A2 /* White Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "White Noise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786071E9A943E004448A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7D786091E9A943E004448A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +83,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C79C62CD1EE77EC800D6B9E2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C7D785FB1E9A943D004448A2 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +97,7 @@
 				C7D7861B1E9A943E004448A2 /* White NoiseTests */,
 				C7D786261E9A943E004448A2 /* White NoiseUITests */,
 				C7D786051E9A943E004448A2 /* Products */,
+				C79C62CD1EE77EC800D6B9E2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +114,7 @@
 		C7D786061E9A943E004448A2 /* White Noise */ = {
 			isa = PBXGroup;
 			children = (
+				C79C62CC1EE77EC800D6B9E2 /* White Noise.entitlements */,
 				C76AEC091EA5A384005CA0AF /* white.mp3 */,
 				C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */,
 				C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */,
@@ -210,6 +220,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
 							};
 						};
 					};

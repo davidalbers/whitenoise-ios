@@ -25,7 +25,11 @@ class ViewController: UIViewController {
         do {
             try AVAudioSession.sharedInstance().setCategory(
             AVAudioSessionCategoryPlayAndRecord,
-            with: .defaultToSpeaker)
+            with: [
+                .defaultToSpeaker,
+                .allowBluetooth,
+                .allowAirPlay,
+                .allowBluetoothA2DP])
         } catch {
             print("Failed to set audio session category.  Error: \(error)")
         }
