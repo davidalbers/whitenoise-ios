@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var timerPicker: UIDatePicker!
     @IBOutlet weak var timerButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var wavesSwitch: UISwitch!
+    @IBOutlet weak var fadeSwitch: UISwitch!
+    @IBOutlet weak var colorSegmented: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,9 @@ class ViewController: UIViewController {
             print("Failed to set audio session category.  Error: \(error)")
         }
         presenter = MainPresenter(viewController: self)
+        wavesSwitch.onTintColor = UIColor.brown
+        fadeSwitch.onTintColor = UIColor.brown
+        presenter?.loadSaved()
     }
     
     func update() {
@@ -79,7 +85,6 @@ class ViewController: UIViewController {
             weakSelf?.presenter?.play()
             return .success
         }
-
     }
 
     public func pause() {
@@ -113,6 +118,32 @@ class ViewController: UIViewController {
         timerLabel.text = text
     }
     
+    public func setColor(color : MainPresenter.NoiseColors) {
+        switch color {
+        case .White:
+            colorSegmented.selectedSegmentIndex = 0
+            break;
+        case .Pink:
+            colorSegmented.selectedSegmentIndex = 1
+            break;
+        case .Brown:
+            colorSegmented.selectedSegmentIndex = 2
+            break;
+        }
+    }
+    
+    public func setWavesEnabled(enabled : Bool) {
+        wavesSwitch.setOn(enabled, animated: false)
+    }
+    
+    public func setFadeEnabled(enabled : Bool) {
+        fadeSwitch.setOn(enabled, animated: false)
+    }
+    
+    public func setTimerPickerTime(time : Double) {
+        timerPicker.countDownDuration = time
+    }
+    
     @IBAction func playPausePressed(_ sender: UIButton) {
         presenter?.playPause()
     }
@@ -132,6 +163,7 @@ class ViewController: UIViewController {
             break
         }
     }
+    
     
     @IBAction func wavesEnabledAction(_ sender: UISwitch) {
         presenter?.enableWavyVolume(enabled: sender.isOn)

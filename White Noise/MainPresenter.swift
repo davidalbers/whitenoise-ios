@@ -33,6 +33,10 @@ class MainPresenter {
     var timeLeftSecs: Double = 0
     var prevTime: Int = 0
     var timerActive: Bool = false
+    private let colorKey : String = "colorKey"
+    private let wavesKey : String = "wavesKey"
+    private let fadeKey : String = "fadeKey"
+    private let timerKey : String = "timerKey"
 
 
     init(viewController: ViewController) {
@@ -71,6 +75,26 @@ class MainPresenter {
         viewController.play()
         isPlaying = true
     }
+    
+    private func saveState() {
+        let defaults = UserDefaults.standard
+        defaults.set(currentColor.rawValue, forKey: colorKey)
+        defaults.set(wavesEnabled, forKey: wavesKey)
+        defaults.set(fadeEnabled, forKey: fadeKey)
+        defaults.set(viewController.getTimerPickerTime(), forKey: timerKey)
+    }
+    
+    public func loadSaved() {
+        let defaults = UserDefaults.standard
+        if let savedColor = defaults.string(forKey: colorKey) {
+            currentColor = MainPresenter.NoiseColors(rawValue: savedColor) ?? .White
+            viewController.setColor(color: currentColor)
+        }
+        viewController.setWavesEnabled(enabled: defaults.bool(forKey: wavesKey))
+        viewController.setFadeEnabled(enabled: defaults.bool(forKey: fadeKey))
+        viewController.setTimerPickerTime(time: defaults.double(forKey: timerKey))
+    }
+    
     
     public func enableWavyVolume(enabled: Bool) {
         wavesEnabled = enabled
