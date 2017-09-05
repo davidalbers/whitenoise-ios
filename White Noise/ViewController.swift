@@ -85,6 +85,7 @@ class ViewController: UIViewController {
             weakSelf?.presenter?.play()
             return .success
         }
+        presenter?.saveState()
     }
 
     public func pause() {

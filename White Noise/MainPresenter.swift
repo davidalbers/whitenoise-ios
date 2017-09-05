@@ -76,7 +76,7 @@ class MainPresenter {
         isPlaying = true
     }
     
-    private func saveState() {
+    public func saveState() {
         let defaults = UserDefaults.standard
         defaults.set(currentColor.rawValue, forKey: colorKey)
         defaults.set(wavesEnabled, forKey: wavesKey)
