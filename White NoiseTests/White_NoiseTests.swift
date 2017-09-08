@@ -33,6 +33,10 @@ class White_NoiseTests: XCTestCase {
             addTimerCalled = true
             self.timerText = timerText
         }
+        
+        override func setColor(color: MainPresenter.NoiseColors) {
+            //mock has nothing to do
+        }
     }
     
     override func setUp() {
@@ -104,10 +108,5 @@ class White_NoiseTests: XCTestCase {
         print(viewController.timerText)
         XCTAssert(viewController.timerText == "01:00")
     }
-    
-//    func testPerformanceExample() {
-//        self.measure {
-//        }
-//    }
     
 }

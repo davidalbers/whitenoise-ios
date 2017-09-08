@@ -51,6 +51,7 @@ class MainPresenter {
         }
         currentColor = color
         viewController.resetPlayer(restart: isPlaying)
+        viewController.setColor(color: color)
     }
     
     public func getColor() -> NoiseColors {
@@ -219,7 +220,7 @@ class MainPresenter {
         if (timerDisplayed) {
             return secondsToFormattedTime(time: timeLeftSecs)
         } else {
-            return "None"
+            return ""
         }
     }
     

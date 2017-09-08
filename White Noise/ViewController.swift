@@ -22,6 +22,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var wavesSwitch: UISwitch!
     @IBOutlet weak var fadeSwitch: UISwitch!
     @IBOutlet weak var colorSegmented: UISegmentedControl!
+    
+    let grey : UIColor = UIColor(red: 201, green: 201, blue: 201)
+    let pink : UIColor = UIColor(red: 255, green: 207, blue: 203)
+    let brown : UIColor = UIColor(red: 161, green: 136, blue: 127)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +40,9 @@ class ViewController: UIViewController {
         } catch {
             print("Failed to set audio session category.  Error: \(error)")
         }
+        timerLabel.text = ""
+        timerPicker.setValue(UIColor.white, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
-        wavesSwitch.onTintColor = UIColor.brown
-        fadeSwitch.onTintColor = UIColor.brown
         presenter?.loadSaved()
     }
     
@@ -72,7 +76,6 @@ class ViewController: UIViewController {
                                      userInfo: nil,
                                      repeats: true)
         player?.play()
-        playButton.setTitle("Pause", for: .normal)
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let commandCenter = MPRemoteCommandCenter.shared()
         weak var weakSelf = self
@@ -86,12 +89,17 @@ class ViewController: UIViewController {
             return .success
         }
         presenter?.saveState()
+        
+        let btnImage = UIImage(named: "pause")
+        playButton.setImage(btnImage, for: UIControlState.normal)
     }
 
     public func pause() {
         timer?.invalidate()
         player?.pause()
-        playButton.setTitle("Play", for: .normal)
+        
+        let btnImage = UIImage(named: "play")
+        playButton.setImage(btnImage, for: UIControlState.normal)
     }
     
     public func setVolume(volume: Float) {
@@ -105,13 +113,13 @@ class ViewController: UIViewController {
     
     public func cancelTimer(timerText: String) {
         timerPicker.isEnabled = true
-        timerButton.setTitle("Set", for: .normal)
+        timerButton.setImage(UIImage(named: "add"), for: .normal)
         setTimerText(text: timerText)
     }
     
     public func addTimer(timerText: String) {
         timerPicker.isEnabled = false
-        timerButton.setTitle("Clear", for: .normal)
+        timerButton.setImage(UIImage(named: "delete"), for: .normal)
         setTimerText(text: timerText)
     }
     
@@ -123,12 +131,18 @@ class ViewController: UIViewController {
         switch color {
         case .White:
             colorSegmented.selectedSegmentIndex = 0
+            wavesSwitch.onTintColor = grey
+            fadeSwitch.onTintColor = grey
             break;
         case .Pink:
             colorSegmented.selectedSegmentIndex = 1
+            wavesSwitch.onTintColor = pink
+            fadeSwitch.onTintColor = pink
             break;
         case .Brown:
             colorSegmented.selectedSegmentIndex = 2
+            wavesSwitch.onTintColor = brown
+            fadeSwitch.onTintColor = brown
             break;
         }
     }
@@ -176,6 +190,26 @@ class ViewController: UIViewController {
     
     @IBAction func timerAddedAction(_ sender: UIButton) {
         presenter?.addDeleteTimer()
+    }
+    
+    
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
     }
 }
 
