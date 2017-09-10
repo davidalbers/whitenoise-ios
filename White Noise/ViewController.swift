@@ -76,6 +76,7 @@ class ViewController: UIViewController {
                                      userInfo: nil,
                                      repeats: true)
         player?.play()
+        
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let commandCenter = MPRemoteCommandCenter.shared()
         weak var weakSelf = self
@@ -90,8 +91,20 @@ class ViewController: UIViewController {
         }
         presenter?.saveState()
         
-        let btnImage = UIImage(named: "pause")
-        playButton.setImage(btnImage, for: UIControlState.normal)
+        playButton.setImage(UIImage(named: "pause"), for: UIControlState.normal)
+    }
+    
+    public func setMediaTitle(title: String) {
+        if let image = UIImage(named: "darkIcon") {
+            let artwork = MPMediaItemArtwork
+                .init(boundsSize: image.size,
+                      requestHandler: { (size) -> UIImage in return image})
+            
+            let nowPlayingInfo = [MPMediaItemPropertyTitle : title,
+                                  MPMediaItemPropertyArtwork : artwork]
+                                        as [String : Any]
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
     }
 
     public func pause() {
@@ -103,7 +116,6 @@ class ViewController: UIViewController {
     }
     
     public func setVolume(volume: Float) {
-        print(volume)
         player?.setVolume(volume, fadeDuration: 0)
     }
     

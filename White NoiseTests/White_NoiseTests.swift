@@ -20,6 +20,7 @@ class White_NoiseTests: XCTestCase {
         public var addTimerCalled : Bool = false
         let timerPickerTime : Double = 60.0
         public var timerText : String = ""
+        public var mediaTitle : String = ""
         
         override func play() {
             playCalled = true
@@ -36,6 +37,10 @@ class White_NoiseTests: XCTestCase {
         
         override func setColor(color: MainPresenter.NoiseColors) {
             //mock has nothing to do
+        }
+        
+        override func setMediaTitle(title: String) {
+            mediaTitle = title
         }
     }
     
@@ -89,6 +94,7 @@ class White_NoiseTests: XCTestCase {
     func testChangeColor() {
         presenter.changeColor(color: MainPresenter.NoiseColors.Pink);
         XCTAssert(presenter.getColor() == MainPresenter.NoiseColors.Pink)
+        XCTAssertTrue(viewController.mediaTitle == "Pink Noise")
     }
     
     func testPlay() {
@@ -97,6 +103,7 @@ class White_NoiseTests: XCTestCase {
         
         XCTAssertTrue(viewController.playCalled)
         XCTAssert(presenter.isPlaying)
+        XCTAssertTrue(viewController.mediaTitle == "White Noise")
     }
     
     func testAddTimer() {

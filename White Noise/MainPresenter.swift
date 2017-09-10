@@ -52,6 +52,7 @@ class MainPresenter {
         currentColor = color
         viewController.resetPlayer(restart: isPlaying)
         viewController.setColor(color: color)
+        viewController.setMediaTitle(title: getSoundTitle())
     }
     
     public func getColor() -> NoiseColors {
@@ -74,7 +75,24 @@ class MainPresenter {
     public func play() {
         resetVolume()
         viewController.play()
+        viewController.setMediaTitle(title: getSoundTitle())
         isPlaying = true
+    }
+    
+    private func getSoundTitle() -> String {
+        var playingTitle = ""
+        switch (currentColor) {
+        case .Brown:
+            playingTitle = "Brown"
+            break;
+        case .Pink:
+            playingTitle = "Pink"
+            break;
+        default:
+            playingTitle = "White"
+            break;
+        }
+        return playingTitle + " Noise"
     }
     
     public func saveState() {

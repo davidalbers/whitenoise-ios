@@ -451,7 +451,7 @@
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dalbers.White-Noise";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -467,7 +467,7 @@
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dalbers.White-Noise";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
