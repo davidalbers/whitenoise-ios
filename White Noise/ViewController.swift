@@ -26,31 +26,36 @@ class ViewController: UIViewController {
     let grey : UIColor = UIColor(red: 201, green: 201, blue: 201)
     let pink : UIColor = UIColor(red: 255, green: 207, blue: 203)
     let brown : UIColor = UIColor(red: 161, green: 136, blue: 127)
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            try AVAudioSession.sharedInstance().setCategory(
-            AVAudioSessionCategoryPlayAndRecord,
-            with: [
-                .defaultToSpeaker,
-                .allowBluetooth,
-                .allowAirPlay,
-                .allowBluetoothA2DP])
-        } catch {
-            print("Failed to set audio session category.  Error: \(error)")
-        }
+
         timerLabel.text = ""
         timerPicker.setValue(UIColor.white, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
-        presenter?.loadSaved()
+        presenter?.loadStateFromDefaults()
     }
     
-    func update() {
+    @objc func update() {
         presenter?.tick()
     }
     
-  
+    public func makeActiveAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to set audio session category.  Error: \(error)")
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    public func onReceiveIntent(intent: PlayIntent) {
+        presenter?.setIntent(intent: intent)
+    }
+    
     private func makePlayer() -> AVAudioPlayer? {
         let url = Bundle.main.url(forResource: presenter?.getColor().rawValue,
                                   withExtension: "mp3")!
@@ -69,6 +74,7 @@ class ViewController: UIViewController {
     }
     
     public func play() {
+        makeActiveAudioSession()
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: MainPresenter.tickInterval,
                                      target: self,
@@ -89,7 +95,6 @@ class ViewController: UIViewController {
             weakSelf?.presenter?.play()
             return .success
         }
-        presenter?.saveState()
         
         playButton.setImage(UIImage(named: "pause"), for: UIControlState.normal)
     }
@@ -113,6 +118,11 @@ class ViewController: UIViewController {
         
         let btnImage = UIImage(named: "play")
         playButton.setImage(btnImage, for: UIControlState.normal)
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("Error setting audio session active=false")
+        }
     }
     
     public func setVolume(volume: Float) {
@@ -136,7 +146,11 @@ class ViewController: UIViewController {
     }
     
     public func setTimerText(text: String) {
-        timerLabel.text = text
+        var actualText = text
+        if !actualText.isEmpty {
+            actualText.append("\t")
+        }
+        timerLabel.text = actualText
     }
     
     public func setColor(color : MainPresenter.NoiseColors) {
@@ -167,8 +181,8 @@ class ViewController: UIViewController {
         fadeSwitch.setOn(enabled, animated: false)
     }
     
-    public func setTimerPickerTime(time : Double) {
-        timerPicker.countDownDuration = time
+    public func setTimerPickerTime(seconds : Double) {
+        timerPicker.countDownDuration = seconds
     }
     
     @IBAction func playPausePressed(_ sender: UIButton) {

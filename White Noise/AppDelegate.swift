@@ -40,6 +40,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if #available(iOS 12.0, *),
+            let intent = userActivity.interaction?.intent as? PlayIntent,
+            let viewController = self.window?.rootViewController as? ViewController {
+            viewController.onReceiveIntent(intent: intent)
+            return true
+        }
+        return false
+    }
+
 
 
 }
