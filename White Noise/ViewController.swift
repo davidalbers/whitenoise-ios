@@ -23,18 +23,23 @@ class ViewController: UIViewController {
     @IBOutlet weak var fadeSwitch: UISwitch!
     @IBOutlet weak var colorSegmented: UISegmentedControl!
     
-    let grey : UIColor = UIColor(red: 201, green: 201, blue: 201)
-    let pink : UIColor = UIColor(red: 255, green: 207, blue: 203)
-    let brown : UIColor = UIColor(red: 161, green: 136, blue: 127)
-    
+    let grey : UIColor = UIColor(named: "darkGrey") ?? UIColor.yellow
+    let pink : UIColor = UIColor(named: "pink") ?? UIColor.systemPink
+    let brown : UIColor = UIColor(named: "brown") ?? UIColor.brown
+    let textColor = UIColor(named: "text")
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         timerLabel.text = ""
-        timerPicker.setValue(UIColor.white, forKey: "textColor")
+        timerPicker.setValue(textColor, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
         presenter?.loadStateFromDefaults()
+        if #available(iOS 13.0, *) {
+            // force dark mode on/off/auto
+            overrideUserInterfaceStyle = .unspecified
+        }
+        showPlayButtonPlayable()
     }
     
     @objc func update() {
@@ -96,8 +101,10 @@ class ViewController: UIViewController {
             return .success
         }
         
-        playButton.setImage(UIImage(named: "pause"), for: UIControlState.normal)
+        playButton.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysTemplate), for: UIControlState.normal)
+        playButton.imageView?.tintColor = textColor
     }
+
     
     public func setMediaTitle(title: String) {
         if let image = UIImage(named: "darkIcon") {
@@ -116,13 +123,18 @@ class ViewController: UIViewController {
         timer?.invalidate()
         player?.pause()
         
-        let btnImage = UIImage(named: "play")
-        playButton.setImage(btnImage, for: UIControlState.normal)
+        showPlayButtonPlayable()
         do {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Error setting audio session active=false")
         }
+    }
+    
+    private func showPlayButtonPlayable() {
+        let btnImage = UIImage(named: "play")?.withRenderingMode(.alwaysTemplate)
+        playButton.setImage(btnImage, for: UIControlState.normal)
+        playButton.tintColor = textColor
     }
     
     public func setVolume(volume: Float) {
@@ -135,13 +147,15 @@ class ViewController: UIViewController {
     
     public func cancelTimer(timerText: String) {
         timerPicker.isEnabled = true
-        timerButton.setImage(UIImage(named: "add"), for: .normal)
+        timerButton.setImage(UIImage(named: "add")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        timerButton.imageView?.tintColor = textColor
         setTimerText(text: timerText)
     }
     
     public func addTimer(timerText: String) {
         timerPicker.isEnabled = false
-        timerButton.setImage(UIImage(named: "delete"), for: .normal)
+        timerButton.setImage(UIImage(named: "delete")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        timerButton.imageView?.tintColor = textColor
         setTimerText(text: timerText)
     }
     

@@ -179,6 +179,7 @@ class MainPresenter {
         } else {
             timeLeftSecs = 0
             viewController.setTimerPickerTime(seconds: timeLeftSecs)
+            viewController.cancelTimer(timerText: "")
         }
     }
     
