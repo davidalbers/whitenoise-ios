@@ -14,6 +14,8 @@
 		C76AEC0C1EA5A3B2005CA0AF /* pink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */; };
 		C76AEC0E1EA5A3BC005CA0AF /* brown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */; };
 		C76AEC101EA5A441005CA0AF /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */; };
+		C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7797C9623410753008C09EA /* SettingsViewController.swift */; };
+		C7B8B18E253B57470047FAAB /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
 		C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786071E9A943E004448A2 /* AppDelegate.swift */; };
 		C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786091E9A943E004448A2 /* ViewController.swift */; };
 		C7D7860D1E9A943E004448A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7D7860B1E9A943E004448A2 /* Main.storyboard */; };
@@ -48,7 +50,9 @@
 		C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pink.mp3; sourceTree = "<group>"; };
 		C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = brown.mp3; sourceTree = "<group>"; };
 		C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		C7797C9623410753008C09EA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C79C62CC1EE77EC800D6B9E2 /* White Noise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "White Noise.entitlements"; sourceTree = "<group>"; };
+		C7B8B18D253B57470047FAAB /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
 		C7D786041E9A943E004448A2 /* White Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "White Noise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786071E9A943E004448A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7D786091E9A943E004448A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 				C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */,
 				C7D786071E9A943E004448A2 /* AppDelegate.swift */,
 				C7D786091E9A943E004448A2 /* ViewController.swift */,
+				C7797C9623410753008C09EA /* SettingsViewController.swift */,
 				C727661221573D0100D9D18D /* Intents.intentdefinition */,
 				C7D7860B1E9A943E004448A2 /* Main.storyboard */,
 				C7D7860E1E9A943E004448A2 /* Assets.xcassets */,
@@ -134,6 +139,7 @@
 				C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */,
 				C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */,
 				C7200CDE216020B80012A3F0 /* IntentParser.swift */,
+				C7B8B18D253B57470047FAAB /* Themer.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -311,8 +317,10 @@
 			files = (
 				C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */,
 				C76AEC101EA5A441005CA0AF /* MainPresenter.swift in Sources */,
+				C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */,
 				C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */,
 				C727661321573D0100D9D18D /* Intents.intentdefinition in Sources */,
+				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,
 			);

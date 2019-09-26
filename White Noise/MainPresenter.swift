@@ -8,13 +8,12 @@
 
 import Foundation
 class MainPresenter {
-    //MARK: vars
     public enum NoiseColors: String {
         case White = "white"
         case Pink = "pink"
         case Brown = "brown"
     }
-    
+
     var isPlaying: Bool = false
     var currentColor: NoiseColors = .White
     var viewController: ViewController
@@ -37,7 +36,6 @@ class MainPresenter {
     private let wavesKey : String = "wavesKey"
     private let fadeKey : String = "fadeKey"
     private let timerKey : String = "timerKey"
-
 
     init(viewController: ViewController) {
         self.viewController = viewController
