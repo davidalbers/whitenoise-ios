@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     lazy var player: AVAudioPlayer? = self.makePlayer()
     var presenter: MainPresenter?
     var timer: Timer?
+    private let themer = Themer()
     
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var timerPicker: UIDatePicker!
@@ -22,19 +23,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var wavesSwitch: UISwitch!
     @IBOutlet weak var fadeSwitch: UISwitch!
     @IBOutlet weak var colorSegmented: UISegmentedControl!
+    @IBOutlet weak var themeButton: UIButton!
     
-    let grey : UIColor = UIColor(red: 201, green: 201, blue: 201)
-    let pink : UIColor = UIColor(red: 255, green: 207, blue: 203)
-    let brown : UIColor = UIColor(red: 161, green: 136, blue: 127)
-    
+    let grey : UIColor = UIColor(named: "darkGrey") ?? UIColor.yellow
+    let pink : UIColor = UIColor(named: "pink") ?? UIColor.systemPink
+    let brown : UIColor = UIColor(named: "brown") ?? UIColor.brown
+    let textColor = UIColor(named: "text")
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         timerLabel.text = ""
-        timerPicker.setValue(UIColor.white, forKey: "textColor")
+        timerPicker.setValue(textColor, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
         presenter?.loadStateFromDefaults()
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
+            themeButton.imageView?.tintColor = textColor
+            themeButton.isHidden = false
+        } else {
+            themeButton.isHidden = true
+        }
+        showPlayButtonPlayable()
     }
     
     @objc func update() {
@@ -96,8 +106,10 @@ class ViewController: UIViewController {
             return .success
         }
         
-        playButton.setImage(UIImage(named: "pause"), for: UIControlState.normal)
+        playButton.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysTemplate), for: UIControlState.normal)
+        playButton.imageView?.tintColor = textColor
     }
+
     
     public func setMediaTitle(title: String) {
         if let image = UIImage(named: "darkIcon") {
@@ -116,13 +128,18 @@ class ViewController: UIViewController {
         timer?.invalidate()
         player?.pause()
         
-        let btnImage = UIImage(named: "play")
-        playButton.setImage(btnImage, for: UIControlState.normal)
+        showPlayButtonPlayable()
         do {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Error setting audio session active=false")
         }
+    }
+    
+    private func showPlayButtonPlayable() {
+        let btnImage = UIImage(named: "play")?.withRenderingMode(.alwaysTemplate)
+        playButton.setImage(btnImage, for: UIControlState.normal)
+        playButton.tintColor = textColor
     }
     
     public func setVolume(volume: Float) {
@@ -135,13 +152,15 @@ class ViewController: UIViewController {
     
     public func cancelTimer(timerText: String) {
         timerPicker.isEnabled = true
-        timerButton.setImage(UIImage(named: "add"), for: .normal)
+        timerButton.setImage(UIImage(named: "add")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        timerButton.imageView?.tintColor = textColor
         setTimerText(text: timerText)
     }
     
     public func addTimer(timerText: String) {
         timerPicker.isEnabled = false
-        timerButton.setImage(UIImage(named: "delete"), for: .normal)
+        timerButton.setImage(UIImage(named: "delete")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        timerButton.imageView?.tintColor = textColor
         setTimerText(text: timerText)
     }
     
@@ -218,24 +237,18 @@ class ViewController: UIViewController {
         presenter?.addDeleteTimer()
     }
     
-    
-}
-
-extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    @IBAction func themeButton(_ sender: Any) {
+        if #available(iOS 13.0, *) {
+            let sampleStoryBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            let newViewController = sampleStoryBoard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            
+            self.present(newViewController, animated: true, completion: nil)
+            newViewController.rootVC = self
+        }
     }
+
     
-    convenience init(rgb: Int) {
-        self.init(
-            red: (rgb >> 16) & 0xFF,
-            green: (rgb >> 8) & 0xFF,
-            blue: rgb & 0xFF
-        )
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return themer.getStatusBarStyle()
     }
 }
-
