@@ -66,6 +66,12 @@ class ViewController: UIViewController {
         presenter?.setIntent(intent: intent)
     }
     
+    public func onReceiveDeeplink(
+        params: [URLQueryItem]
+    ) {
+        presenter?.setDeeplinkParams(params: params)
+    }
+    
     private func makePlayer() -> AVAudioPlayer? {
         let url = Bundle.main.url(forResource: presenter?.getColor().rawValue,
                                   withExtension: "mp3")!

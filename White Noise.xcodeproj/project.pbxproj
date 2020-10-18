@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
-		C727661321573D0100D9D18D /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C727661221573D0100D9D18D /* Intents.intentdefinition */; };
 		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
 		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
 		C728368F253CC0DB001CA287 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C728368E253CC0DB001CA287 /* Assets.xcassets */; };
 		C7283693253CC0DB001CA287 /* widgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7283686253CC0D9001CA287 /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C72836B1253CC7ED001CA287 /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C728368C253CC0D9001CA287 /* widget.swift */; };
+		C72836BB253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */; };
+		C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */; };
 		C76AEC0A1EA5A384005CA0AF /* white.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC091EA5A384005CA0AF /* white.mp3 */; };
 		C76AEC0C1EA5A3B2005CA0AF /* pink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */; };
 		C76AEC0E1EA5A3BC005CA0AF /* brown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */; };
@@ -71,13 +72,13 @@
 /* Begin PBXFileReference section */
 		C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutCreator.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
-		C727661221573D0100D9D18D /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C7283689253CC0D9001CA287 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C728368C253CC0D9001CA287 /* widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = widget.swift; sourceTree = "<group>"; };
 		C728368E253CC0DB001CA287 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7283690253CC0DB001CA287 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = WidgetIntent.intentdefinition; sourceTree = "<group>"; };
 		C76AEC091EA5A384005CA0AF /* white.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = white.mp3; path = ../white.mp3; sourceTree = "<group>"; };
 		C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pink.mp3; sourceTree = "<group>"; };
 		C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = brown.mp3; sourceTree = "<group>"; };
@@ -137,7 +138,7 @@
 		C728368B253CC0D9001CA287 /* widget */ = {
 			isa = PBXGroup;
 			children = (
-				C727661221573D0100D9D18D /* Intents.intentdefinition */,
+				C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */,
 				C728368C253CC0D9001CA287 /* widget.swift */,
 				C728368E253CC0DB001CA287 /* Assets.xcassets */,
 				C7283690253CC0DB001CA287 /* Info.plist */,
@@ -403,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,7 +417,7 @@
 				C76AEC101EA5A441005CA0AF /* MainPresenter.swift in Sources */,
 				C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */,
 				C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */,
-				C727661321573D0100D9D18D /* Intents.intentdefinition in Sources */,
+				C72836BB253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,

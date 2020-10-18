@@ -51,7 +51,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
 
-
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any] = [:] ) -> Bool {
+        if let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+            let params = components.queryItems,
+            let viewController = self.window?.rootViewController as? ViewController {
+            viewController.onReceiveDeeplink(params: params)
+            return true
+        } else {
+            return false
+        }
+    }
 
 }
 

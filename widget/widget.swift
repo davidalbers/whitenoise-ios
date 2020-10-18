@@ -31,9 +31,6 @@ struct widgetEntryView : View {
 
     var body: some View {
         Text(entry.color)
-//        Link(destination: homeDeepLink) {
-//            Text("Home")
-//        }
     }
 }
 

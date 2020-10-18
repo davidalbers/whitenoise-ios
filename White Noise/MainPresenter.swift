@@ -165,6 +165,20 @@ class MainPresenter {
             play()
         }
     }
+    
+    public func setDeeplinkParams(
+        params: [URLQueryItem]
+    ) {
+        var state = [String: Any]()
+        state[MainPresenter.colorKey] = params.first(where: { $0.name == "color" })?.value
+        if let minutesParam = params.first(where: { $0.name == "minutes" })?.value {
+            state[timerKey] = (Double(minutesParam) ?? 0.0) * 60
+        }
+        state[wavesKey] = Bool(params.first(where: { $0.name == "wavy" })?.value ?? "false")
+        state[fadeKey] = Bool(params.first(where: { $0.name == "fading" })?.value ?? "false")
+        loadSavedState(state: state)
+        play()
+    }
 
     public func loadStateFromDefaults() {
         loadSavedState(state: UserDefaults.standard.dictionaryRepresentation())
