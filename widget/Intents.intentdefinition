@@ -236,34 +236,6 @@
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>k9jbZy</string>
 				</dict>
-				<key>minutes</key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>for ${minutes} minutes </string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>V06M7A</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Set sleep timer</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>WrMmfU</string>
-				</dict>
-				<key>noiseModification</key>
-				<dict>
-					<key>INIntentParameterCombinationIsPrimary</key>
-					<true/>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>make noise ${noiseModification}</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>DhjtpG</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Modify noise</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>SxMdcm</string>
-				</dict>
 				<key>noiseModification,minutes,color</key>
 				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>

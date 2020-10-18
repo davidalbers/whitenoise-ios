@@ -10,6 +10,11 @@
 		C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C727661321573D0100D9D18D /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C727661221573D0100D9D18D /* Intents.intentdefinition */; };
+		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
+		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
+		C728368F253CC0DB001CA287 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C728368E253CC0DB001CA287 /* Assets.xcassets */; };
+		C7283693253CC0DB001CA287 /* widgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7283686253CC0D9001CA287 /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C72836B1253CC7ED001CA287 /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C728368C253CC0D9001CA287 /* widget.swift */; };
 		C76AEC0A1EA5A384005CA0AF /* white.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC091EA5A384005CA0AF /* white.mp3 */; };
 		C76AEC0C1EA5A3B2005CA0AF /* pink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */; };
 		C76AEC0E1EA5A3BC005CA0AF /* brown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */; };
@@ -26,6 +31,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C7283691253CC0DB001CA287 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7D785FC1E9A943D004448A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7283685253CC0D9001CA287;
+			remoteInfo = widgetExtension;
+		};
 		C7D786191E9A943E004448A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C7D785FC1E9A943D004448A2 /* Project object */;
@@ -42,10 +54,30 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C7283697253CC0DB001CA287 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C7283693253CC0DB001CA287 /* widgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutCreator.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
 		C727661221573D0100D9D18D /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C7283689253CC0D9001CA287 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		C728368C253CC0D9001CA287 /* widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = widget.swift; sourceTree = "<group>"; };
+		C728368E253CC0DB001CA287 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C7283690253CC0DB001CA287 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C76AEC091EA5A384005CA0AF /* white.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = white.mp3; path = ../white.mp3; sourceTree = "<group>"; };
 		C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pink.mp3; sourceTree = "<group>"; };
 		C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = brown.mp3; sourceTree = "<group>"; };
@@ -69,6 +101,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C7283683253CC0D9001CA287 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */,
+				C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7D786011E9A943E004448A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -93,9 +134,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C728368B253CC0D9001CA287 /* widget */ = {
+			isa = PBXGroup;
+			children = (
+				C727661221573D0100D9D18D /* Intents.intentdefinition */,
+				C728368C253CC0D9001CA287 /* widget.swift */,
+				C728368E253CC0DB001CA287 /* Assets.xcassets */,
+				C7283690253CC0DB001CA287 /* Info.plist */,
+			);
+			path = widget;
+			sourceTree = "<group>";
+		};
 		C79C62CD1EE77EC800D6B9E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7283687253CC0D9001CA287 /* WidgetKit.framework */,
+				C7283689253CC0D9001CA287 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,6 +160,7 @@
 				C7D786061E9A943E004448A2 /* White Noise */,
 				C7D7861B1E9A943E004448A2 /* White NoiseTests */,
 				C7D786261E9A943E004448A2 /* White NoiseUITests */,
+				C728368B253CC0D9001CA287 /* widget */,
 				C7D786051E9A943E004448A2 /* Products */,
 				C79C62CD1EE77EC800D6B9E2 /* Frameworks */,
 			);
@@ -117,6 +172,7 @@
 				C7D786041E9A943E004448A2 /* White Noise.app */,
 				C7D786181E9A943E004448A2 /* White NoiseTests.xctest */,
 				C7D786231E9A943E004448A2 /* White NoiseUITests.xctest */,
+				C7283686253CC0D9001CA287 /* widgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,7 +187,6 @@
 				C7D786071E9A943E004448A2 /* AppDelegate.swift */,
 				C7D786091E9A943E004448A2 /* ViewController.swift */,
 				C7797C9623410753008C09EA /* SettingsViewController.swift */,
-				C727661221573D0100D9D18D /* Intents.intentdefinition */,
 				C7D7860B1E9A943E004448A2 /* Main.storyboard */,
 				C7D7860E1E9A943E004448A2 /* Assets.xcassets */,
 				C7D786101E9A943E004448A2 /* LaunchScreen.storyboard */,
@@ -165,6 +220,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C7283685253CC0D9001CA287 /* widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7283694253CC0DB001CA287 /* Build configuration list for PBXNativeTarget "widgetExtension" */;
+			buildPhases = (
+				C7283682253CC0D9001CA287 /* Sources */,
+				C7283683253CC0D9001CA287 /* Frameworks */,
+				C7283684253CC0D9001CA287 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = widgetExtension;
+			productName = widgetExtension;
+			productReference = C7283686253CC0D9001CA287 /* widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C7D786031E9A943E004448A2 /* White Noise */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C7D7862C1E9A943E004448A2 /* Build configuration list for PBXNativeTarget "White Noise" */;
@@ -172,10 +244,12 @@
 				C7D786001E9A943E004448A2 /* Sources */,
 				C7D786011E9A943E004448A2 /* Frameworks */,
 				C7D786021E9A943E004448A2 /* Resources */,
+				C7283697253CC0DB001CA287 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C7283692253CC0DB001CA287 /* PBXTargetDependency */,
 			);
 			name = "White Noise";
 			productName = "White Noise";
@@ -224,10 +298,15 @@
 		C7D785FC1E9A943D004448A2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "David Albers";
 				TargetAttributes = {
+					C7283685253CC0D9001CA287 = {
+						CreatedOnToolsVersion = 12.0.1;
+						DevelopmentTeam = R37L87S852;
+						ProvisioningStyle = Automatic;
+					};
 					C7D786031E9A943E004448A2 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = R37L87S852;
@@ -276,11 +355,20 @@
 				C7D786031E9A943E004448A2 /* White Noise */,
 				C7D786171E9A943E004448A2 /* White NoiseTests */,
 				C7D786221E9A943E004448A2 /* White NoiseUITests */,
+				C7283685253CC0D9001CA287 /* widgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C7283684253CC0D9001CA287 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C728368F253CC0DB001CA287 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7D786021E9A943E004448A2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -311,6 +399,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C7283682253CC0D9001CA287 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7D786001E9A943E004448A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -345,6 +441,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C7283692253CC0DB001CA287 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7283685253CC0D9001CA287 /* widgetExtension */;
+			targetProxy = C7283691253CC0DB001CA287 /* PBXContainerItemProxy */;
+		};
 		C7D7861A1E9A943E004448A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C7D786031E9A943E004448A2 /* White Noise */;
@@ -377,6 +478,55 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C7283695253CC0DB001CA287 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R37L87S852;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C7283696253CC0DB001CA287 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R37L87S852;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		C7D7862A1E9A943E004448A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -489,6 +639,7 @@
 		C7D7862D1E9A943E004448A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "White Noise/White Noise.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -508,6 +659,7 @@
 		C7D7862E1E9A943E004448A2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "White Noise/White Noise.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -585,6 +737,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C7283694253CC0DB001CA287 /* Build configuration list for PBXNativeTarget "widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7283695253CC0DB001CA287 /* Debug */,
+				C7283696253CC0DB001CA287 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C7D785FF1E9A943E004448A2 /* Build configuration list for PBXProject "White Noise" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
