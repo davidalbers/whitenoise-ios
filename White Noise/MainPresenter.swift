@@ -32,7 +32,7 @@ class MainPresenter {
     var timeLeftSecs: Double = 0
     var prevTime: Int = 0
     var timerActive: Bool = false
-    private let colorKey : String = "colorKey"
+    static let colorKey : String = "colorKey"
     private let wavesKey : String = "wavesKey"
     private let fadeKey : String = "fadeKey"
     private let timerKey : String = "timerKey"
@@ -131,7 +131,7 @@ class MainPresenter {
 
     private func createState() -> Dictionary<String, Any> {
         var state = Dictionary<String, Any>()
-        state.updateValue(currentColor.rawValue, forKey: colorKey)
+        state.updateValue(currentColor.rawValue, forKey: MainPresenter.colorKey)
         state.updateValue(wavesEnabled, forKey: wavesKey)
         state.updateValue(fadeEnabled, forKey: fadeKey)
         var timerSeconds: Double? = nil
@@ -146,7 +146,7 @@ class MainPresenter {
     public func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
         var state = [String: Any]()
-        state[colorKey] = intent.color
+        state[MainPresenter.colorKey] = intent.color
         state[timerKey] = intentParser.getMinutesFromIntent()
         state[wavesKey] = intentParser.getWavesEnabledFromIntent()
         state[fadeKey] = intentParser.getFadingEnabledFromIntent()
@@ -161,7 +161,7 @@ class MainPresenter {
     }
 
     private func loadSavedState(state: Dictionary<String, Any>) {
-        if let savedColor = (state[colorKey] as? String) {
+        if let savedColor = (state[MainPresenter.colorKey] as? String) {
             changeColor(color: MainPresenter.NoiseColors(rawValue: savedColor) ?? .White)
         }
         wavesEnabled = state[wavesKey] as? Bool ?? false
