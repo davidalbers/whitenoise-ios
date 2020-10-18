@@ -99,23 +99,33 @@ class MainPresenter {
         guard #available(iOS 12.0, *) else {
             return
         }
-        
         let intent = PlayIntent()
         intent.noiseModification = createNoiseModificationForIntent()
         intent.minutes = createTimerMinutesForIntent()
-        intent.color = currentColor.rawValue
+        switch currentColor {
+        case .White:
+            intent.color = Colors.white
+        case .Brown:
+            intent.color = Colors.brown
+        case .Pink:
+            intent.color = Colors.pink
+        }
+        print(intent.color.rawValue)
         ShortcutCreator().resetShortcutsWithNewIntent(intent: intent)
     }
     
-    private func createNoiseModificationForIntent() -> [String] {
-        var noiseModification = [String]()
-        if fadeEnabled {
-            noiseModification.append("fading")
+    @available(iOS 12.0, *)
+    private func createNoiseModificationForIntent() -> Modification {
+        if fadeEnabled && wavesEnabled {
+            return Modification.both
         }
         if wavesEnabled {
-            noiseModification.append("wavy")
+            return Modification.wavy
         }
-        return noiseModification
+        if fadeEnabled {
+            return Modification.fading
+        }
+        return Modification.unknown
     }
     
     private func createTimerMinutesForIntent() -> NSNumber? {
@@ -146,7 +156,7 @@ class MainPresenter {
     public func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
         var state = [String: Any]()
-        state[MainPresenter.colorKey] = intent.color
+        state[MainPresenter.colorKey] = intentParser.mapColor().rawValue
         state[timerKey] = intentParser.getMinutesFromIntent()
         state[wavesKey] = intentParser.getWavesEnabledFromIntent()
         state[fadeKey] = intentParser.getFadingEnabledFromIntent()
