@@ -15,8 +15,20 @@ class Themer {
     }
     
     func getTheme() -> Theme {
-        let themeString = UserDefaults.standard.integer(forKey: themeKey)
-        return Theme.init(rawValue: (themeString)) ?? Theme.auto
+        let usersSetTheme = UserDefaults.standard.string(forKey: themeKey) != nil
+        // The app used only a dark theme in iOS 12. Keep using dark for people
+        // who installed it then since that's what they expect.
+        let grandfatheredInToDarkTheme = UserDefaults.standard.string(forKey: MainPresenter.colorKey)
+
+        if usersSetTheme {
+            let themeString = UserDefaults.standard.integer(forKey: themeKey)
+            let savedTheme = Theme.init(rawValue: (themeString))
+            return savedTheme ?? Theme.auto
+        } else if grandfatheredInToDarkTheme != nil {
+            return Theme.dark
+        } else {
+            return Theme.auto
+        }
     }
     
     @available(iOS 12.0, *)
