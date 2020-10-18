@@ -2,22 +2,26 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), color: "placeholder")
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+struct Provider: IntentTimelineProvider {
+    func getSnapshot(for configuration: PlayIntent, in context: Context, completion: @escaping (SimpleEntry) -> Void) {
         let entry = SimpleEntry(date: Date(), color: "snapshot")
         completion(entry)
     }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    
+    func getTimeline(for configuration: PlayIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
         let currentDate = Date()
         let entry = SimpleEntry(date: currentDate, color: "timeline")
 
         let timeline = Timeline(entries: Array.init(arrayLiteral: entry), policy: .never)
         completion(timeline)
+    }
+    
+    typealias Entry = SimpleEntry
+    
+    typealias Intent = PlayIntent
+    
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), color: "placeholder")
     }
 }
 
@@ -38,29 +42,13 @@ struct widgetEntryView : View {
 struct widget: Widget {
     let kind: String = "widget"
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        return IntentConfiguration(
+            kind: kind,
+            intent: PlayIntent.self,
+            provider: Provider()
+        ) { entry in
             widgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
-//
-    
-//        IntentConfiguration(
-//            kind: kind,
-//            intent: PlayIntent.self,
-//            provider: Provider(),
-//            placeholder: Provider()
-//        ) { entry in
-//            widgetEntryView(entry: entry)
-//        }
-//        .configurationDisplayName("A Repo's Latest Commit")
-//        .description("Shows the last commit at the a repo/branch combination.")
-    }
-}
-
-struct widget_Previews: PreviewProvider {
-    static var previews: some View {
-        widgetEntryView(entry: SimpleEntry(date: Date(), color: "previews"))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        .configurationDisplayName("Play")
     }
 }
