@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
+import SwiftUI
 
 class ViewController: UIViewController {
     lazy var player: AVAudioPlayer? = self.makePlayer()
@@ -36,8 +37,8 @@ class ViewController: UIViewController {
         timerLabel.text = ""
         timerPicker.setValue(textColor, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
-        presenter?.loadStateFromDefaults()
-        if #available(iOS 13.0, *) {
+        presenter?.loadSavedState()
+        if #available(iOS 14.0, *) {
             overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
             themeButton.imageView?.tintColor = textColor
             themeButton.isHidden = false
@@ -64,6 +65,12 @@ class ViewController: UIViewController {
     @available(iOS 12.0, *)
     public func onReceiveIntent(intent: PlayIntent) {
         presenter?.setIntent(intent: intent)
+    }
+    
+    public func onReceiveDeeplink(
+        params: [URLQueryItem]
+    ) {
+        presenter?.setDeeplinkParams(params: params)
     }
     
     private func makePlayer() -> AVAudioPlayer? {
@@ -172,7 +179,7 @@ class ViewController: UIViewController {
         timerLabel.text = actualText
     }
     
-    public func setColor(color : MainPresenter.NoiseColors) {
+    public func setColor(color : NoiseColors) {
         switch color {
         case .White:
             colorSegmented.selectedSegmentIndex = 0
@@ -238,15 +245,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func themeButton(_ sender: Any) {
-        if #available(iOS 13.0, *) {
-            let sampleStoryBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            let newViewController = sampleStoryBoard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        if #available(iOS 14.0, *) {
+            var settingsView = SettingsView(dismissAction: {self.dismiss( animated: true, completion: nil )})
+            settingsView.rootVc = self
             
-            self.present(newViewController, animated: true, completion: nil)
-            newViewController.rootVC = self
+            let settingsVc = UIHostingController(rootView: settingsView)
+            self.present(settingsVc, animated: true, completion: nil)
         }
     }
-
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return themer.getStatusBarStyle()
