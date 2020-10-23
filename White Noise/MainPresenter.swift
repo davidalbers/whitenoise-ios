@@ -8,12 +8,6 @@
 
 import Foundation
 class MainPresenter {
-    public enum NoiseColors: String {
-        case White = "white"
-        case Pink = "pink"
-        case Brown = "brown"
-    }
-
     var isPlaying: Bool = false
     var currentColor: NoiseColors = .White
     var viewController: ViewController
@@ -186,7 +180,7 @@ class MainPresenter {
 
     private func loadSavedState(state: Dictionary<String, Any>) {
         if let savedColor = (state[MainPresenter.colorKey] as? String) {
-            changeColor(color: MainPresenter.NoiseColors(rawValue: savedColor) ?? .White)
+            changeColor(color: NoiseColors(rawValue: savedColor) ?? .White)
         }
         wavesEnabled = state[wavesKey] as? Bool ?? false
         fadeEnabled = state[fadeKey] as? Bool ?? false

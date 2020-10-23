@@ -29,6 +29,9 @@
 		C7D786121E9A943E004448A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7D786101E9A943E004448A2 /* LaunchScreen.storyboard */; };
 		C7D7861D1E9A943E004448A2 /* White_NoiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D7861C1E9A943E004448A2 /* White_NoiseTests.swift */; };
 		C7D786281E9A943E004448A2 /* White_NoiseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786271E9A943E004448A2 /* White_NoiseUITests.swift */; };
+		C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
+		C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
+		C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,7 @@
 		C7D786231E9A943E004448A2 /* White NoiseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "White NoiseUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786271E9A943E004448A2 /* White_NoiseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = White_NoiseUITests.swift; sourceTree = "<group>"; };
 		C7D786291E9A943E004448A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7DC8422253CEBDC00E0575A /* NoiseColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,7 @@
 		C728368B253CC0D9001CA287 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				C7200CDE216020B80012A3F0 /* IntentParser.swift */,
 				C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */,
 				C728368C253CC0D9001CA287 /* widget.swift */,
 				C728368E253CC0DB001CA287 /* Assets.xcassets */,
@@ -194,8 +199,8 @@
 				C7D786131E9A943E004448A2 /* Info.plist */,
 				C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */,
 				C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */,
-				C7200CDE216020B80012A3F0 /* IntentParser.swift */,
 				C7B8B18D253B57470047FAAB /* Themer.swift */,
+				C7DC8422253CEBDC00E0575A /* NoiseColors.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -406,6 +411,8 @@
 			files = (
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
+				C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */,
+				C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +425,7 @@
 				C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */,
 				C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */,
 				C72836BB253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
+				C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */,
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,

@@ -178,7 +178,7 @@ class ViewController: UIViewController {
         timerLabel.text = actualText
     }
     
-    public func setColor(color : MainPresenter.NoiseColors) {
+    public func setColor(color : NoiseColors) {
         switch color {
         case .White:
             colorSegmented.selectedSegmentIndex = 0

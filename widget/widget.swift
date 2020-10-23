@@ -4,13 +4,14 @@ import SwiftUI
 
 struct Provider: IntentTimelineProvider {
     func getSnapshot(for configuration: PlayIntent, in context: Context, completion: @escaping (SimpleEntry) -> Void) {
-        let entry = SimpleEntry(date: Date(), color: "snapshot")
+        let intentParser = IntentParser(intent: configuration)
+        let entry = SimpleEntry(date: Date(), color: intentParser.mapColor().rawValue)
         completion(entry)
     }
     
     func getTimeline(for configuration: PlayIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        let currentDate = Date()
-        let entry = SimpleEntry(date: currentDate, color: "timeline")
+        let intentParser = IntentParser(intent: configuration)
+        let entry = SimpleEntry(date: Date(), color: intentParser.mapColor().rawValue)
 
         let timeline = Timeline(entries: Array.init(arrayLiteral: entry), policy: .never)
         completion(timeline)

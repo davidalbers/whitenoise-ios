@@ -27,14 +27,14 @@ class IntentParser {
         return intent.noiseModification == Modification.both || intent.noiseModification == Modification.fading
     }
     
-    public func mapColor() -> MainPresenter.NoiseColors {
+    public func mapColor() -> NoiseColors {
         switch intent.color {
         case .pink:
-            return MainPresenter.NoiseColors.Pink
+            return NoiseColors.Pink
         case .brown:
-            return MainPresenter.NoiseColors.Brown
+            return NoiseColors.Brown
         default:
-            return MainPresenter.NoiseColors.White
+            return NoiseColors.White
         }
     }
 }
