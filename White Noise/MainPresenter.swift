@@ -69,7 +69,6 @@ class MainPresenter {
     public func play() {
         resetVolume()
         saveState()
-        updateWidgets()
         donateIntent()
         updateWidgets()
         viewController.play()
@@ -134,7 +133,7 @@ class MainPresenter {
     }
     
     private func saveState() {
-        UserDefaults.standard.setValuesForKeys(createState())
+        UserDefaults(suiteName: userDefaultsSuite)!.setValuesForKeys(createState())
     }
 
     private func createState() -> Dictionary<String, Any> {
@@ -183,12 +182,6 @@ class MainPresenter {
                         if intentParser.playForIntentIfNeeded() {
                             return false
                         }
-//                        let intentState = self.intentToState(intentParser: intentParser)
-//                        let currentState = UserDefaults.standard.dictionaryRepresentation()
-//                        let changed = intentState[MainPresenter.colorKey] as? String != currentState[MainPresenter.colorKey] as? String
-//                            || intentState[self.wavesKey] as? Bool != currentState[self.wavesKey] as? Bool
-//                            || intentState[self.fadeKey] as? Double != currentState[self.fadeKey] as? Double
-                        print("changed")
                         return true
                     }
                     return false
@@ -213,9 +206,13 @@ class MainPresenter {
         loadSavedState(state: state)
         play()
     }
+    
+    private let userDefaultsSuite = "group.com.dalbers.WhiteNoise"
 
     public func loadStateFromDefaults() {
-        loadSavedState(state: UserDefaults.standard.dictionaryRepresentation())
+        loadSavedState(state:
+            UserDefaults(suiteName: userDefaultsSuite)!.dictionaryRepresentation()
+        )
     }
 
     private func loadSavedState(state: Dictionary<String, Any>) {
