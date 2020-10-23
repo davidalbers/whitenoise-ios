@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import WidgetKit
+
 class MainPresenter {
     var isPlaying: Bool = false
     var currentColor: NoiseColors = .White
@@ -67,7 +69,9 @@ class MainPresenter {
     public func play() {
         resetVolume()
         saveState()
+        updateWidgets()
         donateIntent()
+        updateWidgets()
         viewController.play()
         viewController.setMediaTitle(title: getSoundTitle())
         isPlaying = true
@@ -149,14 +153,50 @@ class MainPresenter {
     @available(iOS 12.0, *)
     public func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
+        if intentParser.playForIntentIfNeeded() {
+            loadSavedState(state: intentToState(intentParser: intentParser))
+        } else {
+            loadStateFromDefaults()
+        }
+        play()
+    }
+    
+    @available(iOS 12.0, *)
+    func intentToState(intentParser: IntentParser) -> [String: Any] {
         var state = [String: Any]()
         state[MainPresenter.colorKey] = intentParser.mapColor().rawValue
         state[timerKey] = intentParser.getMinutesFromIntent()
         state[wavesKey] = intentParser.getWavesEnabledFromIntent()
         state[fadeKey] = intentParser.getFadingEnabledFromIntent()
-        loadSavedState(state: state)
-        if intentParser.playForIntentIfNeeded() {
-            play()
+        return state
+    }
+    
+    public func updateWidgets() {
+        if #available(iOS 14.0, *) {
+            print("updating widgets")
+        WidgetCenter.shared.getCurrentConfigurations { result in
+            guard case .success(let widgets) = result else { return }
+            if let widget = widgets.first(
+                where: { widget in
+                    if let intent = widget.configuration as? PlayIntent {
+                        let intentParser = IntentParser(intent: intent)
+                        if intentParser.playForIntentIfNeeded() {
+                            return false
+                        }
+//                        let intentState = self.intentToState(intentParser: intentParser)
+//                        let currentState = UserDefaults.standard.dictionaryRepresentation()
+//                        let changed = intentState[MainPresenter.colorKey] as? String != currentState[MainPresenter.colorKey] as? String
+//                            || intentState[self.wavesKey] as? Bool != currentState[self.wavesKey] as? Bool
+//                            || intentState[self.fadeKey] as? Double != currentState[self.fadeKey] as? Double
+                        print("changed")
+                        return true
+                    }
+                    return false
+                }
+            ) {
+                WidgetCenter.shared.reloadTimelines(ofKind: widget.kind)
+            }
+        }
         }
     }
     
@@ -189,7 +229,8 @@ class MainPresenter {
         
         timerDisplayed = false
         timerActive = false
-        if let savedTimerSeconds = state[timerKey] as? Double {
+        let savedTimerSeconds = state[timerKey] as? Double ?? 0.0
+        if savedTimerSeconds > 0 {
             viewController.setTimerPickerTime(seconds: savedTimerSeconds)
             addDeleteTimer()
         } else {

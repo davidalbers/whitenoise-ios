@@ -174,7 +174,12 @@
 			<integer>25</integer>
 			<key>INIntentManagedParameterCombinations</key>
 			<dict>
-				<key>color,minutes,noiseModification,timerOn</key>
+				<key>color</key>
+				<dict>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+				</dict>
+				<key>color,minutes,noiseModification</key>
 				<dict>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
@@ -182,60 +187,12 @@
 					<string>Play ${color}</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>LY2RQP</string>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
-				</dict>
-				<key>color,noiseModification,timerOn</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${color}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>oD57ua</string>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
 				</dict>
 			</dict>
 			<key>INIntentName</key>
 			<string>Play</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key>color</key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>${color} noise</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>ZgG6AP</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play </string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>mCrrNb</string>
-				</dict>
-				<key>color,minutes,noiseModification,timerOn</key>
-				<dict>
-					<key>INIntentParameterCombinationIsLinked</key>
-					<true/>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${color}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>76aSEs</string>
-				</dict>
-				<key>color,noiseModification,timerOn</key>
-				<dict>
-					<key>INIntentParameterCombinationIsLinked</key>
-					<true/>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Play ${color}</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>k9jbZy</string>
-				</dict>
 				<key>noiseModification,minutes,color</key>
 				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>
@@ -287,6 +244,15 @@
 					<string>j39OwF</string>
 					<key>INIntentParameterName</key>
 					<string>noiseModification</string>
+					<key>INIntentParameterRelationship</key>
+					<dict>
+						<key>INIntentParameterRelationshipParentName</key>
+						<string>color</string>
+						<key>INIntentParameterRelationshipPredicateName</key>
+						<string>HasAnyValue</string>
+						<key>INIntentParameterRelationshipPredicateValue</key>
+						<true/>
+					</dict>
 					<key>INIntentParameterTag</key>
 					<integer>23</integer>
 					<key>INIntentParameterType</key>
@@ -296,53 +262,11 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Timer On</string>
-					<key>INIntentParameterDisplayNameID</key>
-					<string>QHbfVC</string>
-					<key>INIntentParameterDisplayPriority</key>
-					<integer>3</integer>
-					<key>INIntentParameterMetadata</key>
-					<dict>
-						<key>INIntentParameterMetadataFalseDisplayName</key>
-						<string>false</string>
-						<key>INIntentParameterMetadataFalseDisplayNameID</key>
-						<string>NvwtJK</string>
-						<key>INIntentParameterMetadataTrueDisplayName</key>
-						<string>true</string>
-						<key>INIntentParameterMetadataTrueDisplayNameID</key>
-						<string>MtHU1N</string>
-					</dict>
-					<key>INIntentParameterName</key>
-					<string>timerOn</string>
-					<key>INIntentParameterPromptDialogs</key>
-					<array>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Configuration</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Primary</string>
-						</dict>
-					</array>
-					<key>INIntentParameterTag</key>
-					<integer>25</integer>
-					<key>INIntentParameterType</key>
-					<string>Boolean</string>
-				</dict>
-				<dict>
-					<key>INIntentParameterConfigurable</key>
-					<true/>
-					<key>INIntentParameterDisplayName</key>
-					<string>Timer minutes</string>
+					<string>Timer mins</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>kbepyT</string>
 					<key>INIntentParameterDisplayPriority</key>
-					<integer>4</integer>
+					<integer>3</integer>
 					<key>INIntentParameterMetadata</key>
 					<dict>
 						<key>INIntentParameterMetadataDefaultValue</key>
@@ -359,9 +283,9 @@
 					<key>INIntentParameterRelationship</key>
 					<dict>
 						<key>INIntentParameterRelationshipParentName</key>
-						<string>timerOn</string>
+						<string>color</string>
 						<key>INIntentParameterRelationshipPredicateName</key>
-						<string>BooleanHasExactValue</string>
+						<string>HasAnyValue</string>
 						<key>INIntentParameterRelationshipPredicateValue</key>
 						<true/>
 					</dict>
