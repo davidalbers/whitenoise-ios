@@ -28,10 +28,7 @@ class MainPresenter {
     var timeLeftSecs: Double = 0
     var prevTime: Int = 0
     var timerActive: Bool = false
-    static let colorKey : String = "colorKey"
-    private let wavesKey : String = "wavesKey"
-    private let fadeKey : String = "fadeKey"
-    private let timerKey : String = "timerKey"
+    var settingsSource = SettingsSource()
 
     init(viewController: ViewController) {
         self.viewController = viewController
@@ -68,7 +65,7 @@ class MainPresenter {
     
     public func play() {
         resetVolume()
-        saveState()
+        createState()
         donateIntent()
         updateWidgets()
         viewController.play()
@@ -131,102 +128,77 @@ class MainPresenter {
         }
         return nil
     }
-    
-    private func saveState() {
-        UserDefaults(suiteName: userDefaultsSuite)!.setValuesForKeys(createState())
-    }
 
-    private func createState() -> Dictionary<String, Any> {
-        var state = Dictionary<String, Any>()
-        state.updateValue(currentColor.rawValue, forKey: MainPresenter.colorKey)
-        state.updateValue(wavesEnabled, forKey: wavesKey)
-        state.updateValue(fadeEnabled, forKey: fadeKey)
+    private func createState() {
+        settingsSource.setColor(currentColor)
+        settingsSource.setWaves(wavesEnabled)
+        settingsSource.setFade(fadeEnabled)
         var timerSeconds: Double? = nil
         if timerActive {
             timerSeconds = viewController.getTimerPickerTime()
         }
-        state.updateValue(timerSeconds as Any, forKey: timerKey)
-        return state
+        settingsSource.setTimer(timerSeconds)
     }
     
     @available(iOS 12.0, *)
     public func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
         if intentParser.playForIntentIfNeeded() {
-            loadSavedState(state: intentToState(intentParser: intentParser))
+            intentToState(intentParser: intentParser)
         } else {
-            loadStateFromDefaults()
+            loadSavedState()
         }
         play()
     }
     
     @available(iOS 12.0, *)
-    func intentToState(intentParser: IntentParser) -> [String: Any] {
-        var state = [String: Any]()
-        state[MainPresenter.colorKey] = intentParser.mapColor().rawValue
-        state[timerKey] = intentParser.getMinutesFromIntent()
-        state[wavesKey] = intentParser.getWavesEnabledFromIntent()
-        state[fadeKey] = intentParser.getFadingEnabledFromIntent()
-        return state
+    func intentToState(intentParser: IntentParser) {
+        settingsSource.setColor(intentParser.mapColor())
+        settingsSource.setTimer(intentParser.getMinutesFromIntent())
+        settingsSource.setWaves(intentParser.getWavesEnabledFromIntent())
+        settingsSource.setFade(intentParser.getFadingEnabledFromIntent())
+        loadSavedState()
     }
     
     public func updateWidgets() {
         if #available(iOS 14.0, *) {
-            print("updating widgets")
-        WidgetCenter.shared.getCurrentConfigurations { result in
-            guard case .success(let widgets) = result else { return }
-            if let widget = widgets.first(
-                where: { widget in
-                    if let intent = widget.configuration as? PlayIntent {
-                        let intentParser = IntentParser(intent: intent)
-                        if intentParser.playForIntentIfNeeded() {
-                            return false
+            WidgetCenter.shared.getCurrentConfigurations { result in
+                guard case .success(let widgets) = result else { return }
+                if let widget = widgets.first(
+                    where: { widget in
+                        if let intent = widget.configuration as? PlayIntent {
+                            let intentParser = IntentParser(intent: intent)
+                            if intentParser.playForIntentIfNeeded() {
+                                return false
+                            }
+                            return true
                         }
-                        return true
+                        return false
                     }
-                    return false
+                ) {
+                    WidgetCenter.shared.reloadTimelines(ofKind: widget.kind)
                 }
-            ) {
-                WidgetCenter.shared.reloadTimelines(ofKind: widget.kind)
             }
-        }
         }
     }
     
     public func setDeeplinkParams(
         params: [URLQueryItem]
     ) {
-        var state = [String: Any]()
-        state[MainPresenter.colorKey] = params.first(where: { $0.name == "color" })?.value
-        if let minutesParam = params.first(where: { $0.name == "minutes" })?.value {
-            state[timerKey] = (Double(minutesParam) ?? 0.0) * 60
-        }
-        state[wavesKey] = Bool(params.first(where: { $0.name == "wavy" })?.value ?? "false")
-        state[fadeKey] = Bool(params.first(where: { $0.name == "fading" })?.value ?? "false")
-        loadSavedState(state: state)
-        play()
     }
     
     private let userDefaultsSuite = "group.com.dalbers.WhiteNoise"
 
-    public func loadStateFromDefaults() {
-        loadSavedState(state:
-            UserDefaults(suiteName: userDefaultsSuite)!.dictionaryRepresentation()
-        )
-    }
-
-    private func loadSavedState(state: Dictionary<String, Any>) {
-        if let savedColor = (state[MainPresenter.colorKey] as? String) {
-            changeColor(color: NoiseColors(rawValue: savedColor) ?? .White)
-        }
-        wavesEnabled = state[wavesKey] as? Bool ?? false
-        fadeEnabled = state[fadeKey] as? Bool ?? false
+    public func loadSavedState() {
+        changeColor(color: settingsSource.color())
+        wavesEnabled = settingsSource.wavesEnabled()
+        fadeEnabled = settingsSource.fadeEnabled()
         viewController.setWavesEnabled(enabled: wavesEnabled)
         viewController.setFadeEnabled(enabled: fadeEnabled)
         
         timerDisplayed = false
         timerActive = false
-        let savedTimerSeconds = state[timerKey] as? Double ?? 0.0
+        let savedTimerSeconds = settingsSource.timerSeconds()
         if savedTimerSeconds > 0 {
             viewController.setTimerPickerTime(seconds: savedTimerSeconds)
             addDeleteTimer()

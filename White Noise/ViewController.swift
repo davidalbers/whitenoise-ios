@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         timerLabel.text = ""
         timerPicker.setValue(textColor, forKey: "textColor")
         presenter = MainPresenter(viewController: self)
-        presenter?.loadStateFromDefaults()
+        presenter?.loadSavedState()
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
             themeButton.imageView?.tintColor = textColor

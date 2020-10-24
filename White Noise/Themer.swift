@@ -2,29 +2,26 @@ import Foundation
 import UIKit
 
 class Themer {
+    let settingsSource = SettingsSource()
+    
     public enum Theme: Int {
         case auto = 0
         case dark = 1
         case light = 2
     }
-    
-    private let themeKey : String = "themeKey"
 
     func saveTheme(_ theme: Theme?) {
-        UserDefaults.standard.setValue((theme ?? Theme.auto).rawValue, forKey: themeKey)
+        settingsSource.setTheme((theme ?? Theme.auto).rawValue)
     }
     
     func getTheme() -> Theme {
-        let usersSetTheme = UserDefaults.standard.string(forKey: themeKey) != nil
-        // The app used only a dark theme in iOS 12. Keep using dark for people
-        // who installed it then since that's what they expect.
-        let grandfatheredInToDarkTheme = UserDefaults.standard.string(forKey: MainPresenter.colorKey)
-
-        if usersSetTheme {
-            let themeString = UserDefaults.standard.integer(forKey: themeKey)
+        if settingsSource.hasTheme() {
+            let themeString = settingsSource.theme()
             let savedTheme = Theme.init(rawValue: (themeString))
             return savedTheme ?? Theme.auto
-        } else if grandfatheredInToDarkTheme != nil {
+        } else if settingsSource.hasAnySettings() {
+            // The app used only a dark theme in iOS 12. Keep using dark for people
+            // who installed it then since that's what they expect.
             return Theme.dark
         } else {
             return Theme.auto

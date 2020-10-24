@@ -11,12 +11,10 @@ struct Provider: IntentTimelineProvider {
     
     func getTimeline(for configuration: PlayIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
         let intentParser = IntentParser(intent: configuration)
-        let state = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!.dictionaryRepresentation()
-        let savedColor = state["colorKey"] as? String
+
         var displayColor = intentParser.mapColor().rawValue
         if (!intentParser.playForIntentIfNeeded()) {
-            print(state)
-            displayColor = savedColor ?? "nothing"
+            displayColor = SettingsSource().color().rawValue
         }
         let entry = SimpleEntry(date: Date(), color: displayColor)
 
