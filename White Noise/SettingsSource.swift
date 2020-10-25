@@ -42,7 +42,7 @@ class SettingsSource {
 
     
     public func hasTheme() -> Bool {
-        return getSettings()[SettingsSource.themeKey] as? String != nil
+        return getSettings()[SettingsSource.themeKey] as? Int != nil
     }
     
     public func hasAnySettings() -> Bool {

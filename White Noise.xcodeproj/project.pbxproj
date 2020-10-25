@@ -24,6 +24,10 @@
 		C7B8B18E253B57470047FAAB /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
 		C7D0B7E32543781F002CB28B /* SettingsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7E22543781F002CB28B /* SettingsSource.swift */; };
 		C7D0B7E42543781F002CB28B /* SettingsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7E22543781F002CB28B /* SettingsSource.swift */; };
+		C7D0B7E92544AFB8002CB28B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7D7860E1E9A943E004448A2 /* Assets.xcassets */; };
+		C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
+		C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
+		C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
 		C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786071E9A943E004448A2 /* AppDelegate.swift */; };
 		C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786091E9A943E004448A2 /* ViewController.swift */; };
 		C7D7860D1E9A943E004448A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7D7860B1E9A943E004448A2 /* Main.storyboard */; };
@@ -93,6 +97,7 @@
 		C7B8B18D253B57470047FAAB /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
 		C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		C7D0B7E22543781F002CB28B /* SettingsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSource.swift; sourceTree = "<group>"; };
+		C7D0B7FC2545D834002CB28B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C7D786041E9A943E004448A2 /* White Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "White Noise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786071E9A943E004448A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7D786091E9A943E004448A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -197,6 +202,7 @@
 				C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */,
 				C7D786071E9A943E004448A2 /* AppDelegate.swift */,
 				C7D786091E9A943E004448A2 /* ViewController.swift */,
+				C7D0B7FC2545D834002CB28B /* SettingsView.swift */,
 				C7797C9623410753008C09EA /* SettingsViewController.swift */,
 				C7D7860B1E9A943E004448A2 /* Main.storyboard */,
 				C7D7860E1E9A943E004448A2 /* Assets.xcassets */,
@@ -377,6 +383,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D0B7E92544AFB8002CB28B /* Assets.xcassets in Resources */,
 				C728368F253CC0DB001CA287 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,10 +422,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */,
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
 				C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */,
 				C7D0B7E42543781F002CB28B /* SettingsSource.swift in Sources */,
+				C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */,
 				C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +446,7 @@
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,
+				C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

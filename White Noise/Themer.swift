@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SwiftUI
 
 class Themer {
     let settingsSource = SettingsSource()
@@ -49,4 +50,14 @@ class Themer {
         }
         return UIStatusBarStyle.default
     }
+    
+    @available(iOS 13.0, *)
+    func getColorScheme() -> ColorScheme? {
+        switch getTheme() {
+        case .dark: return ColorScheme.dark
+        case .light: return ColorScheme.light
+        default: return nil
+        }
+    }
+
 }
