@@ -53,11 +53,20 @@ class Themer {
     
     @available(iOS 13.0, *)
     func getColorScheme() -> ColorScheme? {
-        switch getTheme() {
+        return getColorScheme(theme: getTheme())
+    }
+
+    @available(iOS 13.0, *)
+    func getWidgetColorScheme() -> ColorScheme? {
+        return getColorScheme(theme: Theme.init(rawValue: settingsSource.widgetTheme()) ?? Theme.auto)
+    }
+    
+    @available(iOS 13.0, *)
+    private func getColorScheme(theme: Theme) -> ColorScheme? {
+        switch theme {
         case .dark: return ColorScheme.dark
         case .light: return ColorScheme.light
         default: return nil
         }
     }
-
 }

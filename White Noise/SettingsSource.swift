@@ -14,6 +14,7 @@ class SettingsSource {
     private static let fadeKey : String = "fadeKey"
     private static let timerKey : String = "timerKey"
     private static let themeKey : String = "themeKey"
+    private static let widgetThemeKey : String = "widgetThemeKey"
 
     
     public func color() -> NoiseColors {
@@ -36,10 +37,17 @@ class SettingsSource {
         return getSettings()[SettingsSource.themeKey] as? Int ?? 0
     }
     
+    public func widgetTheme() -> Int {
+        return getSettings()[SettingsSource.widgetThemeKey] as? Int ?? 0
+    }
+    
     public func setTheme(_ theme: Int) {
         getSettingsObj().setValue(theme, forKey: SettingsSource.themeKey)
     }
 
+    public func setWidgetTheme(_ theme: Int) {
+        getSettingsObj().setValue(theme, forKey: SettingsSource.widgetThemeKey)
+    }
     
     public func hasTheme() -> Bool {
         return getSettings()[SettingsSource.themeKey] as? Int != nil

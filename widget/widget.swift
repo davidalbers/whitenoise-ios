@@ -69,7 +69,7 @@ struct Provider: IntentTimelineProvider {
         }
         
         mod += "\(colorString.rawValue) noise\(timeString)"
-        let colorScheme = Themer().getColorScheme()
+        let colorScheme = Themer().getWidgetColorScheme()
         return SimpleEntry(
             date: Date(),
             displayString: mod.capitalizingFirstLetter(),
