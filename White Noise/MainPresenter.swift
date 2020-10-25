@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import WidgetKit
 
 class MainPresenter {
     var isPlaying: Bool = false
@@ -67,7 +66,6 @@ class MainPresenter {
         resetVolume()
         createState()
         donateIntent()
-        updateWidgets()
         viewController.play()
         viewController.setMediaTitle(title: getSoundTitle())
         isPlaying = true
@@ -158,28 +156,6 @@ class MainPresenter {
         settingsSource.setWaves(intentParser.getWavesEnabledFromIntent())
         settingsSource.setFade(intentParser.getFadingEnabledFromIntent())
         loadSavedState()
-    }
-    
-    public func updateWidgets() {
-        if #available(iOS 14.0, *) {
-            WidgetCenter.shared.getCurrentConfigurations { result in
-                guard case .success(let widgets) = result else { return }
-                if let widget = widgets.first(
-                    where: { widget in
-                        if let intent = widget.configuration as? PlayIntent {
-                            let intentParser = IntentParser(intent: intent)
-                            if intentParser.playForIntentIfNeeded() {
-                                return false
-                            }
-                            return true
-                        }
-                        return false
-                    }
-                ) {
-                    WidgetCenter.shared.reloadTimelines(ofKind: widget.kind)
-                }
-            }
-        }
     }
     
     public func setDeeplinkParams(

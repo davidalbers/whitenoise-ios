@@ -15,7 +15,7 @@ class SettingsSource {
     private static let timerKey : String = "timerKey"
     private static let themeKey : String = "themeKey"
     private static let widgetThemeKey : String = "widgetThemeKey"
-
+    private let widgetUpdater = WidgetUpdater()
     
     public func color() -> NoiseColors {
         return NoiseColors(rawValue: getSettings()[SettingsSource.colorKey] as? String ?? "") ?? .White
@@ -46,7 +46,11 @@ class SettingsSource {
     }
 
     public func setWidgetTheme(_ theme: Int) {
+        let old = widgetTheme()
         getSettingsObj().setValue(theme, forKey: SettingsSource.widgetThemeKey)
+        if old != theme {
+            widgetUpdater.update()
+        }
     }
     
     public func hasTheme() -> Bool {
@@ -58,20 +62,36 @@ class SettingsSource {
     }
     
     public func setColor(_ color: NoiseColors) {
+        let old = self.color()
         getSettingsObj().setValue(color.rawValue, forKey: SettingsSource.colorKey)
+        if old != color {
+            widgetUpdater.update()
+        }
     }
     
     public func setWaves(_ enabled: Bool) {
+        let old = self.wavesEnabled()
         getSettingsObj().setValue(enabled, forKey: SettingsSource.wavesKey)
+        if old != enabled {
+            widgetUpdater.update()
+        }
     }
     
     public func setFade(_ enabled: Bool) {
+        let old = self.fadeEnabled()
         getSettingsObj().setValue(enabled, forKey: SettingsSource.fadeKey)
+        if old != enabled {
+            widgetUpdater.update()
+        }
     }
     
     public func setTimer(_ seconds: Double?) {
+        let old = self.timerSeconds()
         if seconds != nil {
             getSettingsObj().setValue(seconds as Any, forKey: SettingsSource.timerKey)
+        }
+        if old != seconds {
+            widgetUpdater.update()
         }
     }
     

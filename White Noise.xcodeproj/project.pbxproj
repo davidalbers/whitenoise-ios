@@ -28,6 +28,8 @@
 		C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
 		C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
 		C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
+		C7D0B80D254602AE002CB28B /* WidgetUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */; };
+		C7D0B80E254602AE002CB28B /* WidgetUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */; };
 		C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786071E9A943E004448A2 /* AppDelegate.swift */; };
 		C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786091E9A943E004448A2 /* ViewController.swift */; };
 		C7D7860D1E9A943E004448A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7D7860B1E9A943E004448A2 /* Main.storyboard */; };
@@ -98,6 +100,7 @@
 		C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		C7D0B7E22543781F002CB28B /* SettingsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSource.swift; sourceTree = "<group>"; };
 		C7D0B7FC2545D834002CB28B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUpdater.swift; sourceTree = "<group>"; };
 		C7D786041E9A943E004448A2 /* White Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "White Noise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786071E9A943E004448A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7D786091E9A943E004448A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +216,7 @@
 				C7B8B18D253B57470047FAAB /* Themer.swift */,
 				C7DC8422253CEBDC00E0575A /* NoiseColors.swift */,
 				C7D0B7E22543781F002CB28B /* SettingsSource.swift */,
+				C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -429,6 +433,7 @@
 				C7D0B7E42543781F002CB28B /* SettingsSource.swift in Sources */,
 				C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */,
 				C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */,
+				C7D0B80E254602AE002CB28B /* WidgetUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +452,7 @@
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,
 				C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */,
+				C7D0B80D254602AE002CB28B /* WidgetUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
