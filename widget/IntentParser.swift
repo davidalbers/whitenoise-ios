@@ -8,7 +8,7 @@ class IntentParser {
     }
     
     public func playForIntentIfNeeded() -> Bool {
-        return intent.color != nil
+        return intent.color != Colors.unknown
     }
     
     public func getMinutesFromIntent() -> Double? {
@@ -19,12 +19,22 @@ class IntentParser {
     }
     
     public func getWavesEnabledFromIntent() -> Bool {
-        return intent.noiseModification?.contains("wavy") ?? false
+        return intent.noiseModification == Modification.both || intent.noiseModification == Modification.wavy
         
     }
     
     public func getFadingEnabledFromIntent() -> Bool {
-        return intent.noiseModification?.contains("fading") ?? false
+        return intent.noiseModification == Modification.both || intent.noiseModification == Modification.fading
     }
     
+    public func mapColor() -> NoiseColors {
+        switch intent.color {
+        case .pink:
+            return NoiseColors.Pink
+        case .brown:
+            return NoiseColors.Brown
+        default:
+            return NoiseColors.White
+        }
+    }
 }
