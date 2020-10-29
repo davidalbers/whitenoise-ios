@@ -20,7 +20,6 @@
 		C76AEC0C1EA5A3B2005CA0AF /* pink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */; };
 		C76AEC0E1EA5A3BC005CA0AF /* brown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */; };
 		C76AEC101EA5A441005CA0AF /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */; };
-		C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7797C9623410753008C09EA /* SettingsViewController.swift */; };
 		C7B8B18E253B57470047FAAB /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
 		C7D0B7E32543781F002CB28B /* SettingsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7E22543781F002CB28B /* SettingsSource.swift */; };
 		C7D0B7E42543781F002CB28B /* SettingsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7E22543781F002CB28B /* SettingsSource.swift */; };
@@ -94,7 +93,6 @@
 		C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pink.mp3; sourceTree = "<group>"; };
 		C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = brown.mp3; sourceTree = "<group>"; };
 		C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
-		C7797C9623410753008C09EA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C79C62CC1EE77EC800D6B9E2 /* White Noise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "White Noise.entitlements"; sourceTree = "<group>"; };
 		C7B8B18D253B57470047FAAB /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
 		C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 				C7D786071E9A943E004448A2 /* AppDelegate.swift */,
 				C7D786091E9A943E004448A2 /* ViewController.swift */,
 				C7D0B7FC2545D834002CB28B /* SettingsView.swift */,
-				C7797C9623410753008C09EA /* SettingsViewController.swift */,
 				C7D7860B1E9A943E004448A2 /* Main.storyboard */,
 				C7D7860E1E9A943E004448A2 /* Assets.xcassets */,
 				C7D786101E9A943E004448A2 /* LaunchScreen.storyboard */,
@@ -443,7 +440,6 @@
 			files = (
 				C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */,
 				C76AEC101EA5A441005CA0AF /* MainPresenter.swift in Sources */,
-				C7797C9723410753008C09EA /* SettingsViewController.swift in Sources */,
 				C7D0B7E32543781F002CB28B /* SettingsSource.swift in Sources */,
 				C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */,
 				C72836BB253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,

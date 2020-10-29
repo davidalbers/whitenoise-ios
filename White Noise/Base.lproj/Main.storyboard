@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -162,108 +161,11 @@
                         <outlet property="timerLabel" destination="pUN-ON-2Ih" id="FzH-Hw-bcm"/>
                         <outlet property="timerPicker" destination="uCr-8a-xkC" id="q7G-of-TiV"/>
                         <outlet property="wavesSwitch" destination="Wbu-g0-c5I" id="Td9-fI-zC6"/>
-                        <segue destination="PcE-mY-jRM" kind="presentation" id="MF0-hm-Zs0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-54" y="62"/>
-        </scene>
-        <!--Settings View Controller-->
-        <scene sceneID="YzF-Qb-zQa">
-            <objects>
-                <viewController storyboardIdentifier="SettingsViewController" modalPresentationStyle="formSheet" id="PcE-mY-jRM" customClass="SettingsViewController" customModule="White_Noise" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="HDx-Uj-C44"/>
-                        <viewControllerLayoutGuide type="bottom" id="Roy-Lk-KOn"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="eX0-pO-1mC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="g6Q-g7-wSI">
-                                <rect key="frame" x="12" y="72" width="390" height="78"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="158" translatesAutoresizingMaskIntoConstraints="NO" id="JKq-i6-Ulz">
-                                        <rect key="frame" x="0.0" y="0.0" width="390" height="31"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJU-Df-UJB">
-                                                <rect key="frame" x="0.0" y="0.0" width="53" height="31"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="knP-q2-FKa">
-                                                <rect key="frame" x="211" y="0.0" width="179" height="32"/>
-                                                <segments>
-                                                    <segment title="Auto"/>
-                                                    <segment title="Dark"/>
-                                                    <segment title="Light"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="themeChanged:" destination="PcE-mY-jRM" eventType="valueChanged" id="I2u-7a-2dg"/>
-                                                </connections>
-                                            </segmentedControl>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="158" translatesAutoresizingMaskIntoConstraints="NO" id="x6Z-Cd-hWj">
-                                        <rect key="frame" x="0.0" y="47" width="390" height="31"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Widget theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rjO-CT-XL5">
-                                                <rect key="frame" x="0.0" y="0.0" width="107.5" height="31"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nKu-3j-v0h">
-                                                <rect key="frame" x="265.5" y="0.0" width="124.5" height="32"/>
-                                                <segments>
-                                                    <segment title="Auto"/>
-                                                    <segment title="Dark"/>
-                                                    <segment title="Light"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="themeChanged:" destination="PcE-mY-jRM" eventType="valueChanged" id="sWy-jI-eWl"/>
-                                                </connections>
-                                            </segmentedControl>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="x6Z-Cd-hWj" firstAttribute="leading" secondItem="g6Q-g7-wSI" secondAttribute="leading" id="OIM-J5-rmy"/>
-                                    <constraint firstAttribute="trailing" secondItem="x6Z-Cd-hWj" secondAttribute="trailing" id="TD8-vg-IJ8"/>
-                                </constraints>
-                            </stackView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oeB-c4-8Yj">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
-                                <items>
-                                    <navigationItem title="Settings" id="VA0-FL-GNK">
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="b9X-lM-k7X">
-                                            <connections>
-                                                <action selector="done:" destination="PcE-mY-jRM" id="Cjc-A0-lg5"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="oeB-c4-8Yj" firstAttribute="leading" secondItem="eX0-pO-1mC" secondAttribute="leading" id="5PD-Eh-Yuo"/>
-                            <constraint firstAttribute="trailing" secondItem="g6Q-g7-wSI" secondAttribute="trailing" constant="12" id="7bb-Xd-EaJ"/>
-                            <constraint firstItem="g6Q-g7-wSI" firstAttribute="leading" secondItem="eX0-pO-1mC" secondAttribute="leading" constant="12" id="MNj-6s-25p"/>
-                            <constraint firstAttribute="trailing" secondItem="oeB-c4-8Yj" secondAttribute="trailing" id="dXd-SL-ta4"/>
-                            <constraint firstItem="oeB-c4-8Yj" firstAttribute="top" secondItem="HDx-Uj-C44" secondAttribute="bottom" id="feu-1J-c5C"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <connections>
-                        <outlet property="themeSegmentedControl" destination="knP-q2-FKa" id="GMg-1m-kyf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vsl-FU-lWV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="875.36231884057975" y="0.0"/>
         </scene>
     </scenes>
     <resources>
@@ -279,8 +181,5 @@
         <namedColor name="text">
             <color white="0.19499999284744263" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
