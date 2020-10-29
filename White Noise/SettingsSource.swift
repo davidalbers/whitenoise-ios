@@ -9,12 +9,14 @@
 import Foundation
 
 class SettingsSource {
+    var userDefaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
     private static let colorKey : String = "colorKey"
     private static let wavesKey : String = "wavesKey"
     private static let fadeKey : String = "fadeKey"
     private static let timerKey : String = "timerKey"
     private static let themeKey : String = "themeKey"
     private static let widgetThemeKey : String = "widgetThemeKey"
+    private static let migratedKey : String = "migratedKey"
     private let widgetUpdater = WidgetUpdater()
     
     public func color() -> NoiseColors {
@@ -57,8 +59,8 @@ class SettingsSource {
         return getSettings()[SettingsSource.themeKey] as? Int != nil
     }
     
-    public func hasAnySettings() -> Bool {
-        return getSettings()[SettingsSource.colorKey] as? String != nil
+    public func hasLegacySettings() -> Bool {
+        return UserDefaults.standard.dictionaryRepresentation()[SettingsSource.colorKey] as? String != nil
     }
     
     public func setColor(_ color: NoiseColors) {
@@ -95,11 +97,19 @@ class SettingsSource {
         }
     }
     
+    public func setMigrated(_ migrated: Bool) {
+        getSettingsObj().setValue(migrated, forKey: SettingsSource.migratedKey)
+    }
+    
+    public func migrated() -> Bool {
+        return getSettings()[SettingsSource.migratedKey] as? Bool ?? false
+    }
+    
     private func getSettings() -> [String : Any] {
-        return UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!.dictionaryRepresentation()
+        return getSettingsObj().dictionaryRepresentation()
     }
     
     private func getSettingsObj() -> UserDefaults {
-        return UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
+        return userDefaults
     }
 }

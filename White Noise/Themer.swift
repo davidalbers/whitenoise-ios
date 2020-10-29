@@ -20,7 +20,7 @@ class Themer {
             let themeString = settingsSource.theme()
             let savedTheme = Theme.init(rawValue: (themeString))
             return savedTheme ?? Theme.auto
-        } else if settingsSource.hasAnySettings() {
+        } else if settingsSource.hasLegacySettings() {
             // The app used only a dark theme in iOS 12. Keep using dark for people
             // who installed it then since that's what they expect.
             return Theme.dark

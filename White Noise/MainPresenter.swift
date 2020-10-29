@@ -31,6 +31,7 @@ class MainPresenter {
 
     init(viewController: ViewController) {
         self.viewController = viewController
+        SettingsMigrater().migrate()
         volumeIncrement = Float(MainPresenter.tickInterval / 5)
         resetVolumeIncrement = Float(MainPresenter.tickInterval)
     }
