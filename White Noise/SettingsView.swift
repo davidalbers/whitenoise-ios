@@ -67,7 +67,9 @@ struct SettingsView: View {
             .navigationBarItems(trailing: Button(action: self.dismissAction, label: {
                 Text("Done")
             }))
-        }.colorScheme(colorScheme)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .colorScheme(colorScheme)
     }
 }
 
