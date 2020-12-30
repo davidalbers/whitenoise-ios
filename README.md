@@ -13,7 +13,6 @@ The app store page is [here](https://itunes.apple.com/us/app/white-noise-plus/id
 There is a nearly identical Android version [here](https://github.com/davidalbers/whitenoise).
 
 ---
-<img src="/screenshot.png" width="250">
 
----
-The source code for this app is licensed under the MIT license. This means you can do what ever you want with the code as long as you include the [LICENSE.txt](https://github.com/davidalbers/whitenoise-ios/blob/master/LICENSE.txt "License Link").
+<img src="/main_screenshot.png" width="250">
+<img src="/widget_screenshot.png" width="250">
