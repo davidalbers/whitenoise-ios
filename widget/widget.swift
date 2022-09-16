@@ -86,7 +86,63 @@ struct SimpleEntry: TimelineEntry {
     let colorScheme: ColorScheme?
 }
 
-struct widgetEntryView : View {
+struct RootWidget : View {
+    @Environment(\.widgetFamily) var family
+    var entry: Provider.Entry
+    var body: some View {
+        switch family {
+        case .accessoryRectangular:
+            PlayWidget(entry: entry)
+        case .accessoryCircular:
+            IconWidget(entry: entry)
+        case .systemLarge, .systemMedium, .systemSmall:
+            FullSizeWidget(entry: entry)
+        default:
+            Text("Unknown widget family")
+        }
+    }
+}
+
+struct PlayWidget: View {
+    var entry: Provider.Entry
+
+    var body: some View {
+        HStack {
+            Image(systemName: "play.fill")
+                .resizable()
+                .frame(width: 16, height: 16)
+            Text(entry.displayString)
+                .font(.system(size: 16))
+                .foregroundColor(Color.white)
+        }.frame(
+            minWidth: 0,
+            maxWidth: .infinity,
+            minHeight: 0,
+            maxHeight: .infinity,
+            alignment: .center
+        )
+        .background(Color.white.opacity(0.20))
+        .cornerRadius(16)
+    }
+}
+
+struct IconWidget: View {
+    var entry: Provider.Entry
+
+    var body: some View {
+        Image("iconHighRes")
+            .resizable()
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity,
+                alignment: .center
+            )
+    }
+}
+
+struct FullSizeWidget : View {
     var entry: Provider.Entry
     let padding: CGFloat = 14
     
@@ -124,17 +180,22 @@ struct widgetEntryView : View {
 
 
 @main
-struct widget: Widget {
+struct WhiteNoiseWidget: Widget {
     let kind: String = "widget"
     var body: some WidgetConfiguration {
+        var families = [WidgetFamily.systemSmall, WidgetFamily.systemMedium, WidgetFamily.systemLarge]
+        if #available(iOSApplicationExtension 16.0, *) {
+            families.append(contentsOf: [WidgetFamily.accessoryRectangular, WidgetFamily.accessoryCircular])
+        }
         return IntentConfiguration(
             kind: kind,
             intent: PlayIntent.self,
             provider: Provider()
         ) { entry in
-            widgetEntryView(entry: entry)
+            RootWidget(entry: entry)
         }
         .configurationDisplayName("Play")
+        .supportedFamilies(families)
     }
 }
 
