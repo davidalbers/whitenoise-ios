@@ -130,7 +130,7 @@ struct IconWidget: View {
     var entry: Provider.Entry
 
     var body: some View {
-        Image("icon")
+        Image("iconHighRes")
             .resizable()
             .frame(
                 minWidth: 0,
