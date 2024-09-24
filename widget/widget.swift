@@ -121,7 +121,7 @@ struct PlayWidget: View {
             maxHeight: .infinity,
             alignment: .center
         )
-        .background(Color.white.opacity(0.20))
+        .widgetBackground(Color.white.opacity(0.20))
         .cornerRadius(16)
     }
 }
@@ -139,13 +139,14 @@ struct IconWidget: View {
                 maxHeight: .infinity,
                 alignment: .center
             )
+            .widgetBackground(Color.white)
     }
 }
 
 struct FullSizeWidget : View {
     var entry: Provider.Entry
     let padding: CGFloat = 14
-    
+
     
     var body: some View {
         VStack {
@@ -173,7 +174,7 @@ struct FullSizeWidget : View {
             maxHeight: .infinity,
             alignment: .topLeading
         )
-        .background(entry.color)
+        .widgetBackground(entry.color)
         .colorScheme(entry.colorScheme)
     }
 }
@@ -196,6 +197,7 @@ struct WhiteNoiseWidget: Widget {
         }
         .configurationDisplayName("Play")
         .supportedFamilies(families)
+        .contentMarginsDisabled()
     }
 }
 
@@ -206,5 +208,19 @@ extension String {
 
     mutating func capitalizeFirstLetter() {
       self = self.capitalizingFirstLetter()
+    }
+}
+
+extension View {
+    // Handle a new required API
+    // https://nemecek.be/blog/192/hotfixing-widgets-for-ios-17-containerbackground-padding
+    func widgetBackground(_ backgroundView: some View) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return containerBackground(for: .widget) {
+                backgroundView
+            }
+        } else {
+            return background(backgroundView)
+        }
     }
 }
