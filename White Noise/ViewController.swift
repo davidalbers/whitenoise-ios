@@ -66,7 +66,12 @@ class ViewController: UIViewController {
     public func onReceiveIntent(intent: PlayIntent) {
         presenter?.setIntent(intent: intent)
     }
-    
+
+    @available(iOS 12.0, *)
+    public func onReceiveIntent(intent: PauseIntent) {
+        presenter?.pause()
+    }
+
     public func onReceiveDeeplink(
         params: [URLQueryItem]
     ) {

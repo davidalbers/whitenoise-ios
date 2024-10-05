@@ -149,7 +149,7 @@ class MainPresenter {
         }
         play()
     }
-    
+
     @available(iOS 12.0, *)
     func intentToState(intentParser: IntentParser) {
         settingsSource.setColor(intentParser.mapColor())

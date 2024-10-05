@@ -43,9 +43,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if #available(iOS 12.0, *),
-            let intent = userActivity.interaction?.intent as? PlayIntent,
-            let viewController = self.window?.rootViewController as? ViewController {
-            viewController.onReceiveIntent(intent: intent)
+           let viewController = self.window?.rootViewController as? ViewController,
+           let intent = userActivity.interaction?.intent {
+
+            switch intent {
+            case is PlayIntent:
+                viewController.onReceiveIntent(intent: intent as! PlayIntent)
+            case is PauseIntent:
+                viewController.onReceiveIntent(intent: intent as! PauseIntent)
+            default:
+                return false
+            }
             return true
         }
         return false
