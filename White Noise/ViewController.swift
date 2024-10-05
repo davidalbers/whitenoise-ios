@@ -117,9 +117,8 @@ class ViewController: UIViewController {
             weakSelf?.presenter?.play()
             return .success
         }
-        
-        playButton.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysTemplate), for: UIControlState.normal)
-        playButton.imageView?.tintColor = textColor
+
+        animateButtonImage(newImageName: "pause", button: playButton)
     }
 
     
@@ -149,11 +148,22 @@ class ViewController: UIViewController {
     }
     
     private func showPlayButtonPlayable() {
-        let btnImage = UIImage(named: "play")?.withRenderingMode(.alwaysTemplate)
-        playButton.setImage(btnImage, for: UIControlState.normal)
-        playButton.tintColor = textColor
+        animateButtonImage(newImageName: "play", button: playButton)
     }
-    
+
+    private func animateButtonImage(newImageName: String, button: UIButton) {
+        let btnImage = UIImage(named: newImageName)?.withRenderingMode(.alwaysTemplate)
+        UIView.transition(with: button,
+          duration: 0.3,
+          options: .transitionFlipFromBottom,
+          animations: {
+            button.setImage(btnImage, for: UIControlState.normal)
+          },
+          completion: nil
+        )
+        button.tintColor = textColor
+    }
+
     public func setVolume(volume: Float) {
         player?.setVolume(volume, fadeDuration: 0)
     }
