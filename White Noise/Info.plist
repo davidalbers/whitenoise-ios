@@ -39,6 +39,7 @@
 	<true/>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>PauseIntent</string>
 		<string>PlayIntent</string>
 		<string>com.dalbers.whitenoise</string>
 	</array>
