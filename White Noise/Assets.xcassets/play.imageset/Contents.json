@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "play_arrow_20dp_E8EAED_FILL1_wght300_GRAD0_opsz20.png",
       "idiom" : "universal",
-      "filename" : "ic_play_arrow_white_48pt.png",
       "scale" : "1x"
     },
     {
+      "filename" : "play_arrow_40dp_E8EAED_FILL1_wght300_GRAD0_opsz40.png",
       "idiom" : "universal",
-      "filename" : "ic_play_arrow_white_48pt_2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "play_arrow_60dp_E8EAED_FILL1_wght300_GRAD0_opsz48.png",
       "idiom" : "universal",
-      "filename" : "ic_play_arrow_white_48pt_3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
