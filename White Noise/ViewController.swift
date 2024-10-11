@@ -174,18 +174,34 @@ class ViewController: UIViewController {
     
     public func cancelTimer(timerText: String) {
         timerPicker.isEnabled = true
-        timerButton.setImage(UIImage(named: "add")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        timerButton.imageView?.tintColor = textColor
-        setTimerText(text: timerText)
+        animateButtonImage(newImageName: "add", button: timerButton)
+        animateTimer(
+            hidden: true,
+            completion: { self.setTimerText(text: timerText) }
+        )
     }
     
     public func addTimer(timerText: String) {
         timerPicker.isEnabled = false
-        timerButton.setImage(UIImage(named: "delete")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        timerButton.imageView?.tintColor = textColor
+        animateButtonImage(newImageName: "delete", button: timerButton)
+
         setTimerText(text: timerText)
+        animateTimer(hidden: false)
     }
-    
+
+    func animateTimer(hidden: Bool, completion: @escaping () -> Void = {}) {
+        UIView.transition(with: timerLabel,
+            duration: 0.3,
+            options: .transitionFlipFromBottom,
+            animations: {
+                self.timerLabel.isHidden = hidden
+            },
+            completion: { _ in
+                completion()
+            }
+        )
+    }
+
     public func setTimerText(text: String) {
         var actualText = text
         if !actualText.isEmpty {
