@@ -45,10 +45,6 @@ class White_NoiseTests: XCTestCase {
         presenter.resettingVolume = false
     }
 
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func testFade() {
         presenter.enableFadeVolume(enabled: true)
         XCTAssert(presenter.fadeEnabled)
