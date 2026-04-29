@@ -3,8 +3,6 @@
 ## Bugs
 1. Fix accumulating `MPRemoteCommandCenter` handlers — new handlers are added on every `play()` call with no cleanup, so they pile up
 2. Remove `NotificationCenter` observer — `appWillEnterForeground` is registered but never removed
-3. Fix deprecated `AVAudioSession` API — `AVAudioSessionCategoryPlayback` should be `.playback`
-
 ## Code Quality
 4. Fix the `setTimerText` tab character hack — `actualText.append("\t")` is a fragile layout trick that should be real layout
 5. Add error handling in `AudioManager` — `catch {}` silently swallows audio failures

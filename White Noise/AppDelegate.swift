@@ -17,9 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         StopPlayingIntent.stopHandler = {
             AudioManager.shared.pause()
         }
-        if #available(iOS 16.0, *) {
-            WhiteNoiseShortcuts.updateAppShortcutParameters()
-        }
+        WhiteNoiseShortcuts.updateAppShortcutParameters()
         return true
     }
 
@@ -34,8 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_: UIApplication) {}
 
     func application(_: UIApplication, continue userActivity: NSUserActivity, restorationHandler _: @escaping ([Any]?) -> Void) -> Bool {
-        if #available(iOS 12.0, *),
-           let viewController = window?.rootViewController as? ViewController,
+        if let viewController = window?.rootViewController as? ViewController,
            let intent = userActivity.interaction?.intent
         {
             switch intent {
@@ -67,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-@available(iOS 16.0, *)
 struct WhiteNoiseShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(

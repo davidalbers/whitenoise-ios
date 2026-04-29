@@ -38,13 +38,9 @@ class ViewController: UIViewController {
         }
         presenter?.loadSavedState()
         setupRemoteCommandCenter()
-        if #available(iOS 14.0, *) {
-            overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
-            themeButton.imageView?.tintColor = textColor
-            themeButton.isHidden = false
-        } else {
-            themeButton.isHidden = true
-        }
+        overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
+        themeButton.imageView?.tintColor = textColor
+        themeButton.isHidden = false
         if AudioManager.shared.isPlaying {
             presenter?.play()
         } else {
@@ -126,12 +122,10 @@ class ViewController: UIViewController {
         presenter?.tick()
     }
 
-    @available(iOS 12.0, *)
     func onReceiveIntent(intent: PlayIntent) {
         presenter?.setIntent(intent: intent)
     }
 
-    @available(iOS 12.0, *)
     func onReceiveIntent(intent _: PauseIntent) {
         presenter?.pause()
     }
@@ -309,13 +303,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction func themeButton(_: Any) {
-        if #available(iOS 14.0, *) {
-            var settingsView = SettingsView(dismissAction: { self.dismiss(animated: true, completion: nil) })
-            settingsView.rootVc = self
-
-            let settingsVc = UIHostingController(rootView: settingsView)
-            present(settingsVc, animated: true, completion: nil)
-        }
+        var settingsView = SettingsView(dismissAction: { self.dismiss(animated: true, completion: nil) })
+        settingsView.rootVc = self
+        let settingsVc = UIHostingController(rootView: settingsView)
+        present(settingsVc, animated: true, completion: nil)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

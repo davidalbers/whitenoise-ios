@@ -29,7 +29,6 @@ class Themer {
         }
     }
 
-    @available(iOS 12.0, *)
     func getUIUserInterfaceStyle() -> UIUserInterfaceStyle {
         switch getTheme() {
         case nil: UIUserInterfaceStyle.unspecified
@@ -40,28 +39,22 @@ class Themer {
     }
 
     func getStatusBarStyle() -> UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            switch getTheme() {
-            case nil: return UIStatusBarStyle.default
-            case .auto: return UIStatusBarStyle.default
-            case .dark: return UIStatusBarStyle.lightContent
-            case .light: return UIStatusBarStyle.darkContent
-            }
+        switch getTheme() {
+        case nil: .default
+        case .auto: .default
+        case .dark: .lightContent
+        case .light: .darkContent
         }
-        return UIStatusBarStyle.default
     }
 
-    @available(iOS 13.0, *)
     func getColorScheme() -> ColorScheme? {
         getColorScheme(theme: getTheme())
     }
 
-    @available(iOS 13.0, *)
     func getWidgetColorScheme() -> ColorScheme? {
         getColorScheme(theme: Theme(rawValue: settingsSource.widgetTheme()) ?? Theme.auto)
     }
 
-    @available(iOS 13.0, *)
     private func getColorScheme(theme: Theme) -> ColorScheme? {
         switch theme {
         case .dark: ColorScheme.dark
