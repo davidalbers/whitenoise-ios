@@ -21,9 +21,9 @@ brew install swiftformat swiftlint
 ## Running manually
 
 ```bash
-swiftformat .          # format all files
-swiftformat . --lint   # check without making changes
-swiftlint lint         # lint all files
+swiftformat .           # format all files
+swiftformat . --lint    # check without making changes
+swiftlint lint --strict # lint all files
 ```
 
 ## Configuration
