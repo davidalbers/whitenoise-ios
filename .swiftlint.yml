@@ -11,10 +11,6 @@ disabled_rules:
   - trailing_comma     # managed by SwiftFormat
   - opening_brace      # conflicts with SwiftFormat's multiline brace style
 
-identifier_name:
-  min_length:
-    warning: 1
-    error: 1
 
 type_name:
   allowed_symbols:

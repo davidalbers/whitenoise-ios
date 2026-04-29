@@ -63,46 +63,46 @@ class ViewController: UIViewController {
     }
 
     private func syncSettingsWithSavedState() {
-        guard let p = presenter, AudioManager.shared.isPlaying else { return }
-        let color = p.settingsSource.color()
-        p.currentColor = color
+        guard let presenter, AudioManager.shared.isPlaying else { return }
+        let color = presenter.settingsSource.color()
+        presenter.currentColor = color
         setColor(color: color)
-        p.wavesEnabled = p.settingsSource.wavesEnabled()
-        p.fadeEnabled = p.settingsSource.fadeEnabled()
-        setWavesEnabled(enabled: p.wavesEnabled)
-        setFadeEnabled(enabled: p.fadeEnabled)
+        presenter.wavesEnabled = presenter.settingsSource.wavesEnabled()
+        presenter.fadeEnabled = presenter.settingsSource.fadeEnabled()
+        setWavesEnabled(enabled: presenter.wavesEnabled)
+        setFadeEnabled(enabled: presenter.fadeEnabled)
     }
 
     private func syncTimerWithSavedState() {
-        guard let p = presenter, AudioManager.shared.isPlaying else { return }
-        let savedSeconds = p.settingsSource.timerSeconds()
+        guard let presenter, AudioManager.shared.isPlaying else { return }
+        let savedSeconds = presenter.settingsSource.timerSeconds()
         if savedSeconds == 0 {
-            guard p.timerActive else { return }
-            p.timerActive = false
-            p.timerDisplayed = false
-            p.timeLeftSecs = 0
+            guard presenter.timerActive else { return }
+            presenter.timerActive = false
+            presenter.timerDisplayed = false
+            presenter.timeLeftSecs = 0
             cancelTimer(timerText: "")
-        } else if !p.timerActive || savedSeconds != getTimerPickerTime() {
+        } else if !presenter.timerActive || savedSeconds != getTimerPickerTime() {
             setTimerPickerTime(seconds: savedSeconds)
-            p.timerActive = true
-            p.timerDisplayed = true
-            p.timeLeftSecs = savedSeconds
-            if p.fadeEnabled { AudioManager.shared.fadeSeconds = Int(savedSeconds) }
+            presenter.timerActive = true
+            presenter.timerDisplayed = true
+            presenter.timeLeftSecs = savedSeconds
+            if presenter.fadeEnabled { AudioManager.shared.fadeSeconds = Int(savedSeconds) }
             addTimer(timerText: formatTimerSeconds(savedSeconds))
         }
     }
 
     private func formatTimerSeconds(_ seconds: Double) -> String {
-        let h = Int(seconds) / 3600
-        let m = Int(seconds) / 60 % 60
-        let s = Int(seconds) % 60
-        return h > 0 ? String(format: "%02i:%02i:%02i", h, m, s) : String(format: "%02i:%02i", m, s)
+        let hours = Int(seconds) / 3600
+        let minutes = Int(seconds) / 60 % 60
+        let secs = Int(seconds) % 60
+        return hours > 0 ? String(format: "%02i:%02i:%02i", hours, minutes, secs) : String(format: "%02i:%02i", minutes, secs)
     }
 
     private func syncWithAudioManager() {
-        guard let p = presenter else { return }
-        if AudioManager.shared.isPlaying, !p.isPlaying {
-            p.isPlaying = true
+        guard let presenter else { return }
+        if AudioManager.shared.isPlaying, !presenter.isPlaying {
+            presenter.isPlaying = true
             timer?.invalidate()
             timer = Timer.scheduledTimer(timeInterval: MainPresenter.tickInterval,
                                          target: self,
@@ -110,8 +110,8 @@ class ViewController: UIViewController {
                                          userInfo: nil,
                                          repeats: true)
             animateButtonImage(newImageName: "pause", button: playButton)
-        } else if !AudioManager.shared.isPlaying, p.isPlaying {
-            p.isPlaying = false
+        } else if !AudioManager.shared.isPlaying, presenter.isPlaying {
+            presenter.isPlaying = false
             timer?.invalidate()
             showPlayButtonPlayable()
         }

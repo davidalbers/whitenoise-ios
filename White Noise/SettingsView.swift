@@ -20,7 +20,7 @@ struct SettingsView: View {
     func themeChanged(_ index: Int) {
         themer.saveTheme(Themer.Theme(rawValue: index))
         colorScheme = themer.getColorScheme()
-        if let vc = rootVc { updateThemeForViewController(vc) }
+        if let rootVc { updateThemeForViewController(rootVc) }
     }
 
     private func updateThemeForViewController(_ viewController: UIViewController) {
