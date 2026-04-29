@@ -47,11 +47,11 @@ class SettingsSource {
     }
 
     func hasTheme() -> Bool {
-        getSettings()[SettingsSource.themeKey] as? Int != nil
+        getSettings()[SettingsSource.themeKey] is Int
     }
 
     func hasLegacySettings() -> Bool {
-        UserDefaults.standard.dictionaryRepresentation()[SettingsSource.colorKey] as? String != nil
+        UserDefaults.standard.dictionaryRepresentation()[SettingsSource.colorKey] is String
     }
 
     func setColor(_ color: NoiseColors) {
