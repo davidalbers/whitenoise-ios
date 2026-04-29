@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WidgetKit
 
 class SettingsSource {
     var userDefaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
@@ -17,8 +18,6 @@ class SettingsSource {
     private static let themeKey : String = "themeKey"
     private static let widgetThemeKey : String = "widgetThemeKey"
     private static let migratedKey : String = "migratedKey"
-    private let widgetUpdater = WidgetUpdater()
-    
     public func color() -> NoiseColors {
         return NoiseColors(rawValue: getSettings()[SettingsSource.colorKey] as? String ?? "") ?? .White
     }
@@ -51,7 +50,7 @@ class SettingsSource {
         let old = widgetTheme()
         getSettingsObj().setValue(theme, forKey: SettingsSource.widgetThemeKey)
         if old != theme {
-            widgetUpdater.update()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
@@ -67,7 +66,7 @@ class SettingsSource {
         let old = self.color()
         getSettingsObj().setValue(color.rawValue, forKey: SettingsSource.colorKey)
         if old != color {
-            widgetUpdater.update()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
@@ -75,7 +74,7 @@ class SettingsSource {
         let old = self.wavesEnabled()
         getSettingsObj().setValue(enabled, forKey: SettingsSource.wavesKey)
         if old != enabled {
-            widgetUpdater.update()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
@@ -83,17 +82,19 @@ class SettingsSource {
         let old = self.fadeEnabled()
         getSettingsObj().setValue(enabled, forKey: SettingsSource.fadeKey)
         if old != enabled {
-            widgetUpdater.update()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
     public func setTimer(_ seconds: Double?) {
         let old = self.timerSeconds()
-        if seconds != nil {
-            getSettingsObj().setValue(seconds as Any, forKey: SettingsSource.timerKey)
+        if let seconds = seconds {
+            getSettingsObj().setValue(seconds, forKey: SettingsSource.timerKey)
+        } else {
+            getSettingsObj().removeObject(forKey: SettingsSource.timerKey)
         }
-        if old != seconds {
-            widgetUpdater.update()
+        if old != (seconds ?? 0.0) {
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     

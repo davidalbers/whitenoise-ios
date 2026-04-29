@@ -12,7 +12,6 @@ import MediaPlayer
 import SwiftUI
 
 class ViewController: UIViewController {
-    lazy var player: AVAudioPlayer? = self.makePlayer()
     var presenter: MainPresenter?
     var timer: Timer?
     private let themer = Themer()
@@ -30,13 +29,21 @@ class ViewController: UIViewController {
     let pink : UIColor = UIColor(named: "pink") ?? UIColor.systemPink
     let brown : UIColor = UIColor(named: "brown") ?? UIColor.brown
     let textColor = UIColor(named: "text")
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         timerLabel.text = ""
         timerPicker.setValue(textColor, forKey: "textColor")
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillEnterForeground),
+            name: NSNotification.Name.UIApplicationWillEnterForeground,
+            object: nil
+        )
         presenter = MainPresenter(viewController: self)
+        if AudioManager.shared.isPlaying {
+            presenter?.isPlaying = true
+        }
         presenter?.loadSavedState()
         if #available(iOS 14.0, *) {
             overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
@@ -45,21 +52,81 @@ class ViewController: UIViewController {
         } else {
             themeButton.isHidden = true
         }
-        showPlayButtonPlayable()
+        if AudioManager.shared.isPlaying {
+            presenter?.play()
+        } else {
+            showPlayButtonPlayable()
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        syncWithAudioManager()
+    }
+
+    @objc private func appWillEnterForeground() {
+        syncSettingsWithSavedState()
+        syncTimerWithSavedState()
+        syncWithAudioManager()
+    }
+
+    private func syncSettingsWithSavedState() {
+        guard let p = presenter, AudioManager.shared.isPlaying else { return }
+        let color = p.settingsSource.color()
+        p.currentColor = color
+        setColor(color: color)
+        p.wavesEnabled = p.settingsSource.wavesEnabled()
+        p.fadeEnabled = p.settingsSource.fadeEnabled()
+        setWavesEnabled(enabled: p.wavesEnabled)
+        setFadeEnabled(enabled: p.fadeEnabled)
+    }
+
+    private func syncTimerWithSavedState() {
+        guard let p = presenter, AudioManager.shared.isPlaying else { return }
+        let savedSeconds = p.settingsSource.timerSeconds()
+        if savedSeconds == 0 {
+            guard p.timerActive else { return }
+            p.timerActive = false
+            p.timerDisplayed = false
+            p.timeLeftSecs = 0
+            cancelTimer(timerText: "")
+        } else if !p.timerActive || savedSeconds != getTimerPickerTime() {
+            setTimerPickerTime(seconds: savedSeconds)
+            p.timerActive = true
+            p.timerDisplayed = true
+            p.timeLeftSecs = savedSeconds
+            if p.fadeEnabled { AudioManager.shared.fadeSeconds = Int(savedSeconds) }
+            addTimer(timerText: formatTimerSeconds(savedSeconds))
+        }
+    }
+
+    private func formatTimerSeconds(_ seconds: Double) -> String {
+        let h = Int(seconds) / 3600
+        let m = Int(seconds) / 60 % 60
+        let s = Int(seconds) % 60
+        return h > 0 ? String(format: "%02i:%02i:%02i", h, m, s) : String(format: "%02i:%02i", m, s)
+    }
+
+    private func syncWithAudioManager() {
+        guard let p = presenter else { return }
+        if AudioManager.shared.isPlaying && !p.isPlaying {
+            p.isPlaying = true
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: MainPresenter.tickInterval,
+                                         target: self,
+                                         selector: #selector(self.update),
+                                         userInfo: nil,
+                                         repeats: true)
+            animateButtonImage(newImageName: "pause", button: playButton)
+        } else if !AudioManager.shared.isPlaying && p.isPlaying {
+            p.isPlaying = false
+            timer?.invalidate()
+            showPlayButtonPlayable()
+        }
     }
     
     @objc func update() {
         presenter?.tick()
-    }
-    
-    public func makeActiveAudioSession() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-            try audioSession.setActive(true)
-        } catch {
-            print("Failed to set audio session category.  Error: \(error)")
-        }
     }
     
     @available(iOS 12.0, *)
@@ -78,33 +145,23 @@ class ViewController: UIViewController {
         presenter?.setDeeplinkParams(params: params)
     }
     
-    private func makePlayer() -> AVAudioPlayer? {
-        let url = Bundle.main.url(forResource: presenter?.getColor().rawValue,
-                                  withExtension: "mp3")!
-        let player = try? AVAudioPlayer(contentsOf: url)
-
-        player?.numberOfLoops = -1
-        return player
-    }
-    
     public func resetPlayer(restart: Bool) {
-        player?.pause()
-        player = makePlayer()
-        if (restart) {
-            player?.play()
-        }
+        AudioManager.shared.reset(color: presenter?.getColor() ?? .White, restart: restart)
     }
-    
+
     public func play() {
-        makeActiveAudioSession()
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: MainPresenter.tickInterval,
                                      target: self,
                                      selector: #selector(self.update),
                                      userInfo: nil,
                                      repeats: true)
-        player?.play()
-        
+        AudioManager.shared.play(
+            color: presenter?.getColor() ?? .White,
+            waves: presenter?.wavesEnabled ?? false,
+            fade: presenter?.fadeEnabled ?? false
+        )
+
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let commandCenter = MPRemoteCommandCenter.shared()
         weak var weakSelf = self
@@ -112,7 +169,7 @@ class ViewController: UIViewController {
             weakSelf?.presenter?.pause()
             return .success
         }
-        
+
         commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
             weakSelf?.presenter?.play()
             return .success
@@ -137,14 +194,8 @@ class ViewController: UIViewController {
 
     public func pause() {
         timer?.invalidate()
-        player?.pause()
-        
+        AudioManager.shared.pause()
         showPlayButtonPlayable()
-        do {
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch {
-            print("Error setting audio session active=false")
-        }
     }
     
     private func showPlayButtonPlayable() {
@@ -164,10 +215,6 @@ class ViewController: UIViewController {
         button.tintColor = textColor
     }
 
-    public func setVolume(volume: Float) {
-        player?.setVolume(volume, fadeDuration: 0)
-    }
-    
     public func getTimerPickerTime() -> Double {
        return timerPicker.countDownDuration
     }

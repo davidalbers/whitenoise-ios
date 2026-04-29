@@ -7,15 +7,28 @@
 //
 
 import UIKit
+import AppIntents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        StartPlayingIntent.playHandler = { colorRaw, waves, fade in
+            let color = NoiseColors(rawValue: colorRaw) ?? .White
+            if fade {
+                let timerSeconds = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")?.double(forKey: "timerKey") ?? 0
+                if timerSeconds > 0 { AudioManager.shared.fadeSeconds = Int(timerSeconds) }
+            }
+            AudioManager.shared.play(color: color, waves: waves, fade: fade)
+        }
+        StopPlayingIntent.stopHandler = {
+            AudioManager.shared.pause()
+        }
+        if #available(iOS 16.0, *) {
+            WhiteNoiseShortcuts.updateAppShortcutParameters()
+        }
         return true
     }
 
@@ -74,3 +87,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+@available(iOS 16.0, *)
+struct WhiteNoiseShortcuts: AppShortcutsProvider {
+    static var appShortcuts: [AppShortcut] {
+        AppShortcut(
+            intent: StartPlayingIntent(),
+            phrases: [
+                "Play \(.applicationName)",
+                "Start \(.applicationName)",
+                "Play \(\.$color) noise with \(.applicationName)"
+            ],
+            shortTitle: "Play White Noise",
+            systemImageName: "speaker.wave.3"
+        )
+    }
+}

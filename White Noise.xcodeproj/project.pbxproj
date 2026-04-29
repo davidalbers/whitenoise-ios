@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
 		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
@@ -27,10 +26,6 @@
 		C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B8B18D253B57470047FAAB /* Themer.swift */; };
 		C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
 		C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B7FC2545D834002CB28B /* SettingsView.swift */; };
-		C7D0B80D254602AE002CB28B /* WidgetUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */; };
-		C7D0B80E254602AE002CB28B /* WidgetUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */; };
-		C7D0B820254A5347002CB28B /* SettingsMigrater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B81F254A5347002CB28B /* SettingsMigrater.swift */; };
-		C7D0B821254A5348002CB28B /* SettingsMigrater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D0B81F254A5347002CB28B /* SettingsMigrater.swift */; };
 		C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786071E9A943E004448A2 /* AppDelegate.swift */; };
 		C7D7860A1E9A943E004448A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D786091E9A943E004448A2 /* ViewController.swift */; };
 		C7D7860D1E9A943E004448A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7D7860B1E9A943E004448A2 /* Main.storyboard */; };
@@ -41,6 +36,9 @@
 		C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
 		C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
+		EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
+		EE100003253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
+		EE200003253CC0D9001CA289 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE200001253CC0D9001CA289 /* AudioManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +80,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutCreator.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
 		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -100,8 +97,6 @@
 		C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 		C7D0B7E22543781F002CB28B /* SettingsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSource.swift; sourceTree = "<group>"; };
 		C7D0B7FC2545D834002CB28B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUpdater.swift; sourceTree = "<group>"; };
-		C7D0B81F254A5347002CB28B /* SettingsMigrater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMigrater.swift; sourceTree = "<group>"; };
 		C7D786041E9A943E004448A2 /* White Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "White Noise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D786071E9A943E004448A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7D786091E9A943E004448A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +111,8 @@
 		C7D786271E9A943E004448A2 /* White_NoiseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = White_NoiseUITests.swift; sourceTree = "<group>"; };
 		C7D786291E9A943E004448A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DC8422253CEBDC00E0575A /* NoiseColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseColors.swift; sourceTree = "<group>"; };
+		EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPlayIntent.swift; sourceTree = "<group>"; };
+		EE200001253CC0D9001CA289 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +155,7 @@
 				C7200CDE216020B80012A3F0 /* IntentParser.swift */,
 				C72836BA253CC96D001CA287 /* WidgetIntent.intentdefinition */,
 				C728368C253CC0D9001CA287 /* widget.swift */,
+				EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */,
 				C728368E253CC0DB001CA287 /* Assets.xcassets */,
 				C7283690253CC0DB001CA287 /* Info.plist */,
 			);
@@ -212,12 +210,10 @@
 				C7D786101E9A943E004448A2 /* LaunchScreen.storyboard */,
 				C7D786131E9A943E004448A2 /* Info.plist */,
 				C76AEC0F1EA5A441005CA0AF /* MainPresenter.swift */,
-				C7200CDC21600C940012A3F0 /* ShortcutCreator.swift */,
 				C7B8B18D253B57470047FAAB /* Themer.swift */,
 				C7DC8422253CEBDC00E0575A /* NoiseColors.swift */,
 				C7D0B7E22543781F002CB28B /* SettingsSource.swift */,
-				C7D0B80C254602AE002CB28B /* WidgetUpdater.swift */,
-				C7D0B81F254A5347002CB28B /* SettingsMigrater.swift */,
+				EE200001253CC0D9001CA289 /* AudioManager.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -430,12 +426,11 @@
 				C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */,
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
+				EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */,
 				C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */,
 				C7D0B7E42543781F002CB28B /* SettingsSource.swift in Sources */,
-				C7D0B821254A5348002CB28B /* SettingsMigrater.swift in Sources */,
 				C7D0B7EE2544CF6C002CB28B /* Themer.swift in Sources */,
 				C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */,
-				C7D0B80E254602AE002CB28B /* WidgetUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,13 +443,12 @@
 				C7D0B7E32543781F002CB28B /* SettingsSource.swift in Sources */,
 				C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */,
 				C72836BB253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
-				C7D0B820254A5347002CB28B /* SettingsMigrater.swift in Sources */,
+				EE100003253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */,
+				EE200003253CC0D9001CA289 /* AudioManager.swift in Sources */,
 				C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */,
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
-				C7200CDD21600C940012A3F0 /* ShortcutCreator.swift in Sources */,
 				C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */,
-				C7D0B80D254602AE002CB28B /* WidgetUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +524,7 @@
 				DEVELOPMENT_TEAM = R37L87S852;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.9;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -558,6 +553,7 @@
 				DEVELOPMENT_TEAM = R37L87S852;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.9;
 				MTL_FAST_MATH = YES;
@@ -688,7 +684,7 @@
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
@@ -710,7 +706,7 @@
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
