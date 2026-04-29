@@ -1,53 +1,60 @@
-
 import WidgetKit
 import SwiftUI
+import AppIntents
 
-struct Provider: IntentTimelineProvider {
-    let grey = Color(UIColor(named: "widgetGrey") ?? UIColor.black)
-    let pink = Color(UIColor(named: "widgetPink") ?? UIColor.systemPink)
+// MARK: - Timeline provider
+
+struct Provider: AppIntentTimelineProvider {
+    let grey  = Color(UIColor(named: "widgetGrey")  ?? UIColor.black)
+    let pink  = Color(UIColor(named: "widgetPink")  ?? UIColor.systemPink)
     let brown = Color(UIColor(named: "widgetBrown") ?? UIColor.brown)
-    
-    func getSnapshot(for configuration: PlayIntent, in context: Context, completion: @escaping (SimpleEntry) -> Void) {
-        completion(intentToEntry(configuration))
-    }
-    
-    func getTimeline(for configuration: PlayIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        let timeline = Timeline(entries: Array.init(arrayLiteral: intentToEntry(configuration)), policy: .never)
-        completion(timeline)
-    }
-    
-    typealias Entry = SimpleEntry
-    
-    typealias Intent = PlayIntent
-    
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), displayString: "Rainbow", color: grey, colorScheme: .dark)
-    }
-        
-    private func intentToEntry(_ intent: PlayIntent) -> SimpleEntry {
-        let intentParser = IntentParser(intent: intent)
 
-        var colorString = intentParser.mapColor()
-        var waves = intentParser.getWavesEnabledFromIntent()
-        var fade = intentParser.getFadingEnabledFromIntent()
-        var minutes = (intentParser.getMinutesFromIntent() ?? 0.0) / 60.0
-        if (!intentParser.playForIntentIfNeeded()) {
-            colorString = SettingsSource().color()
-            waves = SettingsSource().wavesEnabled()
-            fade = SettingsSource().fadeEnabled()
-            minutes = SettingsSource().timerSeconds() / 60.0
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(
+            date: Date(),
+            displayString: "White noise",
+            color: grey,
+            colorScheme: .dark,
+            isPlaying: false,
+            startIntent: StartPlayingIntent(),
+            stopIntent: StopPlayingIntent()
+        )
+    }
+
+    func snapshot(for configuration: PlayWidgetIntent, in context: Context) async -> SimpleEntry {
+        intentToEntry(configuration)
+    }
+
+    func timeline(for configuration: PlayWidgetIntent, in context: Context) async -> Timeline<SimpleEntry> {
+        Timeline(entries: [intentToEntry(configuration)], policy: .never)
+    }
+
+    private func intentToEntry(_ intent: PlayWidgetIntent) -> SimpleEntry {
+        let color: WidgetNoiseColor
+        let waves: Bool
+        let fade: Bool
+        let timerMinutes: Int?
+
+        if intent.mirrorApp {
+            let settings = SettingsSource()
+            color = WidgetNoiseColor(rawValue: settings.color().rawValue) ?? .white
+            waves = settings.wavesEnabled()
+            fade  = settings.fadeEnabled()
+            timerMinutes = nil
+        } else {
+            color = intent.color
+            waves = intent.waves
+            fade  = intent.fade
+            timerMinutes = intent.timerMinutes
         }
-        let hours = Int(minutes) / 60
-        let mins = Int(minutes) % 60
-        var timeString = ""
-        if hours > 0 && mins > 0 {
-            timeString = " for \(hours)h \(mins)m"
-        } else if hours > 0 {
-            timeString = " for \(hours)h"
-        } else if (mins > 0) {
-            timeString = " for \(mins)m"
+
+        var backgroundColor = grey
+        switch color {
+        case .pink:  backgroundColor = pink
+        case .brown: backgroundColor = brown
+        case .white: backgroundColor = grey
         }
-        
+
         var mod = ""
         if waves && fade {
             mod += "wavy and fading "
@@ -56,75 +63,97 @@ struct Provider: IntentTimelineProvider {
         } else if fade {
             mod += "fading "
         }
-        
-        var backgroundColor = grey
-        
-        switch colorString {
-        case .Pink:
-            backgroundColor = pink
-        case .Brown:
-            backgroundColor = brown
-        default:
-            backgroundColor = grey
+        mod += "\(color.rawValue) noise"
+
+        if let mins = timerMinutes, mins > 0 {
+            mod += " for \(formatMinutes(mins))"
         }
-        
-        mod += "\(colorString.rawValue) noise\(timeString)"
-        let colorScheme = Themer().getWidgetColorScheme()
+
+        let isPlaying = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")?.bool(forKey: "isPlayingKey") ?? false
+
         return SimpleEntry(
             date: Date(),
             displayString: mod.capitalizingFirstLetter(),
             color: backgroundColor,
-            colorScheme: colorScheme
+            colorScheme: Themer().getWidgetColorScheme(),
+            isPlaying: isPlaying,
+            startIntent: StartPlayingIntent(config: intent),
+            stopIntent: StopPlayingIntent()
         )
     }
 }
+
+// MARK: - Entry
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let displayString: String
     let color: Color
     let colorScheme: ColorScheme?
+    let isPlaying: Bool
+    let startIntent: StartPlayingIntent
+    let stopIntent: StopPlayingIntent
 }
 
-struct RootWidget : View {
+// MARK: - Root view
+
+struct RootWidget: View {
     @Environment(\.widgetFamily) var family
     var entry: Provider.Entry
+
     var body: some View {
         switch family {
         case .accessoryRectangular:
             PlayWidget(entry: entry)
         case .accessoryCircular:
             IconWidget(entry: entry)
-        case .systemLarge, .systemMedium, .systemSmall:
-            FullSizeWidget(entry: entry)
         default:
-            Text("Unknown widget family")
+            FullSizeWidget(entry: entry)
         }
     }
 }
+
+// MARK: - Lock-screen rectangular widget
 
 struct PlayWidget: View {
     var entry: Provider.Entry
 
     var body: some View {
-        HStack {
-            Image(systemName: "play.fill")
-                .resizable()
-                .frame(width: 16, height: 16)
-            Text(entry.displayString)
-                .font(.system(size: 16))
-                .foregroundColor(Color.white)
-        }.frame(
-            minWidth: 0,
-            maxWidth: .infinity,
-            minHeight: 0,
-            maxHeight: .infinity,
-            alignment: .center
-        )
+        Group {
+            if entry.isPlaying {
+                Button(intent: entry.stopIntent) {
+                    HStack {
+                        Image(systemName: "pause.fill")
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                        Text(entry.displayString)
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+                }
+                .buttonStyle(.plain)
+            } else {
+                Button(intent: entry.startIntent) {
+                    HStack {
+                        Image(systemName: "play.fill")
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                        Text(entry.displayString)
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+                }
+                .buttonStyle(.plain)
+            }
+        }
         .widgetBackground(Color.white.opacity(0.20))
         .cornerRadius(16)
     }
 }
+
+// MARK: - Lock-screen circular widget (interactive buttons not supported here)
 
 struct IconWidget: View {
     var entry: Provider.Entry
@@ -132,29 +161,38 @@ struct IconWidget: View {
     var body: some View {
         Image("iconHighRes")
             .resizable()
-            .frame(
-                minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity,
-                alignment: .center
-            )
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
             .widgetBackground(Color.white)
     }
 }
 
-struct FullSizeWidget : View {
+// MARK: - Home-screen widget (small / medium / large)
+
+struct FullSizeWidget: View {
     var entry: Provider.Entry
     let padding: CGFloat = 14
 
-    
     var body: some View {
         VStack {
-            HStack (alignment: .top) {
-                Image("play")
-                    .resizable()
-                    .frame(width: 48.0, height: 48.0)
-                    .padding(.top, padding)
+            HStack(alignment: .top) {
+                Group {
+                    if entry.isPlaying {
+                        Button(intent: entry.stopIntent) {
+                            Image("pause")
+                                .resizable()
+                                .frame(width: 48.0, height: 48.0)
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        Button(intent: entry.startIntent) {
+                            Image("play")
+                                .resizable()
+                                .frame(width: 48.0, height: 48.0)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.top, padding)
                 Spacer()
                 Image("icon")
                     .resizable()
@@ -168,57 +206,57 @@ struct FullSizeWidget : View {
                 .padding(.leading, padding)
                 .padding(.trailing, padding)
                 .padding(.bottom, padding)
-                .foregroundColor(Color.white)
-        }.frame(
-            minHeight: 0,
-            maxHeight: .infinity,
-            alignment: .topLeading
-        )
+                .foregroundColor(.white)
+        }
+        .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .widgetBackground(entry.color)
         .colorScheme(entry.colorScheme)
     }
 }
 
+// MARK: - Widget declaration
 
 @main
 struct WhiteNoiseWidget: Widget {
     let kind: String = "widget"
+
     var body: some WidgetConfiguration {
-        var families = [WidgetFamily.systemSmall, WidgetFamily.systemMedium, WidgetFamily.systemLarge]
-        if #available(iOSApplicationExtension 16.0, *) {
-            families.append(contentsOf: [WidgetFamily.accessoryRectangular, WidgetFamily.accessoryCircular])
-        }
-        return IntentConfiguration(
+        AppIntentConfiguration(
             kind: kind,
-            intent: PlayIntent.self,
+            intent: PlayWidgetIntent.self,
             provider: Provider()
         ) { entry in
             RootWidget(entry: entry)
         }
         .configurationDisplayName("Play")
-        .supportedFamilies(families)
+        .supportedFamilies([
+            .systemSmall, .systemMedium, .systemLarge,
+            .accessoryRectangular, .accessoryCircular,
+        ])
         .contentMarginsDisabled()
     }
 }
 
+// MARK: - Helpers
+
+private func formatMinutes(_ minutes: Int) -> String {
+    if minutes < 60 { return "\(minutes)m" }
+    let h = minutes / 60
+    let m = minutes % 60
+    return m == 0 ? "\(h)h" : "\(h)h \(m)m"
+}
+
 extension String {
     func capitalizingFirstLetter() -> String {
-      return prefix(1).uppercased() + self.lowercased().dropFirst()
-    }
-
-    mutating func capitalizeFirstLetter() {
-      self = self.capitalizingFirstLetter()
+        prefix(1).uppercased() + self.lowercased().dropFirst()
     }
 }
 
 extension View {
-    // Handle a new required API
     // https://nemecek.be/blog/192/hotfixing-widgets-for-ios-17-containerbackground-padding
     func widgetBackground(_ backgroundView: some View) -> some View {
         if #available(iOSApplicationExtension 17.0, *) {
-            return containerBackground(for: .widget) {
-                backgroundView
-            }
+            return containerBackground(for: .widget) { backgroundView }
         } else {
             return background(backgroundView)
         }

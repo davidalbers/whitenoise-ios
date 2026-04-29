@@ -1,4 +1,6 @@
 import Foundation
+
+// Kept for backward compatibility with old Intent system
 @available(iOS 12.0, *)
 class IntentParser {
     private var intent: PlayIntent
