@@ -32,11 +32,11 @@ class IntentParser {
     public func mapColor() -> NoiseColors {
         switch intent.color {
         case .pink:
-            return NoiseColors.Pink
+            return NoiseColors.pink
         case .brown:
-            return NoiseColors.Brown
+            return NoiseColors.brown
         default:
-            return NoiseColors.White
+            return NoiseColors.white
         }
     }
 }

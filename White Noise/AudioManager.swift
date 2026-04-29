@@ -20,9 +20,11 @@ class AudioManager {
     private static let sharedDefaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")
 
     private static let tickInterval: Double = MainPresenter.tickInterval
-    private let waveIncrement: Float = Float(MainPresenter.tickInterval / 5)
+    private let waveIncrement: Float = .init(MainPresenter.tickInterval / 5)
 
-    var isPlaying: Bool { player?.isPlaying ?? false }
+    var isPlaying: Bool {
+        player?.isPlaying ?? false
+    }
 
     private init() {}
 
@@ -64,8 +66,11 @@ class AudioManager {
 
     func setFade(_ enabled: Bool, seconds: Int) {
         fadeEnabled = enabled
-        if enabled { fadeSeconds = seconds }
-        else { maxVolume = 1.0 }
+        if enabled {
+            fadeSeconds = seconds
+        } else {
+            maxVolume = 1.0
+        }
     }
 
     func reset(color: NoiseColors, restart: Bool) {
@@ -100,15 +105,20 @@ class AudioManager {
     }
 
     private func tick() {
-        if fadeEnabled  { applyFade() }
+        if fadeEnabled { applyFade() }
         if wavesEnabled { applyWave() }
         player?.volume = volume
     }
 
     private func applyWave() {
         if increasing { volume += waveIncrement } else { volume -= waveIncrement }
-        if volume <= minVolume { volume = minVolume; increasing = true }
-        else if volume >= maxVolume { increasing = false; volume = maxVolume }
+        if volume <= minVolume {
+            volume = minVolume
+            increasing = true
+        } else if volume >= maxVolume {
+            increasing = false
+            volume = maxVolume
+        }
     }
 
     private func applyFade() {

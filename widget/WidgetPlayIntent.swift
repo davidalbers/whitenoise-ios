@@ -13,9 +13,9 @@ enum WidgetNoiseColor: String, AppEnum {
 
     func toNoiseColor() -> NoiseColors {
         switch self {
-        case .pink:  return .Pink
-        case .brown: return .Brown
-        case .white: return .White
+        case .pink:  return .pink
+        case .brown: return .brown
+        case .white: return .white
         }
     }
 }

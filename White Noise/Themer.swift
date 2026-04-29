@@ -1,11 +1,11 @@
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 class Themer {
     let settingsSource = SettingsSource()
-    
-    public enum Theme: Int {
+
+    enum Theme: Int {
         case auto = 0
         case dark = 1
         case light = 2
@@ -14,11 +14,11 @@ class Themer {
     func saveTheme(_ theme: Theme?) {
         settingsSource.setTheme((theme ?? Theme.auto).rawValue)
     }
-    
+
     func getTheme() -> Theme {
         if settingsSource.hasTheme() {
             let themeString = settingsSource.theme()
-            let savedTheme = Theme.init(rawValue: (themeString))
+            let savedTheme = Theme(rawValue: themeString)
             return savedTheme ?? Theme.auto
         } else if settingsSource.hasLegacySettings() {
             // The app used only a dark theme in iOS 12. Keep using dark for people
@@ -28,17 +28,17 @@ class Themer {
             return Theme.auto
         }
     }
-    
+
     @available(iOS 12.0, *)
     func getUIUserInterfaceStyle() -> UIUserInterfaceStyle {
         switch getTheme() {
-        case nil: return UIUserInterfaceStyle.unspecified
-        case .auto: return UIUserInterfaceStyle.unspecified
-        case .dark: return UIUserInterfaceStyle.dark
-        case .light: return UIUserInterfaceStyle.light
+        case nil: UIUserInterfaceStyle.unspecified
+        case .auto: UIUserInterfaceStyle.unspecified
+        case .dark: UIUserInterfaceStyle.dark
+        case .light: UIUserInterfaceStyle.light
         }
     }
-    
+
     func getStatusBarStyle() -> UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             switch getTheme() {
@@ -50,23 +50,23 @@ class Themer {
         }
         return UIStatusBarStyle.default
     }
-    
+
     @available(iOS 13.0, *)
     func getColorScheme() -> ColorScheme? {
-        return getColorScheme(theme: getTheme())
+        getColorScheme(theme: getTheme())
     }
 
     @available(iOS 13.0, *)
     func getWidgetColorScheme() -> ColorScheme? {
-        return getColorScheme(theme: Theme.init(rawValue: settingsSource.widgetTheme()) ?? Theme.auto)
+        getColorScheme(theme: Theme(rawValue: settingsSource.widgetTheme()) ?? Theme.auto)
     }
-    
+
     @available(iOS 13.0, *)
     private func getColorScheme(theme: Theme) -> ColorScheme? {
         switch theme {
-        case .dark: return ColorScheme.dark
-        case .light: return ColorScheme.light
-        default: return nil
+        case .dark: ColorScheme.dark
+        case .light: ColorScheme.light
+        default: nil
         }
     }
 }

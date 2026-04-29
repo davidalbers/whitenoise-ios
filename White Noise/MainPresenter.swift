@@ -1,16 +1,8 @@
-//
-//  MainPresenter.swift
-//  White Noise
-//
-//  Created by David Albers on 4/17/17.
-//  Copyright © 2017 David Albers. All rights reserved.
-//
-
 import Foundation
 
 class MainPresenter {
     var isPlaying: Bool = false
-    var currentColor: NoiseColors = .White
+    var currentColor: NoiseColors = .white
     var viewController: ViewController
     static let tickInterval: Double = 0.03
     var wavesEnabled: Bool = false
@@ -25,7 +17,7 @@ class MainPresenter {
         self.viewController = viewController
     }
 
-    public func changeColor(color: NoiseColors) {
+    func changeColor(color: NoiseColors) {
         if currentColor == color { return }
         currentColor = color
         viewController.resetPlayer(restart: isPlaying)
@@ -33,18 +25,20 @@ class MainPresenter {
         viewController.setMediaTitle(title: getSoundTitle())
     }
 
-    public func getColor() -> NoiseColors { currentColor }
+    func getColor() -> NoiseColors {
+        currentColor
+    }
 
-    public func playPause() {
+    func playPause() {
         if isPlaying { pause() } else { play() }
     }
 
-    public func pause() {
+    func pause() {
         viewController.pause()
         isPlaying = false
     }
 
-    public func play() {
+    func play() {
         createState()
         viewController.play()
         viewController.setMediaTitle(title: getSoundTitle())
@@ -53,9 +47,9 @@ class MainPresenter {
 
     private func getSoundTitle() -> String {
         switch currentColor {
-        case .Brown: return "Brown Noise"
-        case .Pink:  return "Pink Noise"
-        default:     return "White Noise"
+        case .brown: "Brown Noise"
+        case .pink: "Pink Noise"
+        default: "White Noise"
         }
     }
 
@@ -63,13 +57,13 @@ class MainPresenter {
         settingsSource.setColor(currentColor)
         settingsSource.setWaves(wavesEnabled)
         settingsSource.setFade(fadeEnabled)
-        var timerSeconds: Double? = nil
+        var timerSeconds: Double?
         if timerActive { timerSeconds = viewController.getTimerPickerTime() }
         settingsSource.setTimer(timerSeconds)
     }
 
     @available(iOS 12.0, *)
-    public func setIntent(intent: PlayIntent) {
+    func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
         if intentParser.playForIntentIfNeeded() {
             intentToState(intentParser: intentParser)
@@ -88,9 +82,9 @@ class MainPresenter {
         loadSavedState()
     }
 
-    public func setDeeplinkParams(params: [URLQueryItem]) {}
+    func setDeeplinkParams(params _: [URLQueryItem]) {}
 
-    public func loadSavedState() {
+    func loadSavedState() {
         changeColor(color: settingsSource.color())
         wavesEnabled = settingsSource.wavesEnabled()
         fadeEnabled = settingsSource.fadeEnabled()
@@ -110,18 +104,18 @@ class MainPresenter {
         }
     }
 
-    public func enableWavyVolume(enabled: Bool) {
+    func enableWavyVolume(enabled: Bool) {
         wavesEnabled = enabled
         AudioManager.shared.setWaves(enabled)
     }
 
-    public func enableFadeVolume(enabled: Bool) {
+    func enableFadeVolume(enabled: Bool) {
         fadeEnabled = enabled
         let seconds = timerActive && timeLeftSecs > 0 ? Int(timeLeftSecs) : 600
         AudioManager.shared.setFade(enabled, seconds: seconds)
     }
 
-    public func tick() {
+    func tick() {
         decrementTimerTime()
     }
 
@@ -142,7 +136,7 @@ class MainPresenter {
         }
     }
 
-    public func addDeleteTimer() {
+    func addDeleteTimer() {
         timerDisplayed = !timerDisplayed
         if timerDisplayed {
             timerActive = true
