@@ -1,0 +1,27 @@
+name: Lint 
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  format-check:
+    name: Format check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+      - name: SwiftFormat lint
+        run: swiftformat . --lint
+
+  lint:
+    name: SwiftLint
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: Run SwiftLint
+        run: swiftlint lint --strict
