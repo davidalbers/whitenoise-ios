@@ -37,6 +37,7 @@ class ViewController: UIViewController {
             presenter?.isPlaying = true
         }
         presenter?.loadSavedState()
+        setupRemoteCommandCenter()
         if #available(iOS 14.0, *) {
             overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
             themeButton.imageView?.tintColor = textColor
@@ -154,19 +155,6 @@ class ViewController: UIViewController {
             fade: presenter?.fadeEnabled ?? false
         )
 
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-        let commandCenter = MPRemoteCommandCenter.shared()
-        weak var weakSelf = self
-        commandCenter.pauseCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in
-            weakSelf?.presenter?.pause()
-            return .success
-        }
-
-        commandCenter.playCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in
-            weakSelf?.presenter?.play()
-            return .success
-        }
-
         animateButtonImage(newImageName: "pause", button: playButton)
     }
 
@@ -186,6 +174,19 @@ class ViewController: UIViewController {
         timer?.invalidate()
         AudioManager.shared.pause()
         showPlayButtonPlayable()
+    }
+
+    private func setupRemoteCommandCenter() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
+            self?.presenter?.pause()
+            return .success
+        }
+        commandCenter.playCommand.addTarget { [weak self] _ in
+            self?.presenter?.play()
+            return .success
+        }
     }
 
     private func showPlayButtonPlayable() {
