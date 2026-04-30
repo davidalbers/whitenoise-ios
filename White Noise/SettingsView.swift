@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SettingsView: View {
     @State private var theme: Int
     @State private var colorScheme: ColorScheme?
@@ -65,7 +64,6 @@ struct SettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 public extension View {
     func colorScheme(_ colorScheme: ColorScheme?) -> some View {
         Group {

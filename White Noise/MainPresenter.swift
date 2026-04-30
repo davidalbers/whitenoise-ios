@@ -62,7 +62,6 @@ class MainPresenter {
         settingsSource.setTimer(timerSeconds)
     }
 
-    @available(iOS 12.0, *)
     func setIntent(intent: PlayIntent) {
         let intentParser = IntentParser(intent: intent)
         if intentParser.playForIntentIfNeeded() {
@@ -73,7 +72,6 @@ class MainPresenter {
         play()
     }
 
-    @available(iOS 12.0, *)
     func intentToState(intentParser: IntentParser) {
         settingsSource.setColor(intentParser.mapColor())
         settingsSource.setTimer(intentParser.getMinutesFromIntent())
