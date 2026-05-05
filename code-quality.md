@@ -21,6 +21,7 @@ brew install swiftformat swiftlint
 swiftformat .           # format all files
 swiftformat . --lint    # check without making changes
 swiftlint lint --strict # lint all files
+swiftlint lint --fix    # autofix issues
 ```
 
 **Configuration:** `.swiftformat` and `.swiftlint.yml`.

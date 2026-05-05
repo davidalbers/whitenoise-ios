@@ -112,16 +112,16 @@ struct MainView: View {
                 .padding(.bottom, 64)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.isPlaying) { _, new in new }
-        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isPlaying) { _, new in !new }
-        .sensoryFeedback(.selection, trigger: viewModel.currentColor)
-        .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.timerDisplayed) { _, new in new }
-        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.timerDisplayed) { _, new in !new }
+            .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.isPlaying) { _, new in new }
+            .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isPlaying) { _, new in !new }
+            .sensoryFeedback(.selection, trigger: viewModel.currentColor)
+            .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.timerDisplayed) { _, new in new }
+            .sensoryFeedback(.impact(weight: .light), trigger: viewModel.timerDisplayed) { _, new in !new }
         }
         .preferredColorScheme(viewModel.colorScheme)
         .sheet(isPresented: $settingsPresented) {
-            SettingsView(dismissAction: { settingsPresented = false }, onThemeChanged: { cs in
-                viewModel.colorScheme = cs
+            SettingsView(dismissAction: { settingsPresented = false }, onThemeChanged: { colorScheme in
+                viewModel.colorScheme = colorScheme
             })
         }
     }
@@ -160,10 +160,10 @@ struct DurationPicker: View {
         .onChange(of: minutes) { sync() }
         .onChange(of: duration) {
             let total = Int(duration)
-            let h = total / 3600
-            let m = (total % 3600) / 60
-            if hours != h { hours = h }
-            if minutes != m { minutes = m }
+            let hrs = total / 3600
+            let mins = (total % 3600) / 60
+            if hours != hrs { hours = hrs }
+            if minutes != mins { minutes = mins }
         }
     }
 

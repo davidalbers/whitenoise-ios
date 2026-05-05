@@ -220,41 +220,41 @@ final class MainViewModelTests: XCTestCase {
     func testIntent_overridesSettings() {
         settings.setColor(.brown)
         settings.setFade(true)
-        let vm = MainViewModel(audio: audio, settings: settings)
-        vm.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
-        XCTAssertEqual(vm.currentColor, .pink)
-        XCTAssertEqual(vm.wavesEnabled, true)
-        XCTAssertEqual(vm.fadeEnabled, false)
+        let viewModel = MainViewModel(audio: audio, settings: settings)
+        viewModel.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
+        XCTAssertEqual(viewModel.currentColor, .pink)
+        XCTAssertEqual(viewModel.wavesEnabled, true)
+        XCTAssertEqual(viewModel.fadeEnabled, false)
     }
 
     // MARK: Saved state
 
     func testInit_restoresSavedColor() {
         settings.setColor(.brown)
-        let vm = MainViewModel(audio: audio, settings: settings)
-        XCTAssertEqual(vm.currentColor, .brown)
+        let viewModel = MainViewModel(audio: audio, settings: settings)
+        XCTAssertEqual(viewModel.currentColor, .brown)
     }
 
     func testInit_restoresSavedWavesAndFade() {
         settings.setWaves(true)
         settings.setFade(true)
-        let vm = MainViewModel(audio: audio, settings: settings)
-        XCTAssertTrue(vm.wavesEnabled)
-        XCTAssertTrue(vm.fadeEnabled)
+        let viewModel = MainViewModel(audio: audio, settings: settings)
+        XCTAssertTrue(viewModel.wavesEnabled)
+        XCTAssertTrue(viewModel.fadeEnabled)
     }
 
     func testInit_restoresSavedTimer() {
         settings.setTimer(600)
-        let vm = MainViewModel(audio: audio, settings: settings)
-        XCTAssertTrue(vm.timerDisplayed)
-        XCTAssertEqual(vm.timerPickerSeconds, 600)
-        XCTAssertEqual(vm.timerText, "10:00")
+        let viewModel = MainViewModel(audio: audio, settings: settings)
+        XCTAssertTrue(viewModel.timerDisplayed)
+        XCTAssertEqual(viewModel.timerPickerSeconds, 600)
+        XCTAssertEqual(viewModel.timerText, "10:00")
     }
 
     func testInit_noTimerWhenNotSaved() {
-        let vm = MainViewModel(audio: audio, settings: settings)
-        XCTAssertFalse(vm.timerDisplayed)
-        XCTAssertTrue(vm.timerText.isEmpty)
+        let viewModel = MainViewModel(audio: audio, settings: settings)
+        XCTAssertFalse(viewModel.timerDisplayed)
+        XCTAssertTrue(viewModel.timerText.isEmpty)
     }
 
     // MARK: Foreground sync

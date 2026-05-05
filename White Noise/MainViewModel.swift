@@ -250,7 +250,7 @@ final class MainViewModel {
             MPMediaItemPropertyTitle: title,
             MPMediaItemPropertyArtwork: artwork,
         ]
-        if timerActive && timeLeftSecs > 0 {
+        if timerActive, timeLeftSecs > 0 {
             info[MPMediaItemPropertyPlaybackDuration] = timerPickerSeconds
             info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = timerPickerSeconds - timeLeftSecs
             info[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
@@ -260,11 +260,11 @@ final class MainViewModel {
 
     private func formattedTime(_ seconds: Double) -> String {
         let total = Int(seconds)
-        let h = total / 3600
-        let m = total / 60 % 60
-        let s = total % 60
-        return h > 0
-            ? String(format: "%02i:%02i:%02i", h, m, s)
-            : String(format: "%02i:%02i", m, s)
+        let hours = total / 3600
+        let minutes = total / 60 % 60
+        let secs = total % 60
+        return hours > 0
+            ? String(format: "%02i:%02i:%02i", hours, minutes, secs)
+            : String(format: "%02i:%02i", minutes, secs)
     }
 }
