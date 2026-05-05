@@ -25,3 +25,4 @@
 14. Scheduled start — "start playing at 10:30pm" as an alternative to the countdown timer, good for consistent bedtime routines
 15. Presets — save current settings (color + waves + fade + timer) as a named preset for one-tap restore
 16. Crossfade between noise colors — short crossfade when switching colors instead of the current abrupt cut
+17. Night light? color slowly gets darker at night. might required keeping screen on

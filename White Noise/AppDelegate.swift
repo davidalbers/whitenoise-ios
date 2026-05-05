@@ -1,23 +1,26 @@
 import AppIntents
+import SwiftUI
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var mainViewModel: MainViewModel!
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        StartPlayingIntent.playHandler = { colorRaw, waves, fade in
-            let color = NoiseColors(rawValue: colorRaw) ?? .white
-            if fade {
-                let timerSeconds = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")?.double(forKey: "timerKey") ?? 0
-                if timerSeconds > 0 { AudioManager.shared.fadeSeconds = Int(timerSeconds) }
-            }
-            AudioManager.shared.play(color: color, waves: waves, fade: fade)
+        mainViewModel = MainViewModel()
+
+        StartPlayingIntent.playHandler = { [weak self] colorRaw, waves, fade in
+            self?.mainViewModel.handleStartIntent(colorRaw: colorRaw, waves: waves, fade: fade)
         }
-        StopPlayingIntent.stopHandler = {
-            AudioManager.shared.pause()
+        StopPlayingIntent.stopHandler = { [weak self] in
+            self?.mainViewModel.pause()
         }
         WhiteNoiseShortcuts.updateAppShortcutParameters()
+
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = UIHostingController(rootView: MainView(viewModel: mainViewModel))
+        window?.makeKeyAndVisible()
         return true
     }
 
@@ -32,35 +35,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_: UIApplication) {}
 
     func application(_: UIApplication, continue userActivity: NSUserActivity, restorationHandler _: @escaping ([Any]?) -> Void) -> Bool {
-        if let viewController = window?.rootViewController as? ViewController,
-           let intent = userActivity.interaction?.intent
-        {
-            switch intent {
-            case let playIntent as PlayIntent:
-                viewController.onReceiveIntent(intent: playIntent)
-            case let pauseIntent as PauseIntent:
-                viewController.onReceiveIntent(intent: pauseIntent)
-            default:
-                return false
-            }
-            return true
+        guard let intent = userActivity.interaction?.intent else { return false }
+        switch intent {
+        case let playIntent as PlayIntent:
+            mainViewModel.setIntent(intent: playIntent)
+        case _ as PauseIntent:
+            mainViewModel.handlePauseIntent()
+        default:
+            return false
         }
-        return false
+        return true
     }
 
     func application(_: UIApplication,
                      open url: URL,
                      options _: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool
     {
-        if let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
-           let params = components.queryItems,
-           let viewController = window?.rootViewController as? ViewController
-        {
-            viewController.onReceiveDeeplink(params: params)
-            return true
-        } else {
-            return false
-        }
+        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+              components.queryItems != nil else { return false }
+        return true
     }
 }
 

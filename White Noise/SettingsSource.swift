@@ -90,14 +90,6 @@ class SettingsSource {
         }
     }
 
-    func setMigrated(_ migrated: Bool) {
-        getSettingsObj().setValue(migrated, forKey: SettingsSource.migratedKey)
-    }
-
-    func migrated() -> Bool {
-        getSettings()[SettingsSource.migratedKey] as? Bool ?? false
-    }
-
     private func getSettings() -> [String: Any] {
         getSettingsObj().dictionaryRepresentation()
     }

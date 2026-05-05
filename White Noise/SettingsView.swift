@@ -4,13 +4,14 @@ struct SettingsView: View {
     @State private var theme: Int
     @State private var colorScheme: ColorScheme?
     @State private var widgetTheme: Int
-    var rootVc: UIViewController?
+    var onThemeChanged: ((ColorScheme?) -> Void)?
     var dismissAction: () -> Void
     var themer = Themer()
     var settingsSource = SettingsSource()
 
-    init(dismissAction: @escaping (() -> Void)) {
+    init(dismissAction: @escaping (() -> Void), onThemeChanged: ((ColorScheme?) -> Void)? = nil) {
         self.dismissAction = dismissAction
+        self.onThemeChanged = onThemeChanged
         _theme = State(initialValue: themer.getTheme().rawValue)
         _widgetTheme = State(initialValue: settingsSource.widgetTheme())
         _colorScheme = State(initialValue: themer.getColorScheme())
@@ -19,13 +20,7 @@ struct SettingsView: View {
     func themeChanged(_ index: Int) {
         themer.saveTheme(Themer.Theme(rawValue: index))
         colorScheme = themer.getColorScheme()
-        if let rootVc { updateThemeForViewController(rootVc) }
-    }
-
-    private func updateThemeForViewController(_ viewController: UIViewController) {
-        viewController.overrideUserInterfaceStyle = themer.getUIUserInterfaceStyle()
-        viewController.setNeedsStatusBarAppearanceUpdate()
-        viewController.view.setNeedsDisplay()
+        onThemeChanged?(colorScheme)
     }
 
     var body: some View {
@@ -38,8 +33,8 @@ struct SettingsView: View {
                         Text("Dark").tag(1)
                         Text("Light").tag(2)
                     }.pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: theme) { value in
-                            themeChanged(value)
+                        .onChange(of: theme) { _, newValue in
+                            themeChanged(newValue)
                         }
                 }
                 Section {
@@ -49,8 +44,8 @@ struct SettingsView: View {
                         Text("Dark").tag(1)
                         Text("Light").tag(2)
                     }.pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: widgetTheme) { value in
-                            settingsSource.setWidgetTheme(value)
+                        .onChange(of: widgetTheme) { _, newValue in
+                            settingsSource.setWidgetTheme(newValue)
                         }
                 }
             }
