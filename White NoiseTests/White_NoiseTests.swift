@@ -31,6 +31,8 @@ final class MockPlaybackService: PlaybackService {
 
     func setWavesIntensity(_: WavesIntensity) {}
 
+    func setWavesIntensity(_: WavesIntensity) {}
+
     func setFade(_ enabled: Bool, seconds: Int) {
         lastSetFadeEnabled = enabled
         lastSetFadeSeconds = seconds

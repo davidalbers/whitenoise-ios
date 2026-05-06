@@ -16,6 +16,10 @@ class SettingsSource {
         NoiseColors(rawValue: getSettings()[SettingsSource.colorKey] as? String ?? "") ?? .white
     }
 
+    func wavesEnabled() -> Bool {
+        getSettings()[SettingsSource.wavesKey] as? Bool ?? false
+    }
+
     func fadeEnabled() -> Bool {
         getSettings()[SettingsSource.fadeKey] as? Bool ?? false
     }
@@ -53,13 +57,7 @@ class SettingsSource {
     }
 
     func wavesIntensity() -> WavesIntensity {
-        guard let raw = getSettings()[SettingsSource.wavesIntensityKey] as? String else {
-            let legacyWavesEnabled = getSettings()[SettingsSource.wavesKey] as? Bool ?? false
-            if legacyWavesEnabled {
-                return .medium
-            }
-            return .off
-        }
+        guard let raw = getSettings()[SettingsSource.wavesIntensityKey] as? String else { return .medium }
         return WavesIntensity(rawValue: raw) ?? .medium
     }
 
@@ -80,6 +78,14 @@ class SettingsSource {
         let old = self.color()
         getSettingsObj().setValue(color.rawValue, forKey: SettingsSource.colorKey)
         if old != color {
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    func setWaves(_ enabled: Bool) {
+        let old = wavesEnabled()
+        getSettingsObj().setValue(enabled, forKey: SettingsSource.wavesKey)
+        if old != enabled {
             WidgetCenter.shared.reloadAllTimelines()
         }
     }

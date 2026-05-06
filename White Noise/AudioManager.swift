@@ -83,6 +83,10 @@ class AudioManager {
         if let vol = intensity.minVolume { minVolume = vol }
     }
 
+    func setWavesIntensity(_ intensity: WavesIntensity) {
+        if let vol = intensity.minVolume { minVolume = vol }
+    }
+
     func setFade(_ enabled: Bool, seconds: Int) {
         fadeEnabled = enabled
         if enabled {
