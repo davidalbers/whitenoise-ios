@@ -31,21 +31,21 @@ struct Provider: AppIntentTimelineProvider {
 
     private func intentToEntry(_ intent: PlayWidgetIntent) -> SimpleEntry {
         let color: WidgetNoiseColor
-        let wavesIntensity: WavesIntensity
+        let waves: Bool
         let fade: Bool
         let timerMinutes: Int?
 
         if intent.mirrorApp {
             let settings = SettingsSource()
-            color          = WidgetNoiseColor(rawValue: settings.color().rawValue) ?? .white
-            wavesIntensity = settings.wavesIntensity()
-            fade           = settings.fadeEnabled()
-            timerMinutes   = nil
+            color = WidgetNoiseColor(rawValue: settings.color().rawValue) ?? .white
+            waves = settings.wavesIntensity() != .off
+            fade  = settings.fadeEnabled()
+            timerMinutes = nil
         } else {
-            color          = intent.color
-            wavesIntensity = intent.wavesIntensity
-            fade           = intent.fade
-            timerMinutes   = intent.timerMinutes
+            color = intent.color
+            waves = intent.waves
+            fade  = intent.fade
+            timerMinutes = intent.timerMinutes
         }
 
         var backgroundColor = grey
@@ -55,7 +55,6 @@ struct Provider: AppIntentTimelineProvider {
         case .white: backgroundColor = grey
         }
 
-        let waves = wavesIntensity != .off
         var mod = ""
         if waves && fade {
             mod += "wavy and fading "

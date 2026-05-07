@@ -14,7 +14,7 @@ enum WavesIntensity: String, CaseIterable {
 
     var minVolume: Float? {
         switch self {
-        case .off: nil
+        case .off: 1.0
         case .low: 0.5
         case .medium: 0.3
         case .high: 0.1

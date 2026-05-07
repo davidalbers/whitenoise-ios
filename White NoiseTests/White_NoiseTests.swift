@@ -10,17 +10,18 @@ final class MockPlaybackService: PlaybackService {
     private(set) var playCallCount = 0
     private(set) var pauseCallCount = 0
     private(set) var lastPlayColor: NoiseColors?
-    private(set) var lastPlayWavesIntensity: WavesIntensity?
+    private(set) var lastPlayWaves = false
     private(set) var lastPlayFade = false
+    private(set) var lastSetWaves: Bool?
     private(set) var lastSetFadeEnabled: Bool?
     private(set) var lastSetFadeSeconds: Int?
     private(set) var lastResetColor: NoiseColors?
 
-    func play(color: NoiseColors, wavesIntensity: WavesIntensity, fade: Bool) {
+    func play(color: NoiseColors, waves: Bool, fade: Bool) {
         isPlaying = true
         playCallCount += 1
         lastPlayColor = color
-        lastPlayWavesIntensity = wavesIntensity
+        lastPlayWaves = waves
         lastPlayFade = fade
     }
 
@@ -29,7 +30,9 @@ final class MockPlaybackService: PlaybackService {
         pauseCallCount += 1
     }
 
-    func setWavesIntensity(_: WavesIntensity) {}
+    func setWaves(_ enabled: Bool) {
+        lastSetWaves = enabled
+    }
 
     func setWavesIntensity(_: WavesIntensity) {}
 
@@ -113,9 +116,10 @@ final class MainViewModelTests: XCTestCase {
 
     // MARK: Waves / Fade
 
-    func testSetWavesIntensity_updatesStateAndCallsAudio() {
-        viewModel.setWavesIntensity(.medium)
-        XCTAssertEqual(viewModel.wavesIntensity, .medium)
+    func testSetWaves_updatesStateAndCallsAudio() {
+        viewModel.setWaves(true)
+        XCTAssertNotEqual(viewModel.wavesIntensity, .off)
+        XCTAssertEqual(audio.lastSetWaves, true)
     }
 
     func testSetFade_updatesStateAndCallsAudio() {
@@ -194,16 +198,16 @@ final class MainViewModelTests: XCTestCase {
     // MARK: Intent handling
 
     func testHandleStartIntent_updatesStateAndPlays() {
-        viewModel.handleStartIntent(colorRaw: "pink", wavesIntensity: .medium, fade: false)
+        viewModel.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
         XCTAssertEqual(viewModel.currentColor, .pink)
         XCTAssertNotEqual(viewModel.wavesIntensity, .off)
         XCTAssertTrue(viewModel.isPlaying)
         XCTAssertEqual(audio.lastPlayColor, .pink)
-        XCTAssertNotEqual(audio.lastPlayWavesIntensity, .off)
+        XCTAssertTrue(audio.lastPlayWaves)
     }
 
     func testHandleStartIntent_unknownColorDefaultsToWhite() {
-        viewModel.handleStartIntent(colorRaw: "invalid", wavesIntensity: .off, fade: false)
+        viewModel.handleStartIntent(colorRaw: "invalid", waves: false, fade: false)
         XCTAssertEqual(viewModel.currentColor, .white)
     }
 
@@ -217,7 +221,7 @@ final class MainViewModelTests: XCTestCase {
         settings.setColor(.brown)
         settings.setFade(true)
         let viewModel = MainViewModel(audio: audio, settings: settings)
-        viewModel.handleStartIntent(colorRaw: "pink", wavesIntensity: .medium, fade: false)
+        viewModel.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
         XCTAssertEqual(viewModel.currentColor, .pink)
         XCTAssertNotEqual(viewModel.wavesIntensity, .off)
         XCTAssertEqual(viewModel.fadeEnabled, false)

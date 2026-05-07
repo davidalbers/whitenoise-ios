@@ -7,7 +7,6 @@ import UIKit
 final class MainViewModel {
     var isPlaying = false
     var currentColor: NoiseColors = .white
-    var wavesEnabled = false
     var wavesIntensity: WavesIntensity = .medium
     var fadeEnabled = false
     var timerPickerSeconds: Double = 600
@@ -59,7 +58,12 @@ final class MainViewModel {
 
     func handleStartIntent(colorRaw: String, waves: Bool, fade: Bool) {
         currentColor = NoiseColors(rawValue: colorRaw) ?? .white
-        wavesEnabled = waves
+        if waves {
+            wavesIntensity = .medium
+            audio.setWavesIntensity(.medium)
+        } else {
+            wavesIntensity = .off
+        }
         fadeEnabled = fade
         if fade {
             let timerSeconds = settings.timerSeconds()
@@ -69,7 +73,7 @@ final class MainViewModel {
     }
 
     private func startAudio() {
-        audio.play(color: currentColor, waves: wavesEnabled, fade: fadeEnabled)
+        audio.play(color: currentColor, wavesIntensity: wavesIntensity, fade: fadeEnabled)
         updateNowPlaying()
         startTickTimer()
         isPlaying = true
@@ -88,17 +92,9 @@ final class MainViewModel {
         if isPlaying { updateNowPlaying() }
     }
 
-    func setWaves(_ enabled: Bool) {
-        wavesEnabled = enabled
-        audio.setWaves(enabled)
-    }
-
     func setWavesIntensity(_ intensity: WavesIntensity) {
         wavesIntensity = intensity
-        wavesEnabled = intensity != .off
-        audio.setWaves(intensity != .off)
-        if intensity != .off { audio.setWavesIntensity(intensity) }
-        settings.setWaves(intensity != .off)
+        audio.setWavesIntensity(intensity)
         settings.setWavesIntensity(intensity)
     }
 
@@ -149,7 +145,6 @@ final class MainViewModel {
         if parser.playForIntentIfNeeded() {
             settings.setColor(parser.mapColor())
             settings.setTimer(parser.getMinutesFromIntent())
-            settings.setWaves(parser.getWavesEnabledFromIntent())
             settings.setFade(parser.getFadingEnabledFromIntent())
         }
         loadSavedState()
@@ -186,11 +181,8 @@ final class MainViewModel {
     private func loadSavedState() {
         customPresetSeconds = settings.customPresetSeconds()
         currentColor = settings.color()
-        let savedWavesEnabled = settings.wavesEnabled()
-        let savedIntensity = settings.wavesIntensity()
-        wavesEnabled = savedWavesEnabled
-        wavesIntensity = savedWavesEnabled ? savedIntensity : .off
-        if savedWavesEnabled { audio.setWavesIntensity(savedIntensity) }
+        wavesIntensity = settings.wavesIntensity()
+        if wavesIntensity != .off { audio.setWavesIntensity(wavesIntensity) }
         fadeEnabled = settings.fadeEnabled()
         let savedSeconds = settings.timerSeconds()
         if savedSeconds > 0 {
@@ -212,7 +204,6 @@ final class MainViewModel {
 
     private func saveState() {
         settings.setColor(currentColor)
-        settings.setWaves(wavesEnabled)
         settings.setFade(fadeEnabled)
         settings.setTimer(timerActive && timeLeftSecs > 0 ? timeLeftSecs : nil)
     }
@@ -279,7 +270,7 @@ final class MainViewModel {
         }
         guard audio.isPlaying else { return }
         currentColor = settings.color()
-        wavesEnabled = settings.wavesEnabled()
+        wavesIntensity = settings.wavesIntensity()
         fadeEnabled = settings.fadeEnabled()
         let savedSeconds = settings.timerSeconds()
         if savedSeconds == 0 {

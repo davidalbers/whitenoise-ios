@@ -1,7 +1,6 @@
 import AppIntents
 import WidgetKit
 
-
 enum WidgetNoiseColor: String, AppEnum {
     case white, pink, brown
 
@@ -31,8 +30,8 @@ struct PlayWidgetIntent: AppIntent, WidgetConfigurationIntent {
     @Parameter(title: "Noise Color", default: .white)
     var color: WidgetNoiseColor
 
-    @Parameter(title: "Waves", default: .off)
-    var wavesIntensity: WavesIntensity
+    @Parameter(title: "Wavy Volume", default: false)
+    var waves: Bool
 
     @Parameter(title: "Fading Volume", default: false)
     var fade: Bool
@@ -48,7 +47,7 @@ struct PlayWidgetIntent: AppIntent, WidgetConfigurationIntent {
         } otherwise: {
             Summary("Play \(\.$color) noise") {
                 \.$mirrorApp
-                \.$wavesIntensity
+                \.$waves
                 \.$fade
                 \.$timerMinutes
             }
@@ -60,18 +59,18 @@ struct PlayWidgetIntent: AppIntent, WidgetConfigurationIntent {
 
 struct StartPlayingIntent: AudioPlaybackIntent {
     static var title: LocalizedStringResource = "Start White Noise"
-    static var playHandler: ((_ color: String, _ wavesIntensity: WavesIntensity, _ fade: Bool) -> Void)?
+    static var playHandler: ((_ color: String, _ waves: Bool, _ fade: Bool) -> Void)?
 
     @Parameter(title: "Mirror App") var mirrorApp: Bool
     @Parameter(title: "Color") var color: WidgetNoiseColor
-    @Parameter(title: "Waves") var wavesIntensity: WavesIntensity
+    @Parameter(title: "Waves") var waves: Bool
     @Parameter(title: "Fade")  var fade: Bool
     @Parameter(title: "Timer (minutes)", inclusiveRange: (1, 1440)) var timerMinutes: Int?
 
     init() {
         self.mirrorApp = true
         self.color = .white
-        self.wavesIntensity = .off
+        self.waves = false
         self.fade  = false
         self.timerMinutes = nil
     }
@@ -79,39 +78,38 @@ struct StartPlayingIntent: AudioPlaybackIntent {
     init(config: PlayWidgetIntent) {
         self.mirrorApp = config.mirrorApp
         self.color = config.color
-        self.wavesIntensity = config.wavesIntensity
+        self.waves = config.waves
         self.fade  = config.fade
         self.timerMinutes = config.timerMinutes
     }
 
     func perform() async throws -> some IntentResult {
         let colorRaw: String
-        let intensityVal: WavesIntensity
+        let wavesVal: Bool
         let fadeVal: Bool
 
         if mirrorApp {
             let settings = SettingsSource()
-            colorRaw     = settings.color().rawValue
-            intensityVal = settings.wavesIntensity()
-            fadeVal      = settings.fadeEnabled()
+            colorRaw = settings.color().rawValue
+            wavesVal = settings.wavesIntensity() != .off
+            fadeVal  = settings.fadeEnabled()
         } else {
             let defaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
-            defaults.set(color.rawValue,           forKey: "colorKey")
-            defaults.set(wavesIntensity.rawValue,   forKey: "wavesIntensityKey")
-            defaults.set(wavesIntensity != .off,    forKey: "wavesKey")
-            defaults.set(fade,                      forKey: "fadeKey")
+            defaults.set(color.rawValue, forKey: "colorKey")
+            defaults.set(waves,          forKey: "wavesKey")
+            defaults.set(fade,           forKey: "fadeKey")
             if let mins = timerMinutes, mins > 0 {
                 defaults.set(Double(mins) * 60.0, forKey: "timerKey")
             } else {
                 defaults.removeObject(forKey: "timerKey")
             }
-            colorRaw     = color.rawValue
-            intensityVal = wavesIntensity
-            fadeVal      = fade
+            colorRaw = color.rawValue
+            wavesVal = waves
+            fadeVal  = fade
         }
 
         await MainActor.run {
-            Self.playHandler?(colorRaw, intensityVal, fadeVal)
+            Self.playHandler?(colorRaw, wavesVal, fadeVal)
         }
 
         WidgetCenter.shared.reloadAllTimelines()
