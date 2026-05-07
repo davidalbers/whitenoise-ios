@@ -246,14 +246,6 @@ struct TimerSectionView: View {
     let onSelectPreset: (TimerPreset?) -> Void
     let onCustomTapped: () -> Void
 
-    private func formatDuration(_ seconds: Double) -> String {
-        let hours = seconds.secondsToHours()
-        let minutes = seconds.secondsToMins()
-        if hours > 0 && minutes > 0 { return "\(hours)h \(minutes)m" }
-        if hours > 0 { return "\(hours)h" }
-        return "\(minutes)m"
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Timer")
@@ -264,15 +256,14 @@ struct TimerSectionView: View {
                 TimerChipView(label: "Off", isSelected: selectedPreset == nil) {
                     onSelectPreset(nil)
                 }
-                ForEach([TimerPreset.min15, .min30, .hour1, .hour4], id: \.rawValue) { preset in
-                    TimerChipView(label: preset.rawValue, isSelected: selectedPreset == preset) {
+                ForEach(TimerPreset.standard, id: \.self) { preset in
+                    TimerChipView(label: preset.label, isSelected: selectedPreset == preset) {
                         onSelectPreset(preset)
                     }
                 }
-                if let secs = customPresetSeconds,
-                   ![TimerPreset.min15, .min30, .hour1, .hour4].map(\.seconds).contains(secs) {
-                    TimerChipView(label: formatDuration(secs), isSelected: selectedPreset == .custom) {
-                        onSelectPreset(.custom)
+                if let preset = customPresetSeconds.flatMap(TimerPreset.from), preset.isCustom {
+                    TimerChipView(label: preset.label, isSelected: selectedPreset == preset) {
+                        onSelectPreset(preset)
                     }
                 }
                 TimerChipView(label: "Custom ›", isSelected: false) {

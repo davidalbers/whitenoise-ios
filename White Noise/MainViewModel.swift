@@ -110,33 +110,22 @@ final class MainViewModel {
             deactivateTimer()
             return
         }
-        if preset == .custom {
-            if let saved = customPresetSeconds {
-                timerPickerSeconds = saved
-            } else {
-                customPresetSeconds = timerPickerSeconds
-                settings.setCustomPresetSeconds(timerPickerSeconds)
-            }
-        } else {
-            timerPickerSeconds = preset.seconds
-        }
+        timerPickerSeconds = preset.seconds
         activateTimer()
     }
 
     func confirmCustomTimer() {
+        guard let preset = TimerPreset.from(seconds: timerPickerSeconds) else { return }
         customPresetSeconds = timerPickerSeconds
         settings.setCustomPresetSeconds(timerPickerSeconds)
-        let standardPresets: [TimerPreset] = [.min15, .min30, .hour1, .hour4]
-        let matching = standardPresets.first { $0.seconds == timerPickerSeconds }
-        setTimerPreset(matching ?? .custom)
+        setTimerPreset(preset)
     }
 
     func toggleTimer() {
         if timerDisplayed {
             setTimerPreset(nil)
         } else {
-            let preset = TimerPreset.from(seconds: timerPickerSeconds)
-            setTimerPreset(preset ?? .custom)
+            setTimerPreset(TimerPreset.from(seconds: timerPickerSeconds))
         }
     }
 
