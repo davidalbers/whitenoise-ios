@@ -192,7 +192,7 @@ final class MainViewModelTests: XCTestCase {
     // MARK: Intent handling
 
     func testHandleStartIntent_updatesStateAndPlays() {
-        viewModel.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
+        viewModel.handleStartIntent(colorRaw: "pink", wavesIntensity: .medium, fade: false)
         XCTAssertEqual(viewModel.currentColor, .pink)
         XCTAssertNotEqual(viewModel.wavesIntensity, .off)
         XCTAssertTrue(viewModel.isPlaying)
@@ -201,7 +201,7 @@ final class MainViewModelTests: XCTestCase {
     }
 
     func testHandleStartIntent_unknownColorDefaultsToWhite() {
-        viewModel.handleStartIntent(colorRaw: "invalid", waves: false, fade: false)
+        viewModel.handleStartIntent(colorRaw: "invalid", wavesIntensity: .off, fade: false)
         XCTAssertEqual(viewModel.currentColor, .white)
     }
 
@@ -215,7 +215,7 @@ final class MainViewModelTests: XCTestCase {
         settings.setColor(.brown)
         settings.setFade(true)
         let viewModel = MainViewModel(audio: audio, settings: settings)
-        viewModel.handleStartIntent(colorRaw: "pink", waves: true, fade: false)
+        viewModel.handleStartIntent(colorRaw: "pink", wavesIntensity: .medium, fade: false)
         XCTAssertEqual(viewModel.currentColor, .pink)
         XCTAssertNotEqual(viewModel.wavesIntensity, .off)
         XCTAssertEqual(viewModel.fadeEnabled, false)

@@ -56,14 +56,10 @@ final class MainViewModel {
         startAudio()
     }
 
-    func handleStartIntent(colorRaw: String, waves: Bool, fade: Bool) {
+    func handleStartIntent(colorRaw: String, wavesIntensity: WavesIntensity, fade: Bool) {
         currentColor = NoiseColors(rawValue: colorRaw) ?? .white
-        if waves {
-            wavesIntensity = .medium
-            audio.setWavesIntensity(.medium)
-        } else {
-            wavesIntensity = .off
-        }
+        self.wavesIntensity = wavesIntensity
+        if wavesIntensity != .off { audio.setWavesIntensity(wavesIntensity) }
         fadeEnabled = fade
         if fade {
             let timerSeconds = settings.timerSeconds()

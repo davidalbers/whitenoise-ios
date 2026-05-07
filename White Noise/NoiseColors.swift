@@ -1,3 +1,4 @@
+import AppIntents
 import Foundation
 
 public enum NoiseColors: String {
@@ -6,7 +7,9 @@ public enum NoiseColors: String {
     case brown
 }
 
-enum WavesIntensity: String, CaseIterable {
+enum WavesIntensity: String, CaseIterable, AppEnum {
+    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Waves")
+    static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [.off: "Off", .low: "Low", .medium: "Medium", .high: "High"]
     case off = "Off"
     case low = "Low"
     case medium = "Med"
