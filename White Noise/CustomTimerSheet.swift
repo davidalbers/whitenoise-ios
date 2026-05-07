@@ -13,7 +13,7 @@ struct CustomTimerSheet: View {
                 .padding(.top, 8)
                 .padding(.bottom, 16)
 
-            Text("Timer")
+            Text("Sleep timer")
                 .font(.title3).fontWeight(.semibold)
                 .foregroundColor(Color("text"))
                 .padding(.bottom, 8)

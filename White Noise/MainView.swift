@@ -1,148 +1,66 @@
 import SwiftUI
 import UIKit
 
-private extension UIColor {
-    func lightened(by amount: CGFloat = 0.18) -> UIColor {
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        return UIColor(hue: h, saturation: max(0, s - amount * 0.5), brightness: min(1, b + amount), alpha: a)
-    }
-}
-
 struct MainView: View {
     @Bindable var viewModel: MainViewModel
     @State private var settingsPresented = false
     @State private var customTimerPresented = false
-    @State private var pulseScale: CGFloat = 1.0
-
-    private var accentColor: Color {
-        switch viewModel.currentColor {
-        case .white: Color("darkGrey")
-        case .pink: Color("pink")
-        case .brown: Color("brown")
-        }
-    }
 
     var body: some View {
         ZStack {
-            Color(uiColor: .systemBackground).ignoresSafeArea()
+            Color("background").ignoresSafeArea()
+
+            GradientView(accentColor: viewModel.currentColor.toColor())
 
             VStack {
-                Spacer()
-                RadialGradient(
-                    colors: [accentColor.opacity(0.38), .clear],
-                    center: UnitPoint(x: 0.5, y: 1.1),
-                    startRadius: 0,
-                    endRadius: 340
+                TopRowView { settingsPresented = true }
+                    .padding(.horizontal, 16)
+
+                NoiseSelectorView(currentColor: viewModel.currentColor) {
+                    viewModel.changeColor($0)
+
+                }
+                .padding(.top, 20)
+
+                WavesCardView(
+                    intensity: Binding(
+                        get: { viewModel.wavesIntensity },
+                        set: { viewModel.setWavesIntensity($0) }
+                    )
                 )
-                .frame(height: 340)
-                .allowsHitTesting(false)
-                .animation(.easeInOut(duration: 0.6), value: viewModel.currentColor)
-            }
-            .ignoresSafeArea(edges: .bottom)
-
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Button { settingsPresented = true } label: {
-                        Image(systemName: "ellipsis")
-                            .font(.system(size: 15))
-                            .foregroundColor(Color("text"))
-                            .frame(width: 34, height: 34)
-                            .overlay(Circle().stroke(Color("text").opacity(0.18), lineWidth: 1))
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-
-                HStack(spacing: 24) {
-                    ForEach([NoiseColors.white, .pink, .brown], id: \.self) { color in
-                        NoiseOrbView(color: color, isSelected: viewModel.currentColor == color)
-                            .onTapGesture { viewModel.changeColor(color) }
-                    }
-                }
-                .padding(.top, 28)
-
-                VStack(spacing: 8) {
-                    WavesCardView(
-                        intensity: Binding(
-                            get: { viewModel.wavesIntensity },
-                            set: { viewModel.setWavesIntensity($0) }
-                        )
-                    )
-
-                    FadeCardView(
-                        fadeEnabled: Binding(
-                            get: { viewModel.fadeEnabled },
-                            set: { viewModel.setFade($0) }
-                        ),
-                        accentColor: accentColor
-                    )
-
-                    TimerSectionView(
-                        selectedPreset: viewModel.selectedTimerPreset,
-                        customPresetSeconds: viewModel.customPresetSeconds,
-                        onSelectPreset: { viewModel.setTimerPreset($0) },
-                        onCustomTapped: { customTimerPresented = true }
-                    )
-                }
                 .padding(.horizontal, 16)
                 .padding(.top, 20)
 
+                FadeCardView(
+                    fadeEnabled: Binding(
+                        get: { viewModel.fadeEnabled },
+                        set: { viewModel.setFade($0) }
+                    ),
+                    accentColor: viewModel.currentColor.toColor()
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
 
+                TimerSectionView(
+                    selectedPreset: viewModel.selectedTimerPreset,
+                    customPresetSeconds: viewModel.customPresetSeconds,
+                    onSelectPreset: { viewModel.setTimerPreset($0) },
+                    onCustomTapped: { customTimerPresented = true }
+                )
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
 
                 Spacer()
 
-                VStack(spacing: 12) {
-                    Button(action: viewModel.playPause) {
-                        ZStack {
-                            Circle()
-                                .fill(Color("text"))
-                                .frame(width: 84, height: 84)
-                            Image(viewModel.isPlaying ? "pause" : "play")
-                                .renderingMode(.template)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                        }
-                    }
-                    .scaleEffect(pulseScale)
-                    .onAppear {
-                        guard viewModel.isPlaying else { return }
-                        withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
-                            pulseScale = 1.05
-                        }
-                    }
-                    .onChange(of: viewModel.isPlaying) { _, playing in
-                        if playing {
-                            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
-                                pulseScale = 1.05
-                            }
-                        } else {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                pulseScale = 1.0
-                            }
-                        }
-                    }
-
-                    Text(viewModel.timerText)
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                        .contentTransition(.numericText())
-                        .animation(.easeInOut(duration: 0.25), value: viewModel.timerText)
-                        .opacity(viewModel.isPlaying && !viewModel.timerText.isEmpty ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.4), value: viewModel.isPlaying)
-                        .frame(height: 20)
-                }
-                .padding(.bottom, 52)
+                PlayAndTimeView(
+                    isPlaying: viewModel.isPlaying,
+                    timerText: viewModel.timerText
+                ) {
+                    viewModel.playPause()
+                }.padding(.bottom, 52)
             }
         }
         .preferredColorScheme(viewModel.colorScheme)
-        .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.isPlaying) { _, new in new }
-        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isPlaying) { _, new in !new }
-        .sensoryFeedback(.selection, trigger: viewModel.currentColor)
-        .sensoryFeedback(.selection, trigger: viewModel.selectedTimerPreset)
         .sheet(isPresented: $settingsPresented) {
             SettingsView(
                 dismissAction: { settingsPresented = false },
@@ -162,41 +80,87 @@ struct MainView: View {
     }
 }
 
-// MARK: - Noise Orb
+struct GradientView: View {
+    var accentColor: Color
+
+    var body: some View {
+        VStack {
+            Spacer()
+            RadialGradient(
+                colors: [accentColor.opacity(0.75), .clear],
+                center: UnitPoint(x: 0.5, y: 1.25),
+                startRadius: 0,
+                endRadius: 340
+            )
+            .frame(height: 340)
+            .allowsHitTesting(false)
+            .animation(.easeInOut(duration: 0.6), value: accentColor)
+        }
+        .ignoresSafeArea(edges: .bottom)
+    }
+}
+
+struct TopRowView: View {
+    var settingsPresented: () -> Void
+
+    var body: some View {
+        HStack {
+            Spacer()
+            Button(
+                action: settingsPresented,
+                label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(Color("text"))
+                        .frame(width: 34, height: 34)
+                        .overlay(Circle().stroke(Color("text").opacity(0.18), lineWidth: 1))
+                }
+            )
+        }
+    }
+}
+
+struct NoiseSelectorView: View {
+    var currentColor: NoiseColors
+    var colorSelected: (NoiseColors) -> Void
+
+    var body: some View {
+        HStack(spacing: 24) {
+            ForEach([NoiseColors.white, .pink, .brown], id: \.self) { color in
+                NoiseOrbView(color: color, isSelected: currentColor == color)
+                    .onTapGesture { colorSelected(color) }
+            }
+        }.sensoryFeedback(.selection, trigger: currentColor)
+    }
+}
 
 struct NoiseOrbView: View {
     let color: NoiseColors
     let isSelected: Bool
 
     private var orbGradient: RadialGradient {
-        switch color {
+        let colors = switch color {
         case .white:
-            RadialGradient(
-                colors: [Color(UIColor(named: "darkGrey")!.lightened(by: 0.32)), Color(UIColor(named: "darkGrey")!.lightened(by: 0.25))],
-                center: UnitPoint(x: 0.38, y: 0.32),
-                startRadius: 8,
-                endRadius: 46
-            )
+            [
+                Color(UIColor(named: "lightGrey")!.lightened(by: 0.32)),
+                Color(UIColor(named: "lightGrey")!.lightened(by: 0.25))
+            ]
         case .pink:
-            RadialGradient(
-                colors: [Color(UIColor(named: "pink")!.lightened(by: 0.25)), Color("pink")],
-                center: UnitPoint(x: 0.38, y: 0.32),
-                startRadius: 8,
-                endRadius: 46
-            )
+            [Color(UIColor(named: "pink")!.lightened(by: 0.25)), Color("pink")]
         case .brown:
-            RadialGradient(
-                colors: [Color(UIColor(named: "brown")!.lightened(by: 0.18)), Color("brown")],
-                center: UnitPoint(x: 0.38, y: 0.32),
-                startRadius: 8,
-                endRadius: 46
-            )
+            [Color(UIColor(named: "brown")!.lightened(by: 0.18)), Color("brown")]
         }
+
+        return RadialGradient(
+            colors: colors,
+            center: UnitPoint(x: 0.38, y: 0.32),
+            startRadius: 8,
+            endRadius: 46
+        )
     }
 
     private var ringColor: Color {
         switch color {
-        case .white: Color("darkGrey")
+        case .white: Color("lightGrey")
         case .pink: Color("pink")
         case .brown: Color("brown")
         }
@@ -225,13 +189,12 @@ struct NoiseOrbView: View {
             .animation(.easeInOut(duration: 0.2), value: isSelected)
 
             Text(label)
-                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+                .font(.callout)
+                .fontWeight(isSelected ? .semibold : .regular)
                 .foregroundColor(isSelected ? Color("text") : .secondary)
         }
     }
 }
-
-// MARK: - Waves Card
 
 struct WavesCardView: View {
     @Binding var intensity: WavesIntensity
@@ -250,13 +213,12 @@ struct WavesCardView: View {
                 }
             }
         }
-        .padding(14)
-        .background(Color(uiColor: .secondarySystemBackground))
+        .padding(16)
+        .background(Color("accent"))
         .cornerRadius(12)
+        .sensoryFeedback(.selection, trigger: intensity)
     }
 }
-
-// MARK: - Fade Card
 
 struct FadeCardView: View {
     @Binding var fadeEnabled: Bool
@@ -272,13 +234,11 @@ struct FadeCardView: View {
                 .tint(accentColor)
                 .labelsHidden()
         }
-        .padding(14)
-        .background(Color(uiColor: .secondarySystemBackground))
+        .padding(16)
+        .background(Color("accent"))
         .cornerRadius(12)
     }
 }
-
-// MARK: - Timer Section
 
 struct TimerSectionView: View {
     let selectedPreset: TimerPreset?
@@ -287,9 +247,8 @@ struct TimerSectionView: View {
     let onCustomTapped: () -> Void
 
     private func formatDuration(_ seconds: Double) -> String {
-        let total = Int(seconds)
-        let hours = total / 3600
-        let minutes = (total % 3600) / 60
+        let hours = seconds.secondsToHours()
+        let minutes = seconds.secondsToMins()
         if hours > 0 && minutes > 0 { return "\(hours)h \(minutes)m" }
         if hours > 0 { return "\(hours)h" }
         return "\(minutes)m"
@@ -321,10 +280,10 @@ struct TimerSectionView: View {
                 }
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 13)
-        .background(Color(uiColor: .secondarySystemBackground))
+        .padding(16)
+        .background(Color("accent"))
         .cornerRadius(12)
+        .sensoryFeedback(.selection, trigger: selectedPreset)
     }
 }
 
@@ -338,75 +297,20 @@ struct TimerChipView: View {
             Text(label)
                 .font(.body).fontWeight(isSelected ? .semibold : .regular)
                 .foregroundColor(isSelected ? Color(uiColor: .systemBackground) : Color("text"))
-                .padding(.horizontal, 14)
+                .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(
-                    RoundedRectangle(cornerRadius: 11)
-                        .fill(isSelected ? Color("text") : Color(uiColor: .secondarySystemBackground))
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(isSelected ? Color("text") : Color("accent"))
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 11)
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(Color("text").opacity(isSelected ? 0 : 0.12), lineWidth: 1)
                 )
         }
         .animation(.easeInOut(duration: 0.15), value: isSelected)
     }
 }
-
-// MARK: - Custom Timer Sheet
-
-struct CustomTimerSheet: View {
-    @Binding var duration: TimeInterval
-    let onSet: () -> Void
-    let onCancel: () -> Void
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Capsule()
-                .fill(Color(uiColor: .systemFill))
-                .frame(width: 36, height: 5)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
-
-            Text("Sleep timer")
-                .font(.title3).fontWeight(.semibold)
-                .foregroundColor(Color("text"))
-                .padding(.bottom, 8)
-
-            DurationPicker(duration: $duration, isEnabled: true)
-                .frame(height: 200)
-                .padding(.horizontal, 16)
-
-            HStack(spacing: 12) {
-                Button(action: onCancel) {
-                    Text("Cancel")
-                        .font(.body).fontWeight(.medium)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color(uiColor: .secondarySystemBackground))
-                        .cornerRadius(12)
-                        .foregroundColor(Color("text"))
-                }
-                Button(action: onSet) {
-                    Text("Set timer")
-                        .font(.body).fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color("text"))
-                        .cornerRadius(12)
-                        .foregroundColor(Color(uiColor: .systemBackground))
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
-            .padding(.bottom, 32)
-        }
-        .presentationDetents([.height(440)])
-        .presentationDragIndicator(.hidden)
-    }
-}
-
-// MARK: - Flow Layout
 
 struct ChipFlowLayout: Layout {
     var spacing: CGFloat = 8
@@ -450,7 +354,60 @@ struct ChipFlowLayout: Layout {
     }
 }
 
-// MARK: - Duration Picker (used in Custom Timer Sheet)
+struct PlayAndTimeView: View {
+    var isPlaying: Bool
+    var timerText: String
+    var onPlay: () -> Void
+
+    @State private var pulseScale: CGFloat = 1.0
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Button(action: onPlay) {
+                ZStack {
+                    Circle()
+                        .fill(Color("text"))
+                        .frame(width: 84, height: 84)
+                    Image(isPlaying ? "pause" : "play")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 48, height: 48)
+                        .foregroundColor(Color(uiColor: .systemBackground))
+                }
+            }
+            .scaleEffect(pulseScale)
+            .onAppear {
+                guard isPlaying else { return }
+                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                    pulseScale = 1.05
+                }
+            }
+            .onChange(of: isPlaying) { _, playing in
+                if playing {
+                    withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                        pulseScale = 1.05
+                    }
+                } else {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        pulseScale = 1.0
+                    }
+                }
+            }
+
+            Text(timerText)
+                .font(.callout)
+                .foregroundColor(.secondary)
+                .contentTransition(.numericText())
+                .animation(.easeInOut(duration: 0.25), value: timerText)
+                .opacity(isPlaying && !timerText.isEmpty ? 1 : 0)
+                .animation(.easeInOut(duration: 0.4), value: isPlaying)
+                .frame(height: 20)
+        }
+        .sensoryFeedback(.impact(weight: .medium), trigger: isPlaying) { _, new in new }
+        .sensoryFeedback(.impact(weight: .light), trigger: isPlaying) { _, new in !new }
+    }
+}
 
 struct DurationPicker: View {
     @Binding var duration: TimeInterval
@@ -462,9 +419,8 @@ struct DurationPicker: View {
     init(duration: Binding<TimeInterval>, isEnabled: Bool = true) {
         _duration = duration
         self.isEnabled = isEnabled
-        let total = Int(duration.wrappedValue)
-        _hours = State(initialValue: total / 3600)
-        _minutes = State(initialValue: (total % 3600) / 60)
+        _hours = State(initialValue: duration.wrappedValue.secondsToHours())
+        _minutes = State(initialValue: duration.wrappedValue.secondsToMins())
     }
 
     var body: some View {
@@ -484,9 +440,8 @@ struct DurationPicker: View {
         .onChange(of: hours) { sync() }
         .onChange(of: minutes) { sync() }
         .onChange(of: duration) {
-            let total = Int(duration)
-            let hrs = total / 3600
-            let mins = (total % 3600) / 60
+            let hrs = duration.secondsToHours()
+            let mins = duration.secondsToMins()
             if hours != hrs { hours = hrs }
             if minutes != mins { minutes = mins }
         }
@@ -494,5 +449,33 @@ struct DurationPicker: View {
 
     private func sync() {
         duration = TimeInterval(hours * 3600 + minutes * 60)
+    }
+}
+
+private extension Double {
+    func secondsToHours() -> Int {
+        return Int(self) / 3600
+    }
+
+    func secondsToMins() -> Int {
+        return (Int(self) % 3600) / 60
+    }
+}
+
+private extension UIColor {
+    func lightened(by amount: CGFloat = 0.18) -> UIColor {
+        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        return UIColor(hue: h, saturation: max(0, s - amount * 0.5), brightness: min(1, b + amount), alpha: a)
+    }
+}
+
+private extension NoiseColors {
+    func toColor() -> Color {
+        switch self {
+        case .white: Color("darkGrey")
+        case .pink: Color("pink")
+        case .brown: Color("brown")
+        }
     }
 }
