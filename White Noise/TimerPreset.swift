@@ -2,9 +2,7 @@ struct TimerPreset: Equatable, Hashable {
     let hours: Int
     let minutes: Int
 
-    var seconds: Double {
-        Double(hours * 3600 + minutes * 60)
-    }
+    var seconds: Double { Double(hours * 3600 + minutes * 60) }
 
     var label: String {
         if hours > 0, minutes > 0 { return "\(hours)h \(minutes)m" }
@@ -12,9 +10,7 @@ struct TimerPreset: Equatable, Hashable {
         return "\(minutes)m"
     }
 
-    var isCustom: Bool {
-        !Self.standard.contains(self)
-    }
+    var isCustom: Bool { !Self.standard.contains(self) }
 
     static let standard: [TimerPreset] = [
         TimerPreset(hours: 0, minutes: 15),
