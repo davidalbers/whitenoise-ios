@@ -7,11 +7,13 @@ import UIKit
 final class MainViewModel {
     var isPlaying = false
     var currentColor: NoiseColors = .white
-    var wavesEnabled = false
+    var wavesIntensity: WavesIntensity = .medium
     var fadeEnabled = false
     var timerPickerSeconds: Double = 600
     var timerDisplayed = false
     var timerText = ""
+    var selectedTimerPreset: TimerPreset?
+    var customPresetSeconds: Double?
     var colorScheme: ColorScheme?
 
     private var timerActive = false
@@ -54,9 +56,10 @@ final class MainViewModel {
         startAudio()
     }
 
-    func handleStartIntent(colorRaw: String, waves: Bool, fade: Bool) {
+    func handleStartIntent(colorRaw: String, wavesIntensity: WavesIntensity, fade: Bool) {
         currentColor = NoiseColors(rawValue: colorRaw) ?? .white
-        wavesEnabled = waves
+        self.wavesIntensity = wavesIntensity
+        if wavesIntensity != .off { audio.setWavesIntensity(wavesIntensity) }
         fadeEnabled = fade
         if fade {
             let timerSeconds = settings.timerSeconds()
@@ -66,7 +69,7 @@ final class MainViewModel {
     }
 
     private func startAudio() {
-        audio.play(color: currentColor, waves: wavesEnabled, fade: fadeEnabled)
+        audio.play(color: currentColor, wavesIntensity: wavesIntensity, fade: fadeEnabled)
         updateNowPlaying()
         startTickTimer()
         isPlaying = true
@@ -85,9 +88,10 @@ final class MainViewModel {
         if isPlaying { updateNowPlaying() }
     }
 
-    func setWaves(_ enabled: Bool) {
-        wavesEnabled = enabled
-        audio.setWaves(enabled)
+    func setWavesIntensity(_ intensity: WavesIntensity) {
+        wavesIntensity = intensity
+        audio.setWavesIntensity(intensity)
+        settings.setWavesIntensity(intensity)
     }
 
     func setFade(_ enabled: Bool) {
@@ -96,21 +100,28 @@ final class MainViewModel {
         audio.setFade(enabled, seconds: seconds)
     }
 
-    func toggleTimer() {
-        timerDisplayed = !timerDisplayed
-        if timerDisplayed {
-            timerActive = true
-            timeLeftSecs = timerPickerSeconds
-            if fadeEnabled { audio.fadeSeconds = Int(timeLeftSecs) }
-            timerText = formattedTime(timeLeftSecs)
-        } else {
-            timerActive = false
-            timeLeftSecs = 0
-            timerText = ""
+    func setTimerPreset(_ preset: TimerPreset?) {
+        selectedTimerPreset = preset
+        guard let preset else {
+            deactivateTimer()
+            return
         }
-        if isPlaying {
-            saveState()
-            updateNowPlaying()
+        timerPickerSeconds = preset.seconds
+        activateTimer()
+    }
+
+    func confirmCustomTimer() {
+        guard let preset = TimerPreset.from(seconds: timerPickerSeconds) else { return }
+        customPresetSeconds = timerPickerSeconds
+        settings.setCustomPresetSeconds(timerPickerSeconds)
+        setTimerPreset(preset)
+    }
+
+    func toggleTimer() {
+        if timerDisplayed {
+            setTimerPreset(nil)
+        } else {
+            setTimerPreset(TimerPreset.from(seconds: timerPickerSeconds))
         }
     }
 
@@ -119,7 +130,6 @@ final class MainViewModel {
         if parser.playForIntentIfNeeded() {
             settings.setColor(parser.mapColor())
             settings.setTimer(parser.getMinutesFromIntent())
-            settings.setWaves(parser.getWavesEnabledFromIntent())
             settings.setFade(parser.getFadingEnabledFromIntent())
         }
         loadSavedState()
@@ -130,19 +140,46 @@ final class MainViewModel {
         pause()
     }
 
+    private func activateTimer() {
+        timerDisplayed = true
+        timerActive = true
+        timeLeftSecs = timerPickerSeconds
+        if fadeEnabled { audio.fadeSeconds = Int(timeLeftSecs) }
+        timerText = formattedTime(timeLeftSecs)
+        if isPlaying {
+            saveState()
+            updateNowPlaying()
+        }
+    }
+
+    private func deactivateTimer() {
+        timerDisplayed = false
+        timerActive = false
+        timeLeftSecs = 0
+        timerText = ""
+        if isPlaying {
+            saveState()
+            updateNowPlaying()
+        }
+    }
+
     private func loadSavedState() {
+        customPresetSeconds = settings.customPresetSeconds()
         currentColor = settings.color()
-        wavesEnabled = settings.wavesEnabled()
+        wavesIntensity = settings.wavesIntensity()
+        if wavesIntensity != .off { audio.setWavesIntensity(wavesIntensity) }
         fadeEnabled = settings.fadeEnabled()
         let savedSeconds = settings.timerSeconds()
         if savedSeconds > 0 {
             timerPickerSeconds = savedSeconds
+            selectedTimerPreset = TimerPreset.from(seconds: savedSeconds)
             timerDisplayed = true
             timerActive = true
             timeLeftSecs = savedSeconds
             timerText = formattedTime(savedSeconds)
             if fadeEnabled { audio.fadeSeconds = Int(savedSeconds) }
         } else {
+            selectedTimerPreset = nil
             timerDisplayed = false
             timerActive = false
             timeLeftSecs = 0
@@ -152,7 +189,6 @@ final class MainViewModel {
 
     private func saveState() {
         settings.setColor(currentColor)
-        settings.setWaves(wavesEnabled)
         settings.setFade(fadeEnabled)
         settings.setTimer(timerActive && timeLeftSecs > 0 ? timeLeftSecs : nil)
     }
@@ -182,6 +218,7 @@ final class MainViewModel {
             timerText = ""
             timerDisplayed = false
             timerActive = false
+            selectedTimerPreset = nil
             pause()
         }
     }
@@ -218,7 +255,7 @@ final class MainViewModel {
         }
         guard audio.isPlaying else { return }
         currentColor = settings.color()
-        wavesEnabled = settings.wavesEnabled()
+        wavesIntensity = settings.wavesIntensity()
         fadeEnabled = settings.fadeEnabled()
         let savedSeconds = settings.timerSeconds()
         if savedSeconds == 0 {
@@ -227,12 +264,14 @@ final class MainViewModel {
                 timerDisplayed = false
                 timeLeftSecs = 0
                 timerText = ""
+                selectedTimerPreset = nil
             }
         } else if !timerActive || savedSeconds != timerPickerSeconds {
             timerPickerSeconds = savedSeconds
             timerActive = true
             timerDisplayed = true
             timeLeftSecs = savedSeconds
+            selectedTimerPreset = TimerPreset.from(seconds: savedSeconds)
             timerText = formattedTime(savedSeconds)
             if fadeEnabled { audio.fadeSeconds = Int(savedSeconds) }
         }

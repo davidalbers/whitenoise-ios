@@ -7,6 +7,7 @@ class AudioManager {
     private var player: AVAudioPlayer?
     private var crossfadeStartTime: Date?
 
+    private var wavesIntensity = WavesIntensity.off
     private var fadingOut = false
     private var playPauseFading = false
     private var pendingFade: DispatchWorkItem?
@@ -14,11 +15,10 @@ class AudioManager {
     private var currentColor: NoiseColors?
     private var volumeTimer: Timer?
 
-    private(set) var wavesEnabled = false
     private(set) var fadeEnabled = false
     private var volume: Float = 1.0
     private var maxVolume: Float = 1.0
-    private let minVolume: Float = 0.2
+    private var minVolume: Float = 0.2
     private var increasing = false
     var fadeSeconds: Int = 600
 
@@ -36,7 +36,7 @@ class AudioManager {
 
     private init() {}
 
-    func play(color: NoiseColors, waves: Bool, fade: Bool) {
+    func play(color: NoiseColors, wavesIntensity _: WavesIntensity, fade: Bool) {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
@@ -45,7 +45,6 @@ class AudioManager {
         if currentColor != color || player == nil {
             loadPlayer(color: color)
         }
-        wavesEnabled = waves
         fadeEnabled = fade
         maxVolume = 1.0
         volume = maxVolume
@@ -79,9 +78,9 @@ class AudioManager {
         WidgetCenter.shared.reloadAllTimelines()
     }
 
-    func setWaves(_ enabled: Bool) {
-        wavesEnabled = enabled
-        if !enabled { volume = maxVolume }
+    func setWavesIntensity(_ intensity: WavesIntensity) {
+        wavesIntensity = intensity
+        if let vol = intensity.minVolume { minVolume = vol }
     }
 
     func setFade(_ enabled: Bool, seconds: Int) {
@@ -148,7 +147,7 @@ class AudioManager {
     private func tick() {
         if fadeEnabled { applyFade() }
         if playPauseFading { return }
-        if wavesEnabled { applyWave() }
+        if wavesIntensity != .off { applyWave() }
 
         let crossfadeProgress: Float = crossfadeStartTime.map { start in
             let progress = min(

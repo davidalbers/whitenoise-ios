@@ -10,8 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         mainViewModel = MainViewModel()
 
-        StartPlayingIntent.playHandler = { [weak self] colorRaw, waves, fade in
-            self?.mainViewModel.handleStartIntent(colorRaw: colorRaw, waves: waves, fade: fade)
+        StartPlayingIntent.playHandler = { [weak self] colorRaw, wavesIntensity, fade in
+            self?.mainViewModel.handleStartIntent(colorRaw: colorRaw, wavesIntensity: wavesIntensity, fade: fade)
         }
         StopPlayingIntent.stopHandler = { [weak self] in
             self?.mainViewModel.pause()
