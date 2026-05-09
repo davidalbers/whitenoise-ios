@@ -18,7 +18,6 @@ struct MainView: View {
 
                 NoiseSelectorView(currentColor: viewModel.currentColor) {
                     viewModel.changeColor($0)
-
                 }
                 .padding(.top, 20)
 
@@ -142,7 +141,7 @@ struct NoiseOrbView: View {
         case .white:
             [
                 Color(UIColor(named: "lightGrey")!.lightened(by: 0.32)),
-                Color(UIColor(named: "lightGrey")!.lightened(by: 0.25))
+                Color(UIColor(named: "lightGrey")!.lightened(by: 0.25)),
             ]
         case .pink:
             [Color(UIColor(named: "pink")!.lightened(by: 0.25)), Color("pink")]
@@ -306,7 +305,7 @@ struct TimerChipView: View {
 struct ChipFlowLayout: Layout {
     var spacing: CGFloat = 8
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) -> CGSize {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout Void) -> CGSize {
         let rows = computeRows(maxWidth: proposal.width ?? .infinity, subviews: subviews)
         let height = rows.reduce(0.0) { total, row in
             total + (row.map { $0.sizeThatFits(.unspecified).height }.max() ?? 0)
@@ -314,18 +313,18 @@ struct ChipFlowLayout: Layout {
         return CGSize(width: proposal.width ?? 0, height: height)
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) {
+    func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache _: inout Void) {
         let rows = computeRows(maxWidth: bounds.width, subviews: subviews)
-        var y = bounds.minY
+        var yPos = bounds.minY
         for row in rows {
-            var x = bounds.minX
+            var xPos = bounds.minX
             let rowHeight = row.map { $0.sizeThatFits(.unspecified).height }.max() ?? 0
             for subview in row {
                 let size = subview.sizeThatFits(.unspecified)
-                subview.place(at: CGPoint(x: x, y: y), proposal: .unspecified)
-                x += size.width + spacing
+                subview.place(at: CGPoint(x: xPos, y: yPos), proposal: .unspecified)
+                xPos += size.width + spacing
             }
-            y += rowHeight + spacing
+            yPos += rowHeight + spacing
         }
     }
 
@@ -445,19 +444,19 @@ struct DurationPicker: View {
 
 private extension Double {
     func secondsToHours() -> Int {
-        return Int(self) / 3600
+        Int(self) / 3600
     }
 
     func secondsToMins() -> Int {
-        return (Int(self) % 3600) / 60
+        (Int(self) % 3600) / 60
     }
 }
 
 private extension UIColor {
     func lightened(by amount: CGFloat = 0.18) -> UIColor {
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        return UIColor(hue: h, saturation: max(0, s - amount * 0.5), brightness: min(1, b + amount), alpha: a)
+        var hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, alpha: CGFloat = 0
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return UIColor(hue: hue, saturation: max(0, saturation - amount * 0.5), brightness: min(1, brightness + amount), alpha: alpha)
     }
 }
 

@@ -36,7 +36,7 @@ class AudioManager {
 
     private init() {}
 
-    func play(color: NoiseColors, wavesIntensity: WavesIntensity, fade: Bool) {
+    func play(color: NoiseColors, wavesIntensity _: WavesIntensity, fade: Bool) {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
