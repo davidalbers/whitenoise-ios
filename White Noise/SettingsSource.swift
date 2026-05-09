@@ -10,12 +10,10 @@ class SettingsSource {
     private static let themeKey: String = "themeKey"
     private static let widgetThemeKey: String = "widgetThemeKey"
     private static let migratedKey: String = "migratedKey"
+    private static let wavesIntensityKey: String = "wavesIntensityKey"
+    private static let customPresetSecondsKey: String = "customPresetSecondsKey"
     func color() -> NoiseColors {
         NoiseColors(rawValue: getSettings()[SettingsSource.colorKey] as? String ?? "") ?? .white
-    }
-
-    func wavesEnabled() -> Bool {
-        getSettings()[SettingsSource.wavesKey] as? Bool ?? false
     }
 
     func fadeEnabled() -> Bool {
@@ -54,18 +52,34 @@ class SettingsSource {
         UserDefaults.standard.dictionaryRepresentation()[SettingsSource.colorKey] is String
     }
 
+    func wavesIntensity() -> WavesIntensity {
+        guard let raw = getSettings()[SettingsSource.wavesIntensityKey] as? String else {
+            let legacyWavesEnabled = getSettings()[SettingsSource.wavesKey] as? Bool ?? false
+            if legacyWavesEnabled {
+                return .medium
+            }
+            return .off
+        }
+        return WavesIntensity(rawValue: raw) ?? .medium
+    }
+
+    func setWavesIntensity(_ intensity: WavesIntensity) {
+        getSettingsObj().setValue(intensity.rawValue, forKey: SettingsSource.wavesIntensityKey)
+    }
+
+    func customPresetSeconds() -> Double? {
+        let val = getSettings()[SettingsSource.customPresetSecondsKey] as? Double ?? 0
+        return val > 0 ? val : nil
+    }
+
+    func setCustomPresetSeconds(_ seconds: Double) {
+        getSettingsObj().setValue(seconds, forKey: SettingsSource.customPresetSecondsKey)
+    }
+
     func setColor(_ color: NoiseColors) {
         let old = self.color()
         getSettingsObj().setValue(color.rawValue, forKey: SettingsSource.colorKey)
         if old != color {
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-    }
-
-    func setWaves(_ enabled: Bool) {
-        let old = wavesEnabled()
-        getSettingsObj().setValue(enabled, forKey: SettingsSource.wavesKey)
-        if old != enabled {
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
