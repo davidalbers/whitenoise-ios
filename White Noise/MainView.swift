@@ -5,10 +5,22 @@ struct MainView: View {
     @Bindable var viewModel: MainViewModel
     @State private var settingsPresented = false
     @State private var customTimerPresented = false
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var nightlightBackgroundActive: Bool {
+        viewModel.nightlightEnabled && colorScheme == .dark
+    }
+
+    private var nightlightBrightness: Double? {
+        nightlightBackgroundActive ? viewModel.nightlightBrightness : nil
+    }
 
     var body: some View {
         ZStack {
-            Color("background").ignoresSafeArea()
+            Background(
+                nightlightBrightness: nightlightBrightness,
+                nightlightBackgroundActive: nightlightBackgroundActive
+            )
 
             GradientView(accentColor: viewModel.currentColor.toColor())
 
@@ -16,9 +28,13 @@ struct MainView: View {
                 TopRowView { settingsPresented = true }
                     .padding(.horizontal, 16)
 
-                NoiseSelectorView(currentColor: viewModel.currentColor) {
+                NoiseSelectorView(
+                    currentColor: viewModel.currentColor
+                ) {
                     viewModel.changeColor($0)
                 }
+                .nightlightBackground(nightlightBrightness, baseColor: .clear)
+                .cornerRadius(12)
                 .padding(.top, 20)
 
                 WavesCardView(
@@ -27,16 +43,37 @@ struct MainView: View {
                         set: { viewModel.setWavesIntensity($0) }
                     )
                 )
+                .padding(16)
+                .nightlightBackground(nightlightBrightness)
+                .cornerRadius(12)
+                .padding(.top, 8)
                 .padding(.horizontal, 16)
-                .padding(.top, 20)
 
-                FadeCardView(
-                    fadeEnabled: Binding(
-                        get: { viewModel.fadeEnabled },
-                        set: { viewModel.setFade($0) }
-                    ),
-                    accentColor: viewModel.currentColor.toColor()
-                )
+                HStack(spacing: 8) {
+                    FadeCardView(
+                        fadeEnabled: Binding(
+                            get: { viewModel.fadeEnabled },
+                            set: { viewModel.setFade($0) }
+                        ),
+                        accentColor: viewModel.currentColor.toColor()
+                    )
+                    .padding(16)
+                    .nightlightBackground(nightlightBrightness)
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+
+                    NightlightCardView(
+                        nightlightEnabled: Binding(
+                            get: { viewModel.nightlightEnabled },
+                            set: { viewModel.setNightlight($0) }
+                        ),
+                        accentColor: viewModel.currentColor.toColor()
+                    )
+                    .padding(16)
+                    .nightlightBackground(nightlightBrightness)
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+                }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
 
@@ -46,6 +83,9 @@ struct MainView: View {
                     onSelectPreset: { viewModel.setTimerPreset($0) },
                     onCustomTapped: { customTimerPresented = true }
                 )
+                .padding(16)
+                .nightlightBackground(nightlightBrightness)
+                .cornerRadius(12)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
 
@@ -56,7 +96,7 @@ struct MainView: View {
                     timerText: viewModel.timerText
                 ) {
                     viewModel.playPause()
-                }.padding(.bottom, 52)
+                }.padding(.bottom, 32)
             }
         }
         .preferredColorScheme(viewModel.colorScheme)
@@ -128,7 +168,8 @@ struct NoiseSelectorView: View {
                 NoiseOrbView(color: color, isSelected: currentColor == color)
                     .onTapGesture { colorSelected(color) }
             }
-        }.sensoryFeedback(.selection, trigger: currentColor)
+        }
+        .sensoryFeedback(.selection, trigger: currentColor)
     }
 }
 
@@ -212,9 +253,6 @@ struct WavesCardView: View {
                 }
             }
         }
-        .padding(16)
-        .background(Color("accent"))
-        .cornerRadius(12)
         .sensoryFeedback(.selection, trigger: intensity)
     }
 }
@@ -233,9 +271,23 @@ struct FadeCardView: View {
                 .tint(accentColor)
                 .labelsHidden()
         }
-        .padding(16)
-        .background(Color("accent"))
-        .cornerRadius(12)
+    }
+}
+
+struct NightlightCardView: View {
+    @Binding var nightlightEnabled: Bool
+    let accentColor: Color
+
+    var body: some View {
+        HStack {
+            Text("Nightlight")
+                .font(.body).fontWeight(.medium)
+                .foregroundColor(Color("text"))
+            Spacer()
+            Toggle("", isOn: $nightlightEnabled)
+                .tint(accentColor)
+                .labelsHidden()
+        }
     }
 }
 
@@ -270,10 +322,22 @@ struct TimerSectionView: View {
                 }
             }
         }
-        .padding(16)
-        .background(Color("accent"))
-        .cornerRadius(12)
         .sensoryFeedback(.selection, trigger: selectedPreset)
+    }
+}
+
+struct Background: View {
+    var nightlightBrightness: Double?
+    var nightlightBackgroundActive: Bool = false
+
+    var body: some View {
+        Color("background").ignoresSafeArea()
+
+        Color.nightlight(brightness: nightlightBrightness ?? 0.0)
+            .ignoresSafeArea()
+            .opacity(nightlightBackgroundActive ? 1.0 : 0.0)
+            .animation(.easeInOut(duration: 2.0), value: nightlightBackgroundActive)
+            .animation(.linear(duration: 1.0), value: nightlightBrightness)
     }
 }
 
@@ -290,8 +354,7 @@ struct TimerChipView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(isSelected ? Color("text") : Color("accent"))
+                    RoundedRectangle(cornerRadius: 12).fill(isSelected ? Color("text") : Color("accent"))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -449,6 +512,37 @@ private extension Double {
 
     func secondsToMins() -> Int {
         (Int(self) % 3600) / 60
+    }
+}
+
+private extension View {
+    func nightlightBackground(_ brightness: Double?, baseColor: Color = Color("accent")) -> some View {
+        background(
+            ZStack {
+                baseColor
+                Color.nightlightAccent(brightness: brightness ?? 1.0)
+                    .opacity(brightness != nil ? 1.0 : 0.0)
+                    .animation(.easeInOut(duration: 2.0), value: brightness == nil)
+                    .animation(.linear(duration: 1.0), value: brightness)
+            }
+        )
+    }
+}
+
+private extension Color {
+    static func nightlight(brightness: Double) -> Color {
+        scaled(asset: "nightlightStart", by: brightness)
+    }
+
+    static func nightlightAccent(brightness: Double) -> Color {
+        scaled(asset: "nightlightAccentStart", by: brightness)
+    }
+
+    private static func scaled(asset name: String, by brightness: Double) -> Color {
+        guard let base = UIColor(named: name) else { return .clear }
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        base.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return Color(red: red * brightness, green: green * brightness, blue: blue * brightness)
     }
 }
 
