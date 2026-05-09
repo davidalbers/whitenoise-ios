@@ -49,18 +49,33 @@ struct MainView: View {
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
 
-                FadeCardView(
-                    fadeEnabled: Binding(
-                        get: { viewModel.fadeEnabled },
-                        set: { viewModel.setFade($0) }
-                    ),
-                    accentColor: viewModel.currentColor.toColor()
-                )
-                .padding(16)
-                .nightlightBackground(nightlightBrightness)
-                .cornerRadius(12)
-                .padding(.top, 8)
+                HStack(spacing: 8) {
+                    FadeCardView(
+                        fadeEnabled: Binding(
+                            get: { viewModel.fadeEnabled },
+                            set: { viewModel.setFade($0) }
+                        ),
+                        accentColor: viewModel.currentColor.toColor()
+                    )
+                    .padding(16)
+                    .nightlightBackground(nightlightBrightness)
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+
+                    NightlightCardView(
+                        nightlightEnabled: Binding(
+                            get: { viewModel.nightlightEnabled },
+                            set: { viewModel.setNightlight($0) }
+                        ),
+                        accentColor: viewModel.currentColor.toColor()
+                    )
+                    .padding(16)
+                    .nightlightBackground(nightlightBrightness)
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+                }
                 .padding(.horizontal, 16)
+                .padding(.top, 8)
 
                 TimerSectionView(
                     selectedPreset: viewModel.selectedTimerPreset,
@@ -73,20 +88,6 @@ struct MainView: View {
                 .cornerRadius(12)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
-
-                NightlightCardView(
-                    nightlightEnabled: Binding(
-                        get: { viewModel.nightlightEnabled },
-                        set: { viewModel.setNightlight($0) }
-                    ),
-                    accentColor: viewModel.currentColor.toColor()
-                )
-                .padding(16)
-                .nightlightBackground(nightlightBrightness)
-                .cornerRadius(12)
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
-
 
                 Spacer()
 
