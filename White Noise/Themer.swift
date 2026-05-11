@@ -9,6 +9,9 @@ class Themer {
         case auto = 0
         case dark = 1
         case light = 2
+        case dusk = 3
+        case midnight = 4
+        case green = 5
     }
 
     func saveTheme(_ theme: Theme?) {
@@ -20,10 +23,6 @@ class Themer {
             let themeString = settingsSource.theme()
             let savedTheme = Theme(rawValue: themeString)
             return savedTheme ?? Theme.auto
-        } else if settingsSource.hasLegacySettings() {
-            // The app used only a dark theme in iOS 12. Keep using dark for people
-            // who installed it then since that's what they expect.
-            return Theme.dark
         } else {
             return Theme.auto
         }
@@ -31,18 +30,16 @@ class Themer {
 
     func getUIUserInterfaceStyle() -> UIUserInterfaceStyle {
         switch getTheme() {
-        case nil: UIUserInterfaceStyle.unspecified
         case .auto: UIUserInterfaceStyle.unspecified
-        case .dark: UIUserInterfaceStyle.dark
+        case .dark, .dusk, .midnight, .green: UIUserInterfaceStyle.dark
         case .light: UIUserInterfaceStyle.light
         }
     }
 
     func getStatusBarStyle() -> UIStatusBarStyle {
         switch getTheme() {
-        case nil: .default
         case .auto: .default
-        case .dark: .lightContent
+        case .dark, .dusk, .midnight, .green: .lightContent
         case .light: .darkContent
         }
     }
@@ -57,7 +54,7 @@ class Themer {
 
     private func getColorScheme(theme: Theme) -> ColorScheme? {
         switch theme {
-        case .dark: ColorScheme.dark
+        case .dark, .dusk, .midnight, .green: ColorScheme.dark
         case .light: ColorScheme.light
         default: nil
         }

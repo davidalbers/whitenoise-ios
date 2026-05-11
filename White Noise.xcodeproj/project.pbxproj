@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA000002000000000000AA06 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
+		AA000002000000000000AA07 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
 		AA000002000000000000AA01 /* PlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA01 /* PlaybackService.swift */; };
 		AA000002000000000000AA02 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA02 /* MainViewModel.swift */; };
 		AA000002000000000000AA03 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA03 /* MainView.swift */; };
+		AA000002000000000000AA04 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA04 /* SettingsViewModel.swift */; };
+		AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA04 /* SettingsViewModel.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
 		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
@@ -82,9 +86,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA000001000000000000AA06 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA01 /* PlaybackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackService.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA02 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA03 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AA000001000000000000AA04 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
 		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -216,10 +222,12 @@
 				C77AAD632FAD345F00EEC561 /* TimerPreset.swift */,
 				C7D0B7E22543781F002CB28B /* SettingsSource.swift */,
 				EE200001253CC0D9001CA289 /* AudioManager.swift */,
+				AA000001000000000000AA06 /* ThemeColors.swift */,
 				AA000001000000000000AA01 /* PlaybackService.swift */,
 				C77AAD612FAD110D00EEC561 /* CustomTimerSheet.swift */,
 				AA000001000000000000AA02 /* MainViewModel.swift */,
 				AA000001000000000000AA03 /* MainView.swift */,
+				AA000001000000000000AA04 /* SettingsViewModel.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -452,6 +460,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */,
+				AA000002000000000000AA07 /* ThemeColors.swift in Sources */,
+				AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */,
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
 				EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */,
@@ -477,9 +487,11 @@
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */,
+				AA000002000000000000AA06 /* ThemeColors.swift in Sources */,
 				AA000002000000000000AA01 /* PlaybackService.swift in Sources */,
 				AA000002000000000000AA02 /* MainViewModel.swift in Sources */,
 				AA000002000000000000AA03 /* MainView.swift in Sources */,
+				AA000002000000000000AA04 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

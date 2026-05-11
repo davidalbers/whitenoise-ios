@@ -5,6 +5,7 @@ struct MainView: View {
     @Bindable var viewModel: MainViewModel
     @State private var settingsPresented = false
     @State private var customTimerPresented = false
+    @State private var themeColors = ThemeColors()
     @Environment(\.colorScheme) private var colorScheme
 
     private var nightlightBackgroundActive: Bool {
@@ -44,7 +45,7 @@ struct MainView: View {
                     )
                 )
                 .padding(16)
-                .nightlightBackground(nightlightBrightness)
+                .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
                 .cornerRadius(12)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
@@ -58,7 +59,7 @@ struct MainView: View {
                         accentColor: viewModel.currentColor.toColor()
                     )
                     .padding(16)
-                    .nightlightBackground(nightlightBrightness)
+                    .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
                     .cornerRadius(12)
                     .frame(maxWidth: .infinity)
 
@@ -70,7 +71,7 @@ struct MainView: View {
                         accentColor: viewModel.currentColor.toColor()
                     )
                     .padding(16)
-                    .nightlightBackground(nightlightBrightness)
+                    .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
                     .cornerRadius(12)
                     .frame(maxWidth: .infinity)
                 }
@@ -84,7 +85,7 @@ struct MainView: View {
                     onCustomTapped: { customTimerPresented = true }
                 )
                 .padding(16)
-                .nightlightBackground(nightlightBrightness)
+                .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
                 .cornerRadius(12)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -99,12 +100,19 @@ struct MainView: View {
                 }.padding(.bottom, 32)
             }
         }
+        .environment(themeColors)
         .preferredColorScheme(viewModel.colorScheme)
+        .onAppear { themeColors.apply(viewModel.theme) }
         .sheet(isPresented: $settingsPresented) {
             SettingsView(
                 dismissAction: { settingsPresented = false },
-                onThemeChanged: { colorScheme in viewModel.colorScheme = colorScheme }
+                onThemeChanged: { theme, colorScheme in
+                    viewModel.theme = theme
+                    viewModel.colorScheme = colorScheme
+                    themeColors.apply(theme)
+                }
             )
+            .environment(themeColors)
         }
         .sheet(isPresented: $customTimerPresented) {
             CustomTimerSheet(
@@ -115,6 +123,7 @@ struct MainView: View {
                 },
                 onCancel: { customTimerPresented = false }
             )
+            .environment(themeColors)
         }
     }
 }
@@ -122,11 +131,14 @@ struct MainView: View {
 struct GradientView: View {
     var accentColor: Color
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
+        let actualColor = themeColors.noiseColorOverride ?? accentColor
         VStack {
             Spacer()
             RadialGradient(
-                colors: [accentColor.opacity(0.75), .clear],
+                colors: [actualColor.opacity(0.75), .clear],
                 center: UnitPoint(x: 0.5, y: 1.25),
                 startRadius: 0,
                 endRadius: 340
@@ -142,6 +154,8 @@ struct GradientView: View {
 struct TopRowView: View {
     var settingsPresented: () -> Void
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         HStack {
             Spacer()
@@ -149,9 +163,9 @@ struct TopRowView: View {
                 action: settingsPresented,
                 label: {
                     Image(systemName: "ellipsis")
-                        .foregroundColor(Color("text"))
+                        .foregroundColor(themeColors.text)
                         .frame(width: 34, height: 34)
-                        .overlay(Circle().stroke(Color("text").opacity(0.18), lineWidth: 1))
+                        .overlay(Circle().stroke(themeColors.text.opacity(0.18), lineWidth: 1))
                 }
             )
         }
@@ -214,6 +228,8 @@ struct NoiseOrbView: View {
         }
     }
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         VStack(spacing: 8) {
             ZStack {
@@ -231,7 +247,7 @@ struct NoiseOrbView: View {
             Text(label)
                 .font(.callout)
                 .fontWeight(isSelected ? .semibold : .regular)
-                .foregroundColor(isSelected ? Color("text") : .secondary)
+                .foregroundColor(themeColors.text)
         }
     }
 }
@@ -239,11 +255,13 @@ struct NoiseOrbView: View {
 struct WavesCardView: View {
     @Binding var intensity: WavesIntensity
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Waves")
                 .font(.body).fontWeight(.medium)
-                .foregroundColor(Color("text"))
+                .foregroundColor(themeColors.text)
 
             ChipFlowLayout(spacing: 8) {
                 ForEach(WavesIntensity.allCases, id: \.self) { level in
@@ -261,14 +279,16 @@ struct FadeCardView: View {
     @Binding var fadeEnabled: Bool
     let accentColor: Color
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         HStack {
             Text("Fade")
                 .font(.body).fontWeight(.medium)
-                .foregroundColor(Color("text"))
+                .foregroundColor(themeColors.text)
             Spacer()
             Toggle("", isOn: $fadeEnabled)
-                .tint(accentColor)
+                .tint(themeColors.noiseColorOverride ?? accentColor)
                 .labelsHidden()
         }
     }
@@ -278,14 +298,16 @@ struct NightlightCardView: View {
     @Binding var nightlightEnabled: Bool
     let accentColor: Color
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         HStack {
             Text("Nightlight")
                 .font(.body).fontWeight(.medium)
-                .foregroundColor(Color("text"))
+                .foregroundColor(themeColors.text)
             Spacer()
             Toggle("", isOn: $nightlightEnabled)
-                .tint(accentColor)
+                .tint(themeColors.noiseColorOverride ?? accentColor)
                 .labelsHidden()
         }
     }
@@ -297,11 +319,13 @@ struct TimerSectionView: View {
     let onSelectPreset: (TimerPreset?) -> Void
     let onCustomTapped: () -> Void
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Timer")
                 .font(.body).fontWeight(.medium)
-                .foregroundColor(Color("text"))
+                .foregroundColor(themeColors.text)
 
             ChipFlowLayout(spacing: 8) {
                 TimerChipView(label: "Off", isSelected: selectedPreset == nil) {
@@ -330,8 +354,10 @@ struct Background: View {
     var nightlightBrightness: Double?
     var nightlightBackgroundActive: Bool = false
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
-        Color("background").ignoresSafeArea()
+        themeColors.background.ignoresSafeArea()
 
         Color.nightlight(brightness: nightlightBrightness ?? 0.0)
             .ignoresSafeArea()
@@ -346,19 +372,21 @@ struct TimerChipView: View {
     let isSelected: Bool
     let action: () -> Void
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         Button(action: action) {
             Text(label)
                 .font(.body).fontWeight(isSelected ? .semibold : .regular)
-                .foregroundColor(isSelected ? Color(uiColor: .systemBackground) : Color("text"))
+                .foregroundColor(isSelected ? Color(uiColor: .systemBackground) : themeColors.text)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(
-                    RoundedRectangle(cornerRadius: 12).fill(isSelected ? Color("text") : Color("accent"))
+                    RoundedRectangle(cornerRadius: 12).fill(isSelected ? themeColors.text : themeColors.accent)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color("text").opacity(isSelected ? 0 : 0.12), lineWidth: 1)
+                        .stroke(themeColors.text.opacity(isSelected ? 0 : 0.12), lineWidth: 1)
                 )
         }
         .animation(.easeInOut(duration: 0.15), value: isSelected)
@@ -413,13 +441,14 @@ struct PlayAndTimeView: View {
     var onPlay: () -> Void
 
     @State private var pulseScale: CGFloat = 1.0
+    @Environment(ThemeColors.self) private var themeColors
 
     var body: some View {
         VStack(spacing: 12) {
             Button(action: onPlay) {
                 ZStack {
                     Circle()
-                        .fill(Color("text"))
+                        .fill(themeColors.text)
                         .frame(width: 84, height: 84)
                     Image(isPlaying ? "pause" : "play")
                         .renderingMode(.template)
@@ -516,7 +545,7 @@ private extension Double {
 }
 
 private extension View {
-    func nightlightBackground(_ brightness: Double?, baseColor: Color = Color("accent")) -> some View {
+    func nightlightBackground(_ brightness: Double?, baseColor: Color) -> some View {
         background(
             ZStack {
                 baseColor
