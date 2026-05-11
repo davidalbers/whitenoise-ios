@@ -2,10 +2,10 @@ import SwiftUI
 
 @Observable
 final class ThemeColors {
-    var accent: Color = Color("accent")
-    var background: Color = Color("background")
-    var text: Color = Color("text")
-    var noiseColorOverride: Color? = nil
+    var accent: Color = .init("accent")
+    var background: Color = .init("background")
+    var text: Color = .init("text")
+    var noiseColorOverride: Color?
 
     func apply(_ theme: Themer.Theme) {
         switch theme {

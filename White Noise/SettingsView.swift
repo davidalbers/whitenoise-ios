@@ -36,13 +36,9 @@ struct SettingsView: View {
 }
 
 private struct SettingsCard<Content: View>: View {
-    let content: Content
+    @ViewBuilder let content: Content
 
     @Environment(ThemeColors.self) private var themeColors
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -69,8 +65,8 @@ private struct ThemeGrid: View {
                 .font(.headline)
                 .foregroundColor(themeColors.text)
             LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(themes, id: \.rawValue) { t in
-                    ThemeCell(theme: t, isSelected: selected == t) { onSelect(t) }
+                ForEach(themes, id: \.rawValue) { theme in
+                    ThemeCell(theme: theme, isSelected: selected == theme) { onSelect(theme) }
                 }
             }
         }
@@ -116,10 +112,10 @@ private struct AutoThemeIcon: View {
             .overlay(
                 GeometryReader { geo in
                     Path { path in
-                        let w = geo.size.width, h = geo.size.height
-                        path.move(to: CGPoint(x: w, y: 0))
-                        path.addLine(to: CGPoint(x: w, y: h))
-                        path.addLine(to: CGPoint(x: 0, y: h))
+                        let width = geo.size.width, height = geo.size.height
+                        path.move(to: CGPoint(x: width, y: 0))
+                        path.addLine(to: CGPoint(x: width, y: height))
+                        path.addLine(to: CGPoint(x: 0, y: height))
                         path.closeSubpath()
                     }
                     .fill(Color(white: 0.14))
@@ -136,12 +132,12 @@ private struct ThemeIcon: View {
 
     private var fillColor: Color {
         switch theme {
-        case .auto:     .clear
-        case .dark:     Color(white: 0x1F / 255)
-        case .light:    Color(white: 0xF9 / 255)
-        case .dusk:     Color("duskBackground")
+        case .auto: .clear
+        case .dark: Color(white: 0x1F / 255)
+        case .light: Color(white: 0xF9 / 255)
+        case .dusk: Color("duskBackground")
         case .midnight: Color("midnightBackground")
-        case .green:    Color("greenBackground")
+        case .green: Color("greenBackground")
         }
     }
 
@@ -149,7 +145,7 @@ private struct ThemeIcon: View {
         Group {
             switch theme {
             case .auto: AutoThemeIcon()
-            default:    Circle().fill(fillColor)
+            default: Circle().fill(fillColor)
             }
         }
         .overlay(Circle().stroke(themeColors.text, lineWidth: 1.5))

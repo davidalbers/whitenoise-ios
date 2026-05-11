@@ -24,14 +24,14 @@ final class SettingsViewModel {
         self.themer = themer
         self.settings = settings
         self.onThemeChanged = onThemeChanged
-        self.theme = themer.getTheme()
-        self.colorScheme = themer.getColorScheme()
-        self.widgetTheme = Themer.Theme(rawValue: settings.widgetTheme()) ?? .auto
-        self.widgetMirrorsApp = settings.widgetMirrorsApp()
-        self.nightlightStyle = settings.nightlightStyle()
-        self.nightlightLength = settings.nightlightLength()
-        self.premiumState = settings.premiumState()
-        self.trialStartDate = settings.trialStartDate()
+        theme = themer.getTheme()
+        colorScheme = themer.getColorScheme()
+        widgetTheme = Themer.Theme(rawValue: settings.widgetTheme()) ?? .auto
+        widgetMirrorsApp = settings.widgetMirrorsApp()
+        nightlightStyle = settings.nightlightStyle()
+        nightlightLength = settings.nightlightLength()
+        premiumState = settings.premiumState()
+        trialStartDate = settings.trialStartDate()
     }
 
     var daysRemainingInTrial: Int? {

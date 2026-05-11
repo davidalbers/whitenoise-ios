@@ -2,8 +2,8 @@ import Foundation
 import WidgetKit
 
 enum NightlightStyle: String {
-    case fadeOut = "fadeOut"
-    case consistent = "consistent"
+    case fadeOut
+    case consistent
 }
 
 struct NightlightLength: Equatable, Hashable {
@@ -14,13 +14,12 @@ struct NightlightLength: Equatable, Hashable {
     static let fifteen = NightlightLength(seconds: 900)
 
     static let allCases: [NightlightLength] = [.five, .ten, .fifteen]
-
 }
 
 enum PremiumState: String {
-    case none = "none"
-    case trial = "trial"
-    case purchased = "purchased"
+    case none
+    case trial
+    case purchased
 }
 
 class SettingsSource {
@@ -166,8 +165,8 @@ class SettingsSource {
     }
 
     func trialStartDate() -> Date? {
-        guard let ts = getSettings()[SettingsSource.trialStartDateKey] as? Double else { return nil }
-        return Date(timeIntervalSince1970: ts)
+        guard let timestamp = getSettings()[SettingsSource.trialStartDateKey] as? Double else { return nil }
+        return Date(timeIntervalSince1970: timestamp)
     }
 
     func setTrialStartDate(_ date: Date) {
