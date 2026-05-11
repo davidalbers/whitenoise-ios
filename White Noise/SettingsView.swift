@@ -1,72 +1,168 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var theme: Int
-    @State private var colorScheme: ColorScheme?
-    @State private var widgetTheme: Int
-    var onThemeChanged: ((ColorScheme?) -> Void)?
+    @State private var viewModel: SettingsViewModel
     var dismissAction: () -> Void
-    var themer = Themer()
-    var settingsSource = SettingsSource()
 
-    init(dismissAction: @escaping (() -> Void), onThemeChanged: ((ColorScheme?) -> Void)? = nil) {
+    @Environment(ThemeColors.self) private var themeColors
+
+    init(dismissAction: @escaping () -> Void, onThemeChanged: ((Themer.Theme, ColorScheme?) -> Void)? = nil) {
         self.dismissAction = dismissAction
-        self.onThemeChanged = onThemeChanged
-        _theme = State(initialValue: themer.getTheme().rawValue)
-        _widgetTheme = State(initialValue: settingsSource.widgetTheme())
-        _colorScheme = State(initialValue: themer.getColorScheme())
-    }
-
-    func themeChanged(_ index: Int) {
-        themer.saveTheme(Themer.Theme(rawValue: index))
-        colorScheme = themer.getColorScheme()
-        onThemeChanged?(colorScheme)
+        _viewModel = State(initialValue: SettingsViewModel(onThemeChanged: onThemeChanged))
     }
 
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    Text("Theme")
-                    Picker(selection: $theme, label: Text("theme")) {
-                        Text("Auto").tag(0)
-                        Text("Dark").tag(1)
-                        Text("Light").tag(2)
-                    }.pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: theme) { _, newValue in
-                            themeChanged(newValue)
-                        }
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    ThemeGrid(selected: viewModel.theme, onSelect: viewModel.setTheme)
                 }
-                Section {
-                    Text("Widget theme")
-                    Picker(selection: $widgetTheme, label: Text("widget theme")) {
-                        Text("Auto").tag(0)
-                        Text("Dark").tag(1)
-                        Text("Light").tag(2)
-                    }.pickerStyle(SegmentedPickerStyle())
-                        .onChange(of: widgetTheme) { _, newValue in
-                            settingsSource.setWidgetTheme(newValue)
-                        }
+                .padding(16)
+            }
+            .background(themeColors.background.ignoresSafeArea())
+            .toolbarBackground(themeColors.background, for: .navigationBar)
+            .toolbarColorScheme(viewModel.colorScheme, for: .navigationBar)
+            .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done", action: dismissAction)
+                        .foregroundColor(themeColors.text)
                 }
             }
-            .navigationBarTitle("Settings")
-            .navigationBarItems(trailing: Button(action: dismissAction, label: {
-                Text("Done")
-            }))
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .colorScheme(colorScheme)
+        .preferredColorScheme(viewModel.colorScheme)
     }
 }
 
-public extension View {
-    func colorScheme(_ colorScheme: ColorScheme?) -> some View {
-        Group {
-            if colorScheme != nil {
-                self.environment(\.colorScheme, colorScheme!)
-            } else {
-                self
+private struct SettingsCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            content
+        }
+        .padding(16)
+        .background(themeColors.accent)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+private struct ThemeGrid: View {
+    let selected: Themer.Theme
+    let onSelect: (Themer.Theme) -> Void
+
+    private let themes: [Themer.Theme] = [.auto, .dark, .light, .dusk, .midnight, .green]
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 3)
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        SettingsCard {
+            Text("Theme")
+                .font(.headline)
+                .foregroundColor(themeColors.text)
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(themes, id: \.rawValue) { theme in
+                    ThemeCell(theme: theme, isSelected: selected == theme) { onSelect(theme) }
+                }
             }
+        }
+        .sensoryFeedback(.selection, trigger: selected)
+    }
+}
+
+private struct ThemeCell: View {
+    let theme: Themer.Theme
+    let isSelected: Bool
+    let action: () -> Void
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                ThemeIcon(theme: theme)
+                    .frame(width: 60, height: 60)
+                Text(theme.displayName)
+                    .font(.caption)
+                    .fontWeight(isSelected ? .semibold : .regular)
+                    .foregroundColor(isSelected ? themeColors.text : .secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(uiColor: .systemBackground).opacity(0.1))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(themeColors.text, lineWidth: isSelected ? 2 : 0)
+                    )
+            )
+        }
+        .animation(.easeInOut(duration: 0.15), value: isSelected)
+    }
+}
+
+private struct AutoThemeIcon: View {
+    var body: some View {
+        Circle().fill(Color(white: 0.92))
+            .overlay(
+                GeometryReader { geo in
+                    Path { path in
+                        let width = geo.size.width, height = geo.size.height
+                        path.move(to: CGPoint(x: width, y: 0))
+                        path.addLine(to: CGPoint(x: width, y: height))
+                        path.addLine(to: CGPoint(x: 0, y: height))
+                        path.closeSubpath()
+                    }
+                    .fill(Color(white: 0.14))
+                }
+                .clipShape(Circle())
+            )
+    }
+}
+
+private struct ThemeIcon: View {
+    let theme: Themer.Theme
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    private var fillColor: Color {
+        switch theme {
+        case .auto: .clear
+        case .dark: Color(white: 0x1F / 255)
+        case .light: Color(white: 0xF9 / 255)
+        case .dusk: Color("duskBackground")
+        case .midnight: Color("midnightBackground")
+        case .green: Color("greenBackground")
+        }
+    }
+
+    var body: some View {
+        Group {
+            switch theme {
+            case .auto: AutoThemeIcon()
+            default: Circle().fill(fillColor)
+            }
+        }
+        .overlay(Circle().stroke(themeColors.text, lineWidth: 1.5))
+    }
+}
+
+// MARK: - Extensions
+
+private extension Themer.Theme {
+    var displayName: String {
+        switch self {
+        case .auto: "Auto"
+        case .dark: "Dark"
+        case .light: "Light"
+        case .dusk: "Dusk"
+        case .midnight: "Midnight"
+        case .green: "Green"
         }
     }
 }

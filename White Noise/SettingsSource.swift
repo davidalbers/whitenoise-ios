@@ -1,6 +1,27 @@
 import Foundation
 import WidgetKit
 
+enum NightlightStyle: String {
+    case fadeOut
+    case consistent
+}
+
+struct NightlightLength: Equatable, Hashable {
+    let seconds: Int
+
+    static let five = NightlightLength(seconds: 300)
+    static let ten = NightlightLength(seconds: 600)
+    static let fifteen = NightlightLength(seconds: 900)
+
+    static let allCases: [NightlightLength] = [.five, .ten, .fifteen]
+}
+
+enum PremiumState: String {
+    case none
+    case trial
+    case purchased
+}
+
 class SettingsSource {
     var userDefaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
     private static let colorKey: String = "colorKey"
@@ -12,6 +33,12 @@ class SettingsSource {
     private static let migratedKey: String = "migratedKey"
     private static let wavesIntensityKey: String = "wavesIntensityKey"
     private static let customPresetSecondsKey: String = "customPresetSecondsKey"
+    private static let nightlightStyleKey = "nightlightStyleKey"
+    private static let nightlightLengthKey = "nightlightLengthKey"
+    private static let widgetMirrorsAppKey = "widgetMirrorsAppKey"
+    private static let premiumStateKey = "premiumStateKey"
+    private static let trialStartDateKey = "trialStartDateKey"
+
     func color() -> NoiseColors {
         NoiseColors(rawValue: getSettings()[SettingsSource.colorKey] as? String ?? "") ?? .white
     }
@@ -46,10 +73,6 @@ class SettingsSource {
 
     func hasTheme() -> Bool {
         getSettings()[SettingsSource.themeKey] is Int
-    }
-
-    func hasLegacySettings() -> Bool {
-        UserDefaults.standard.dictionaryRepresentation()[SettingsSource.colorKey] is String
     }
 
     func wavesIntensity() -> WavesIntensity {
@@ -102,6 +125,52 @@ class SettingsSource {
         if old != (seconds ?? 0.0) {
             WidgetCenter.shared.reloadAllTimelines()
         }
+    }
+
+    func nightlightStyle() -> NightlightStyle {
+        guard let raw = getSettings()[SettingsSource.nightlightStyleKey] as? String else { return .fadeOut }
+        return NightlightStyle(rawValue: raw) ?? .fadeOut
+    }
+
+    func setNightlightStyle(_ style: NightlightStyle) {
+        getSettingsObj().setValue(style.rawValue, forKey: SettingsSource.nightlightStyleKey)
+    }
+
+    func nightlightLength() -> NightlightLength {
+        guard let raw = getSettings()[SettingsSource.nightlightLengthKey] as? Int else { return .ten }
+        return NightlightLength.allCases.first { $0.seconds == raw } ?? .ten
+    }
+
+    func setNightlightLength(_ length: NightlightLength) {
+        getSettingsObj().setValue(length.seconds, forKey: SettingsSource.nightlightLengthKey)
+    }
+
+    func widgetMirrorsApp() -> Bool {
+        getSettings()[SettingsSource.widgetMirrorsAppKey] as? Bool ?? true
+    }
+
+    func setWidgetMirrorsApp(_ mirrors: Bool) {
+        let old = widgetMirrorsApp()
+        getSettingsObj().setValue(mirrors, forKey: SettingsSource.widgetMirrorsAppKey)
+        if old != mirrors { WidgetCenter.shared.reloadAllTimelines() }
+    }
+
+    func premiumState() -> PremiumState {
+        guard let raw = getSettings()[SettingsSource.premiumStateKey] as? String else { return .none }
+        return PremiumState(rawValue: raw) ?? .none
+    }
+
+    func setPremiumState(_ state: PremiumState) {
+        getSettingsObj().setValue(state.rawValue, forKey: SettingsSource.premiumStateKey)
+    }
+
+    func trialStartDate() -> Date? {
+        guard let timestamp = getSettings()[SettingsSource.trialStartDateKey] as? Double else { return nil }
+        return Date(timeIntervalSince1970: timestamp)
+    }
+
+    func setTrialStartDate(_ date: Date) {
+        getSettingsObj().setValue(date.timeIntervalSince1970, forKey: SettingsSource.trialStartDateKey)
     }
 
     private func getSettings() -> [String: Any] {

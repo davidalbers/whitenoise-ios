@@ -211,7 +211,7 @@ struct FullSizeWidget: View {
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .widgetBackground(entry.color)
-        .colorScheme(entry.colorScheme)
+        .preferredColorScheme(entry.colorScheme)
     }
 }
 

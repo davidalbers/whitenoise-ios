@@ -14,6 +14,7 @@ final class MainViewModel {
     var timerText = ""
     var selectedTimerPreset: TimerPreset?
     var customPresetSeconds: Double?
+    var theme: Themer.Theme
     var colorScheme: ColorScheme?
     var nightlightEnabled = false
     var nightlightBrightness: Double = 0.0
@@ -32,7 +33,9 @@ final class MainViewModel {
     init(audio: PlaybackService = AudioManager.shared, settings: SettingsSource = SettingsSource()) {
         self.audio = audio
         self.settings = settings
-        colorScheme = Themer().getColorScheme()
+        let themer = Themer()
+        theme = themer.getTheme()
+        colorScheme = themer.getColorScheme()
         loadSavedState()
         setupRemoteCommandCenter()
         setupForegroundObserver()
@@ -50,7 +53,9 @@ final class MainViewModel {
     }
 
     func reloadTheme() {
-        colorScheme = Themer().getColorScheme()
+        let themer = Themer()
+        theme = themer.getTheme()
+        colorScheme = themer.getColorScheme()
     }
 
     func playPause() {

@@ -5,6 +5,8 @@ struct CustomTimerSheet: View {
     let onSet: () -> Void
     let onCancel: () -> Void
 
+    @Environment(ThemeColors.self) private var themeColors
+
     var body: some View {
         VStack(spacing: 0) {
             Capsule()
@@ -15,7 +17,7 @@ struct CustomTimerSheet: View {
 
             Text("Timer")
                 .font(.title3).fontWeight(.semibold)
-                .foregroundColor(Color("text"))
+                .foregroundColor(themeColors.text)
                 .padding(.bottom, 8)
 
             DurationPicker(duration: $duration, isEnabled: true)
@@ -28,16 +30,16 @@ struct CustomTimerSheet: View {
                         .font(.body).fontWeight(.medium)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(Color("accent"))
+                        .background(themeColors.accent)
                         .cornerRadius(12)
-                        .foregroundColor(Color("text"))
+                        .foregroundColor(themeColors.text)
                 }
                 Button(action: onSet) {
                     Text("Set timer")
                         .font(.body).fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(Color("text"))
+                        .background(themeColors.text)
                         .cornerRadius(12)
                         .foregroundColor(Color(uiColor: .systemBackground))
                 }
