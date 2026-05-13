@@ -60,7 +60,11 @@ class SettingsSource {
     }
 
     func setTheme(_ theme: Int) {
+        let old = self.theme()
         getSettingsObj().setValue(theme, forKey: SettingsSource.themeKey)
+        if old != theme, widgetMirrorsApp() {
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 
     func setWidgetTheme(_ theme: Int) {

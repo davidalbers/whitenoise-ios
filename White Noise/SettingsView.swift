@@ -15,7 +15,14 @@ struct SettingsView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    ThemeGrid(selected: viewModel.theme, onSelect: viewModel.setTheme)
+                    ThemeCard(selected: viewModel.theme, onSelect: viewModel.setTheme)
+
+                    WidgetThemeCard(
+                        widgetMirrorsApp: viewModel.widgetMirrorsApp,
+                        widgetTheme: viewModel.widgetTheme,
+                        onMirrorAppChanged: viewModel.setWidgetMirrorsApp,
+                        onThemeChanged: viewModel.setWidgetTheme
+                    )
                 }
                 .padding(16)
             }
@@ -50,6 +57,55 @@ private struct SettingsCard<Content: View>: View {
     }
 }
 
+private struct WidgetThemeCard: View {
+    let widgetMirrorsApp: Bool
+    let widgetTheme: Themer.Theme
+    let onMirrorAppChanged: (Bool) -> Void
+    let onThemeChanged: (Themer.Theme) -> Void
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        SettingsCard {
+            HStack(alignment: .top) {
+                Text("Widget theme")
+                    .font(.headline)
+                    .foregroundColor(themeColors.text)
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("Mirror app")
+                        .font(.caption)
+                        .foregroundColor(themeColors.text)
+                    Toggle("", isOn: .init(get: { widgetMirrorsApp }, set: onMirrorAppChanged))
+                        .labelsHidden()
+                }
+            }
+
+            if !widgetMirrorsApp {
+                ThemeGrid(selected: widgetTheme, onSelect: onThemeChanged)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: widgetMirrorsApp)
+    }
+}
+
+private struct ThemeCard: View {
+    let selected: Themer.Theme
+    let onSelect: (Themer.Theme) -> Void
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        SettingsCard {
+            Text("Theme")
+                .font(.headline)
+                .foregroundColor(themeColors.text)
+            ThemeGrid(selected: selected, onSelect: onSelect)
+        }
+    }
+}
+
 private struct ThemeGrid: View {
     let selected: Themer.Theme
     let onSelect: (Themer.Theme) -> Void
@@ -60,14 +116,9 @@ private struct ThemeGrid: View {
     @Environment(ThemeColors.self) private var themeColors
 
     var body: some View {
-        SettingsCard {
-            Text("Theme")
-                .font(.headline)
-                .foregroundColor(themeColors.text)
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(themes, id: \.rawValue) { theme in
-                    ThemeCell(theme: theme, isSelected: selected == theme) { onSelect(theme) }
-                }
+        LazyVGrid(columns: columns, spacing: 8) {
+            ForEach(themes, id: \.rawValue) { theme in
+                ThemeCell(theme: theme, isSelected: selected == theme) { onSelect(theme) }
             }
         }
         .sensoryFeedback(.selection, trigger: selected)
