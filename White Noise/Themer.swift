@@ -48,8 +48,42 @@ class Themer {
         getColorScheme(theme: getTheme())
     }
 
+    func getEffectiveWidgetTheme() -> Theme {
+        if settingsSource.widgetMirrorsApp() {
+            return getTheme()
+        }
+        return Theme(rawValue: settingsSource.widgetTheme()) ?? .auto
+    }
+
     func getWidgetColorScheme() -> ColorScheme? {
-        getColorScheme(theme: Theme(rawValue: settingsSource.widgetTheme()) ?? Theme.auto)
+        getColorScheme(theme: getEffectiveWidgetTheme())
+    }
+
+    func widgetThemeAccent() -> Color {
+        switch getEffectiveWidgetTheme() {
+        case .dusk:     return Color("duskText")
+        case .midnight: return Color("midnightText")
+        default:        return Color("text")
+        }
+    }
+
+    func widgetThemeText() -> Color {
+        switch getEffectiveWidgetTheme() {
+        case .dusk:     return Color("duskText")
+        case .midnight: return Color("midnightText")
+        default:        return Color.primary
+        }
+    }
+
+    func widgetThemeBackground() -> Color? {
+        switch getEffectiveWidgetTheme() {
+        case .dusk:     return Color("duskBackground")
+        case .midnight: return Color("midnightBackground")
+        case .green:    return Color("greenBackground")
+        case .dark:     return Color("darkBackground")
+        case .light:    return Color("lightBackground")
+        default: return nil
+        }
     }
 
     private func getColorScheme(theme: Theme) -> ColorScheme? {

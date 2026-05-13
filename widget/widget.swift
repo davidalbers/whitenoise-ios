@@ -14,6 +14,8 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             displayString: "White noise",
             color: grey,
+            textColor: .white,
+            accentColor: Color("accent"),
             colorScheme: .dark,
             isPlaying: false,
             startIntent: StartPlayingIntent(),
@@ -48,12 +50,14 @@ struct Provider: AppIntentTimelineProvider {
             timerMinutes   = intent.timerMinutes
         }
 
-        var backgroundColor = grey
+        let themer = Themer()
+        let noiseColor: Color
         switch color {
-        case .pink:  backgroundColor = pink
-        case .brown: backgroundColor = brown
-        case .white: backgroundColor = grey
+        case .pink:  noiseColor = pink
+        case .brown: noiseColor = brown
+        case .white: noiseColor = grey
         }
+        let backgroundColor = themer.widgetThemeBackground() ?? noiseColor
 
         let waves = wavesIntensity != .off
         var mod = ""
@@ -76,7 +80,9 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             displayString: mod.capitalizingFirstLetter(),
             color: backgroundColor,
-            colorScheme: Themer().getWidgetColorScheme(),
+            textColor: themer.widgetThemeText(),
+            accentColor: themer.widgetThemeAccent(),
+            colorScheme: themer.getWidgetColorScheme(),
             isPlaying: isPlaying,
             startIntent: StartPlayingIntent(config: intent),
             stopIntent: StopPlayingIntent()
@@ -90,6 +96,8 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let displayString: String
     let color: Color
+    let textColor: Color
+    let accentColor: Color
     let colorScheme: ColorScheme?
     let isPlaying: Bool
     let startIntent: StartPlayingIntent
@@ -180,14 +188,18 @@ struct FullSizeWidget: View {
                     if entry.isPlaying {
                         Button(intent: entry.stopIntent) {
                             Image("pause")
+                                .renderingMode(.template)
                                 .resizable()
+                                .foregroundColor(entry.accentColor)
                                 .frame(width: 48.0, height: 48.0)
                         }
                         .buttonStyle(.plain)
                     } else {
                         Button(intent: entry.startIntent) {
                             Image("play")
+                                .renderingMode(.template)
                                 .resizable()
+                                .foregroundColor(entry.accentColor)
                                 .frame(width: 48.0, height: 48.0)
                         }
                         .buttonStyle(.plain)
@@ -196,7 +208,9 @@ struct FullSizeWidget: View {
                 .padding(.top, padding)
                 Spacer()
                 Image("icon")
+                    .renderingMode(.template)
                     .resizable()
+                    .foregroundColor(entry.accentColor)
                     .frame(width: 24.0, height: 24.0)
                     .padding(.top, padding)
                     .padding(.trailing, padding)
@@ -207,15 +221,13 @@ struct FullSizeWidget: View {
                 .padding(.leading, padding)
                 .padding(.trailing, padding)
                 .padding(.bottom, padding)
-                .foregroundColor(.white)
+                .foregroundColor(entry.textColor)
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .widgetBackground(entry.color)
         .preferredColorScheme(entry.colorScheme)
     }
 }
-
-// MARK: - Widget declaration
 
 @main
 struct WhiteNoiseWidget: Widget {
