@@ -24,8 +24,8 @@ final class MainViewModel {
     private var prevTime = 0
     private var tickTimer: Timer?
     private var nightlightTimer: Timer?
-    private var nightlightElapsedSecs: Double = 0
-    private let nightlightDuration: Double = 600
+    private var nightlightElapsedSecs: Int = 0
+    private var nightlightDuration: Int = 600
 
     private let audio: PlaybackService
     private let settings: SettingsSource
@@ -115,6 +115,7 @@ final class MainViewModel {
         nightlightEnabled = enabled
         UIApplication.shared.isIdleTimerDisabled = enabled
         if enabled {
+            nightlightDuration = settings.nightlightLength().seconds
             nightlightElapsedSecs = 0
             nightlightBrightness = 1.0
             startNightlightTimer()
@@ -138,8 +139,10 @@ final class MainViewModel {
 
     private func nightlightTick() {
         nightlightElapsedSecs += 1
-        nightlightBrightness = max(0.0, 1.0 - nightlightElapsedSecs / nightlightDuration)
-        if nightlightBrightness == 0.0 { setNightlight(false) }
+        if settings.nightlightStyle() == .fadeOut {
+            nightlightBrightness = max(0.0, 1.0 - Double(nightlightElapsedSecs) / Double(nightlightDuration))
+        }
+        if nightlightElapsedSecs == nightlightDuration { setNightlight(false) }
     }
 
     func setTimerPreset(_ preset: TimerPreset?) {
