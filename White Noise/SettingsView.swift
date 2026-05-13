@@ -23,6 +23,13 @@ struct SettingsView: View {
                         onMirrorAppChanged: viewModel.setWidgetMirrorsApp,
                         onThemeChanged: viewModel.setWidgetTheme
                     )
+
+                    NightlightCard(
+                        nightlightStyle: viewModel.nightlightStyle,
+                        nightlightLength: viewModel.nightlightLength,
+                        onStyleChanged: viewModel.setNightlightStyle,
+                        onLengthChanged: viewModel.setNightlightLength
+                    )
                 }
                 .padding(16)
             }
@@ -87,6 +94,55 @@ private struct WidgetThemeCard: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: widgetMirrorsApp)
+    }
+}
+
+private struct NightlightCard: View {
+    let nightlightStyle: NightlightStyle
+    let nightlightLength: NightlightLength
+    let onStyleChanged: (NightlightStyle) -> Void
+    let onLengthChanged: (NightlightLength) -> Void
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        SettingsCard {
+            Text("Nightlight")
+                .font(.headline)
+                .foregroundColor(themeColors.text)
+            Text("Keep screen on with a soft glow for a few minutes while you fall asleep.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, 4)
+
+            HStack {
+                Text("Style")
+                    .font(.body)
+                    .foregroundColor(themeColors.text)
+                Spacer()
+                Picker("Style", selection: .init(get: { nightlightStyle }, set: onStyleChanged)) {
+                    Text("Fade out").tag(NightlightStyle.fadeOut)
+                    Text("Consistent").tag(NightlightStyle.consistent)
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 200)
+            }
+
+            HStack {
+                Text("Length")
+                    .font(.body)
+                    .foregroundColor(themeColors.text)
+                Spacer()
+                Picker("Length", selection: .init(get: { nightlightLength }, set: onLengthChanged)) {
+                    Text("5m").tag(NightlightLength.five)
+                    Text("10m").tag(NightlightLength.ten)
+                    Text("15m").tag(NightlightLength.fifteen)
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 180)
+            }
+        }
     }
 }
 
