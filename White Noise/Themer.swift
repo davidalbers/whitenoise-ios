@@ -61,28 +61,28 @@ class Themer {
 
     func widgetThemeAccent() -> Color {
         switch getEffectiveWidgetTheme() {
-        case .dusk:     return Color("duskText")
-        case .midnight: return Color("midnightText")
-        default:        return Color("text")
+        case .dusk: Color("duskText")
+        case .midnight: Color("midnightText")
+        default: Color("text")
         }
     }
 
     func widgetThemeText() -> Color {
         switch getEffectiveWidgetTheme() {
-        case .dusk:     return Color("duskText")
-        case .midnight: return Color("midnightText")
-        default:        return Color.primary
+        case .dusk: Color("duskText")
+        case .midnight: Color("midnightText")
+        default: Color.primary
         }
     }
 
     func widgetThemeBackground() -> Color? {
         switch getEffectiveWidgetTheme() {
-        case .dusk:     return Color("duskBackground")
-        case .midnight: return Color("midnightBackground")
-        case .green:    return Color("greenBackground")
-        case .dark:     return Color("darkBackground")
-        case .light:    return Color("lightBackground")
-        default: return nil
+        case .dusk: Color("duskBackground")
+        case .midnight: Color("midnightBackground")
+        case .green: Color("greenBackground")
+        case .dark: Color("darkBackground")
+        case .light: Color("lightBackground")
+        default: nil
         }
     }
 

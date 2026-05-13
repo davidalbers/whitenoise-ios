@@ -33,62 +33,62 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done", action: dismissAction)
-                            .foregroundColor(themeColors.text)
-                    }
-                }
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .preferredColorScheme(viewModel.colorScheme)
-        }
-    }
-
-    private struct SettingsCard<Content: View>: View {
-        @ViewBuilder let content: Content
-
-        @Environment(ThemeColors.self) private var themeColors
-
-        var body: some View {
-            VStack(alignment: .leading, spacing: 12) {
-                content
-            }
-            .padding(16)
-            .background(themeColors.accent)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-        }
-    }
-
-    private struct WidgetThemeCard: View {
-        let widgetMirrorsApp: Bool
-        let widgetTheme: Themer.Theme
-        let onMirrorAppChanged: (Bool) -> Void
-        let onThemeChanged: (Themer.Theme) -> Void
-
-        @Environment(ThemeColors.self) private var themeColors
-
-        var body: some View {
-            SettingsCard {
-                HStack(alignment: .top) {
-                    Text("Widget theme")
-                        .font(.headline)
                         .foregroundColor(themeColors.text)
-                    Spacer()
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("Mirror app")
-                            .font(.caption)
-                            .foregroundColor(themeColors.text)
-                        Toggle("", isOn: .init(get: { widgetMirrorsApp }, set: onMirrorAppChanged))
-                            .labelsHidden()
-                    }
-                }
-
-                if !widgetMirrorsApp {
-                    ThemeGrid(selected: widgetTheme, onSelect: onThemeChanged)
-                        .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
-            .animation(.easeInOut(duration: 0.25), value: widgetMirrorsApp)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .preferredColorScheme(viewModel.colorScheme)
     }
+}
+
+private struct SettingsCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            content
+        }
+        .padding(16)
+        .background(themeColors.accent)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+private struct WidgetThemeCard: View {
+    let widgetMirrorsApp: Bool
+    let widgetTheme: Themer.Theme
+    let onMirrorAppChanged: (Bool) -> Void
+    let onThemeChanged: (Themer.Theme) -> Void
+
+    @Environment(ThemeColors.self) private var themeColors
+
+    var body: some View {
+        SettingsCard {
+            HStack(alignment: .top) {
+                Text("Widget theme")
+                    .font(.headline)
+                    .foregroundColor(themeColors.text)
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("Mirror app")
+                        .font(.caption)
+                        .foregroundColor(themeColors.text)
+                    Toggle("", isOn: .init(get: { widgetMirrorsApp }, set: onMirrorAppChanged))
+                        .labelsHidden()
+                }
+            }
+
+            if !widgetMirrorsApp {
+                ThemeGrid(selected: widgetTheme, onSelect: onThemeChanged)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: widgetMirrorsApp)
+    }
+}
 
 private struct ThemeCard: View {
     let selected: Themer.Theme
