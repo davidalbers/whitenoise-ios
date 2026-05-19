@@ -16,12 +16,6 @@ struct NightlightLength: Equatable, Hashable {
     static let allCases: [NightlightLength] = [.five, .ten, .fifteen]
 }
 
-enum PremiumState: String {
-    case none
-    case trial
-    case purchased
-}
-
 class SettingsSource {
     var userDefaults = UserDefaults(suiteName: "group.com.dalbers.WhiteNoise")!
     private static let colorKey: String = "colorKey"
@@ -36,7 +30,6 @@ class SettingsSource {
     private static let nightlightStyleKey = "nightlightStyleKey"
     private static let nightlightLengthKey = "nightlightLengthKey"
     private static let widgetMirrorsAppKey = "widgetMirrorsAppKey"
-    private static let premiumStateKey = "premiumStateKey"
     private static let trialStartDateKey = "trialStartDateKey"
 
     func color() -> NoiseColors {
@@ -157,15 +150,6 @@ class SettingsSource {
         let old = widgetMirrorsApp()
         getSettingsObj().setValue(mirrors, forKey: SettingsSource.widgetMirrorsAppKey)
         if old != mirrors { WidgetCenter.shared.reloadAllTimelines() }
-    }
-
-    func premiumState() -> PremiumState {
-        guard let raw = getSettings()[SettingsSource.premiumStateKey] as? String else { return .none }
-        return PremiumState(rawValue: raw) ?? .none
-    }
-
-    func setPremiumState(_ state: PremiumState) {
-        getSettingsObj().setValue(state.rawValue, forKey: SettingsSource.premiumStateKey)
     }
 
     func trialStartDate() -> Date? {

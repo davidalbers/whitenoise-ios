@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA000002000000000000AA06 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
-		AA000002000000000000AA07 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
 		AA000002000000000000AA01 /* PlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA01 /* PlaybackService.swift */; };
 		AA000002000000000000AA02 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA02 /* MainViewModel.swift */; };
 		AA000002000000000000AA03 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA03 /* MainView.swift */; };
 		AA000002000000000000AA04 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA04 /* SettingsViewModel.swift */; };
 		AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA04 /* SettingsViewModel.swift */; };
+		AA000002000000000000AA06 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
+		AA000002000000000000AA07 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
+		AA000002000000000000AA08 /* EntitlementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA08 /* EntitlementsManager.swift */; };
+		AA000002000000000000AA09 /* EntitlementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA08 /* EntitlementsManager.swift */; };
+		AA000002000000000000AA0A /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA0A /* PurchaseManager.swift */; };
+		AA000002000000000000AA0B /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA0A /* PurchaseManager.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
 		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
@@ -42,6 +46,7 @@
 		C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
 		C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
+		C7F8BE612FB51C2100EBCB44 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */; };
 		EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
 		EE100003253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
 		EE200003253CC0D9001CA289 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE200001253CC0D9001CA289 /* AudioManager.swift */; };
@@ -86,11 +91,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AA000001000000000000AA06 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA01 /* PlaybackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackService.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA02 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA03 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA04 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		AA000001000000000000AA06 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
+		AA000001000000000000AA08 /* EntitlementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementsManager.swift; sourceTree = "<group>"; };
+		AA000001000000000000AA0A /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
 		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -121,6 +128,8 @@
 		C7D786271E9A943E004448A2 /* White_NoiseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = White_NoiseUITests.swift; sourceTree = "<group>"; };
 		C7D786291E9A943E004448A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DC8422253CEBDC00E0575A /* NoiseColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseColors.swift; sourceTree = "<group>"; };
+		C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		C7F8BE622FB6720A00EBCB44 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
 		EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPlayIntent.swift; sourceTree = "<group>"; };
 		EE200001253CC0D9001CA289 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F8BE612FB51C2100EBCB44 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +185,7 @@
 		C79C62CD1EE77EC800D6B9E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */,
 				C7283687253CC0D9001CA287 /* WidgetKit.framework */,
 				C7283689253CC0D9001CA287 /* SwiftUI.framework */,
 			);
@@ -184,6 +195,7 @@
 		C7D785FB1E9A943D004448A2 = {
 			isa = PBXGroup;
 			children = (
+				C7F8BE622FB6720A00EBCB44 /* Store.storekit */,
 				C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */,
 				C7D786061E9A943E004448A2 /* White Noise */,
 				C7D7861B1E9A943E004448A2 /* White NoiseTests */,
@@ -213,7 +225,6 @@
 				C76AEC0B1EA5A3B2005CA0AF /* pink.mp3 */,
 				C76AEC0D1EA5A3BC005CA0AF /* brown.mp3 */,
 				C7D786071E9A943E004448A2 /* AppDelegate.swift */,
-				C7D0B7FC2545D834002CB28B /* SettingsView.swift */,
 				C7D7860E1E9A943E004448A2 /* Assets.xcassets */,
 				C7D786101E9A943E004448A2 /* LaunchScreen.storyboard */,
 				C7D786131E9A943E004448A2 /* Info.plist */,
@@ -227,7 +238,10 @@
 				C77AAD612FAD110D00EEC561 /* CustomTimerSheet.swift */,
 				AA000001000000000000AA02 /* MainViewModel.swift */,
 				AA000001000000000000AA03 /* MainView.swift */,
+				C7D0B7FC2545D834002CB28B /* SettingsView.swift */,
 				AA000001000000000000AA04 /* SettingsViewModel.swift */,
+				AA000001000000000000AA08 /* EntitlementsManager.swift */,
+				AA000001000000000000AA0A /* PurchaseManager.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -462,6 +476,8 @@
 				C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */,
 				AA000002000000000000AA07 /* ThemeColors.swift in Sources */,
 				AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */,
+				AA000002000000000000AA09 /* EntitlementsManager.swift in Sources */,
+				AA000002000000000000AA0B /* PurchaseManager.swift in Sources */,
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
 				EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */,
@@ -492,6 +508,8 @@
 				AA000002000000000000AA02 /* MainViewModel.swift in Sources */,
 				AA000002000000000000AA03 /* MainView.swift in Sources */,
 				AA000002000000000000AA04 /* SettingsViewModel.swift in Sources */,
+				AA000002000000000000AA08 /* EntitlementsManager.swift in Sources */,
+				AA000002000000000000AA0A /* PurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
