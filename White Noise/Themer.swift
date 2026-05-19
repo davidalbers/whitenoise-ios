@@ -12,6 +12,13 @@ class Themer {
         case dusk = 3
         case midnight = 4
         case green = 5
+
+        var isPremium: Bool {
+            switch self {
+            case .dusk, .midnight, .green: true
+            default: false
+            }
+        }
     }
 
     func saveTheme(_ theme: Theme?) {

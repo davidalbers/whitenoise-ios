@@ -7,6 +7,8 @@ struct MainView: View {
     @State private var customTimerPresented = false
     @State private var themeColors = ThemeColors()
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(EntitlementsManager.self) private var entitlements
+    @Environment(PurchaseManager.self) private var purchases
 
     private var nightlightBackgroundActive: Bool {
         viewModel.nightlightEnabled && colorScheme == .dark
@@ -63,17 +65,19 @@ struct MainView: View {
                     .cornerRadius(12)
                     .frame(maxWidth: .infinity)
 
-                    NightlightCardView(
-                        nightlightEnabled: Binding(
-                            get: { viewModel.nightlightEnabled },
-                            set: { viewModel.setNightlight($0) }
-                        ),
-                        accentColor: viewModel.currentColor.toColor()
-                    )
-                    .padding(16)
-                    .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
-                    .cornerRadius(12)
-                    .frame(maxWidth: .infinity)
+                    if entitlements.hasPremiumAccess {
+                        NightlightCardView(
+                            nightlightEnabled: Binding(
+                                get: { viewModel.nightlightEnabled },
+                                set: { viewModel.setNightlight($0) }
+                            ),
+                            accentColor: viewModel.currentColor.toColor()
+                        )
+                        .padding(16)
+                        .nightlightBackground(nightlightBrightness, baseColor: themeColors.accent)
+                        .cornerRadius(12)
+                        .frame(maxWidth: .infinity)
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -106,6 +110,8 @@ struct MainView: View {
         .sheet(isPresented: $settingsPresented) {
             SettingsView(
                 dismissAction: { settingsPresented = false },
+                entitlements: entitlements,
+                purchases: purchases,
                 onThemeChanged: { theme, colorScheme in
                     viewModel.theme = theme
                     viewModel.colorScheme = colorScheme

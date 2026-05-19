@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 @Observable
 final class SettingsViewModel {
     var theme: Themer.Theme
@@ -8,19 +9,59 @@ final class SettingsViewModel {
     var widgetMirrorsApp: Bool
     var nightlightStyle: NightlightStyle
     var nightlightLength: NightlightLength
-    var premiumState: PremiumState
-    var trialStartDate: Date?
+    var hasPremium: Bool {
+        entitlements.hasPremium
+    }
+
+    var hasPremiumAccess: Bool {
+        entitlements.hasPremiumAccess
+    }
+
+    var isInTrial: Bool {
+        entitlements.isInTrial
+    }
+
+    var trialExpired: Bool {
+        entitlements.trialExpired
+    }
+
+    var trialStartDate: Date? {
+        entitlements.trialStartDate
+    }
+
+    var daysRemainingInTrial: Int? {
+        entitlements.daysRemainingInTrial
+    }
+
+    var availableThemes: [Themer.Theme] {
+        [.auto, .dark, .light, .dusk, .midnight, .green].filter { !$0.isPremium || hasPremiumAccess }
+    }
+
+    var isPurchasing: Bool {
+        purchases.isPurchasing
+    }
+
+    var purchaseError: String? {
+        get { purchases.purchaseError }
+        set { purchases.purchaseError = newValue }
+    }
 
     var onThemeChanged: ((Themer.Theme, ColorScheme?) -> Void)?
 
     private let themer: Themer
     private let settings: SettingsSource
+    private let entitlements: EntitlementsManager
+    private let purchases: PurchaseManager
 
     init(
+        entitlements: EntitlementsManager,
+        purchases: PurchaseManager,
         themer: Themer = Themer(),
         settings: SettingsSource = SettingsSource(),
         onThemeChanged: ((Themer.Theme, ColorScheme?) -> Void)? = nil
     ) {
+        self.entitlements = entitlements
+        self.purchases = purchases
         self.themer = themer
         self.settings = settings
         self.onThemeChanged = onThemeChanged
@@ -30,14 +71,6 @@ final class SettingsViewModel {
         widgetMirrorsApp = settings.widgetMirrorsApp()
         nightlightStyle = settings.nightlightStyle()
         nightlightLength = settings.nightlightLength()
-        premiumState = settings.premiumState()
-        trialStartDate = settings.trialStartDate()
-    }
-
-    var daysRemainingInTrial: Int? {
-        guard premiumState == .trial, let start = trialStartDate else { return nil }
-        let elapsed = Date().timeIntervalSince(start)
-        return max(0, 30 - Int(elapsed / 86400))
     }
 
     func setTheme(_ newTheme: Themer.Theme) {
@@ -72,11 +105,14 @@ final class SettingsViewModel {
     }
 
     func startTrial() {
-        guard premiumState == .none else { return }
-        let now = Date()
-        settings.setPremiumState(.trial)
-        settings.setTrialStartDate(now)
-        premiumState = .trial
-        trialStartDate = now
+        entitlements.startTrial()
+    }
+
+    func buy() {
+        Task { await purchases.purchase() }
+    }
+
+    func restore() {
+        Task { await purchases.restore() }
     }
 }
