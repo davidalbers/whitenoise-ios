@@ -14,10 +14,12 @@
 		AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA04 /* SettingsViewModel.swift */; };
 		AA000002000000000000AA06 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
 		AA000002000000000000AA07 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA06 /* ThemeColors.swift */; };
-		AA000002000000000000AA08 /* EntitlementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA08 /* EntitlementsManager.swift */; };
-		AA000002000000000000AA09 /* EntitlementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA08 /* EntitlementsManager.swift */; };
-		AA000002000000000000AA0A /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA0A /* PurchaseManager.swift */; };
-		AA000002000000000000AA0B /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AA0A /* PurchaseManager.swift */; };
+		AA000002000000000000AABB /* UIColor+Lightened.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AABB /* UIColor+Lightened.swift */; };
+		AA000002000000000000AABC /* UIColor+Lightened.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AABB /* UIColor+Lightened.swift */; };
+		C70787882FBE34A500195BE5 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C70787872FBE34A500195BE5 /* SnapshotTesting */; };
+		C707878A2FBE353100195BE5 /* MainViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70787892FBE353100195BE5 /* MainViewSnapshotTests.swift */; };
+		C707878C2FBE447E00195BE5 /* CustomTimerSheetSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707878B2FBE447E00195BE5 /* CustomTimerSheetSnapshotTests.swift */; };
+		C707878E2FBE509B00195BE5 /* SettingsViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707878D2FBE509B00195BE5 /* SettingsViewSnapshotTests.swift */; };
 		C7200CDF216020B80012A3F0 /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7283688253CC0D9001CA287 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283687253CC0D9001CA287 /* WidgetKit.framework */; };
 		C728368A253CC0D9001CA287 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7283689253CC0D9001CA287 /* SwiftUI.framework */; };
@@ -46,7 +48,6 @@
 		C7DC840F253CEB5B00E0575A /* IntentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7200CDE216020B80012A3F0 /* IntentParser.swift */; };
 		C7DC8423253CEBDC00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
 		C7DC8428253CEBED00E0575A /* NoiseColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DC8422253CEBDC00E0575A /* NoiseColors.swift */; };
-		C7F8BE612FB51C2100EBCB44 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */; };
 		EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
 		EE100003253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */; };
 		EE200003253CC0D9001CA289 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE200001253CC0D9001CA289 /* AudioManager.swift */; };
@@ -96,8 +97,10 @@
 		AA000001000000000000AA03 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA04 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		AA000001000000000000AA06 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
-		AA000001000000000000AA08 /* EntitlementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementsManager.swift; sourceTree = "<group>"; };
-		AA000001000000000000AA0A /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		AA000001000000000000AABB /* UIColor+Lightened.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Lightened.swift"; sourceTree = "<group>"; };
+		C70787892FBE353100195BE5 /* MainViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewSnapshotTests.swift; sourceTree = "<group>"; };
+		C707878B2FBE447E00195BE5 /* CustomTimerSheetSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimerSheetSnapshotTests.swift; sourceTree = "<group>"; };
+		C707878D2FBE509B00195BE5 /* SettingsViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewSnapshotTests.swift; sourceTree = "<group>"; };
 		C7200CDE216020B80012A3F0 /* IntentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParser.swift; sourceTree = "<group>"; };
 		C7283686253CC0D9001CA287 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7283687253CC0D9001CA287 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -128,8 +131,6 @@
 		C7D786271E9A943E004448A2 /* White_NoiseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = White_NoiseUITests.swift; sourceTree = "<group>"; };
 		C7D786291E9A943E004448A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DC8422253CEBDC00E0575A /* NoiseColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseColors.swift; sourceTree = "<group>"; };
-		C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		C7F8BE622FB6720A00EBCB44 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
 		EE100001253CC0D9001CA287 /* WidgetPlayIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPlayIntent.swift; sourceTree = "<group>"; };
 		EE200001253CC0D9001CA289 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,7 +149,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7F8BE612FB51C2100EBCB44 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C70787882FBE34A500195BE5 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +186,6 @@
 		C79C62CD1EE77EC800D6B9E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C7F8BE602FB51C2100EBCB44 /* StoreKit.framework */,
 				C7283687253CC0D9001CA287 /* WidgetKit.framework */,
 				C7283689253CC0D9001CA287 /* SwiftUI.framework */,
 			);
@@ -195,7 +195,6 @@
 		C7D785FB1E9A943D004448A2 = {
 			isa = PBXGroup;
 			children = (
-				C7F8BE622FB6720A00EBCB44 /* Store.storekit */,
 				C7D0B7DD254376CE002CB28B /* widgetExtension.entitlements */,
 				C7D786061E9A943E004448A2 /* White Noise */,
 				C7D7861B1E9A943E004448A2 /* White NoiseTests */,
@@ -235,13 +234,12 @@
 				EE200001253CC0D9001CA289 /* AudioManager.swift */,
 				AA000001000000000000AA06 /* ThemeColors.swift */,
 				AA000001000000000000AA01 /* PlaybackService.swift */,
+				AA000001000000000000AABB /* UIColor+Lightened.swift */,
 				C77AAD612FAD110D00EEC561 /* CustomTimerSheet.swift */,
 				AA000001000000000000AA02 /* MainViewModel.swift */,
 				AA000001000000000000AA03 /* MainView.swift */,
 				C7D0B7FC2545D834002CB28B /* SettingsView.swift */,
 				AA000001000000000000AA04 /* SettingsViewModel.swift */,
-				AA000001000000000000AA08 /* EntitlementsManager.swift */,
-				AA000001000000000000AA0A /* PurchaseManager.swift */,
 			);
 			path = "White Noise";
 			sourceTree = "<group>";
@@ -249,6 +247,9 @@
 		C7D7861B1E9A943E004448A2 /* White NoiseTests */ = {
 			isa = PBXGroup;
 			children = (
+				C707878D2FBE509B00195BE5 /* SettingsViewSnapshotTests.swift */,
+				C707878B2FBE447E00195BE5 /* CustomTimerSheetSnapshotTests.swift */,
+				C70787892FBE353100195BE5 /* MainViewSnapshotTests.swift */,
 				C7D7861C1E9A943E004448A2 /* White_NoiseTests.swift */,
 				C7D7861E1E9A943E004448A2 /* Info.plist */,
 			);
@@ -396,6 +397,9 @@
 				Base,
 			);
 			mainGroup = C7D785FB1E9A943D004448A2;
+			packageReferences = (
+				C70787862FBE1E3B00195BE5 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = C7D786051E9A943E004448A2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -474,10 +478,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7D0B7FE2545D834002CB28B /* SettingsView.swift in Sources */,
+				AA000002000000000000AABB /* UIColor+Lightened.swift in Sources */,
 				AA000002000000000000AA07 /* ThemeColors.swift in Sources */,
 				AA000002000000000000AA05 /* SettingsViewModel.swift in Sources */,
-				AA000002000000000000AA09 /* EntitlementsManager.swift in Sources */,
-				AA000002000000000000AA0B /* PurchaseManager.swift in Sources */,
 				C72836BC253CC96D001CA287 /* WidgetIntent.intentdefinition in Sources */,
 				C72836B1253CC7ED001CA287 /* widget.swift in Sources */,
 				EE100002253CC0D9001CA287 /* WidgetPlayIntent.swift in Sources */,
@@ -503,13 +506,12 @@
 				C7B8B18E253B57470047FAAB /* Themer.swift in Sources */,
 				C7D786081E9A943E004448A2 /* AppDelegate.swift in Sources */,
 				C7D0B7FD2545D834002CB28B /* SettingsView.swift in Sources */,
+				AA000002000000000000AABC /* UIColor+Lightened.swift in Sources */,
 				AA000002000000000000AA06 /* ThemeColors.swift in Sources */,
 				AA000002000000000000AA01 /* PlaybackService.swift in Sources */,
 				AA000002000000000000AA02 /* MainViewModel.swift in Sources */,
 				AA000002000000000000AA03 /* MainView.swift in Sources */,
 				AA000002000000000000AA04 /* SettingsViewModel.swift in Sources */,
-				AA000002000000000000AA08 /* EntitlementsManager.swift in Sources */,
-				AA000002000000000000AA0A /* PurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +520,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7D7861D1E9A943E004448A2 /* White_NoiseTests.swift in Sources */,
+				C707878E2FBE509B00195BE5 /* SettingsViewSnapshotTests.swift in Sources */,
+				C707878C2FBE447E00195BE5 /* CustomTimerSheetSnapshotTests.swift in Sources */,
+				C707878A2FBE353100195BE5 /* MainViewSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,7 +748,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "White Noise/White Noise.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
@@ -751,7 +756,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -768,7 +773,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "White Noise/White Noise.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = R37L87S852;
 				INFOPLIST_FILE = "White Noise/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
@@ -776,7 +781,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dalbers.whitenoiseplus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -909,6 +914,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C70787862FBE1E3B00195BE5 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.19.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C70787872FBE34A500195BE5 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C70787862FBE1E3B00195BE5 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C7D785FC1E9A943D004448A2 /* Project object */;
 }

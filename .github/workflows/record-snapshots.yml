@@ -1,0 +1,37 @@
+name: Record Snapshots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  record:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Delete existing snapshots
+        run: rm -rf "White NoiseTests/__Snapshots__"
+
+      - name: Record snapshots
+        run: |
+          xcodebuild -scheme "White NoiseTests" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            -configuration Debug \
+            test | xcpretty || true
+
+      - name: Commit updated snapshots
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          git add "White NoiseTests/__Snapshots__"
+          git diff --staged --quiet || git commit -m "Update reference snapshots from CI"
+          git push

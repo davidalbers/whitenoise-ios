@@ -6,13 +6,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var mainViewModel: MainViewModel!
-    var entitlementsManager: EntitlementsManager!
-    var purchaseManager: PurchaseManager!
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         mainViewModel = MainViewModel()
-        entitlementsManager = EntitlementsManager()
-        purchaseManager = PurchaseManager(entitlements: entitlementsManager)
 
         StartPlayingIntent.playHandler = { [weak self] colorRaw, wavesIntensity, fade in
             self?.mainViewModel.handleStartIntent(colorRaw: colorRaw, wavesIntensity: wavesIntensity, fade: fade)
@@ -25,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIHostingController(
             rootView: MainView(viewModel: mainViewModel)
-                .environment(entitlementsManager)
-                .environment(purchaseManager)
         )
         window?.makeKeyAndVisible()
         return true
