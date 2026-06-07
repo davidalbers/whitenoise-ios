@@ -16,19 +16,16 @@ final class MainViewModel {
     var customPresetSeconds: Double?
     var theme: Themer.Theme
     var colorScheme: ColorScheme?
-    var nightlightEnabled = false
-    var nightlightBrightness: Double = 0.0
 
     private var timerActive = false
     private var timeLeftSecs: Double = 0
     private var prevTime = 0
     private var tickTimer: Timer?
-    private var nightlightTimer: Timer?
-    private var nightlightElapsedSecs: Int = 0
-    private var nightlightDuration: Int = 600
 
     private let audio: PlaybackService
     private let settings: SettingsSource
+
+    let availableColors: [NoiseColors] = [.white, .pink, .brown]
 
     init(audio: PlaybackService = AudioManager.shared, settings: SettingsSource = SettingsSource()) {
         self.audio = audio
@@ -49,7 +46,6 @@ final class MainViewModel {
     deinit {
         NotificationCenter.default.removeObserver(self)
         tickTimer?.invalidate()
-        nightlightTimer?.invalidate()
     }
 
     func reloadTheme() {
@@ -63,6 +59,9 @@ final class MainViewModel {
     }
 
     func play() {
+        if selectedTimerPreset != nil, !timerActive {
+            activateTimer()
+        }
         saveState()
         startAudio()
     }
@@ -109,40 +108,6 @@ final class MainViewModel {
         fadeEnabled = enabled
         let seconds = timerActive && timeLeftSecs > 0 ? Int(timeLeftSecs) : 600
         audio.setFade(enabled, seconds: seconds)
-    }
-
-    func setNightlight(_ enabled: Bool) {
-        nightlightEnabled = enabled
-        UIApplication.shared.isIdleTimerDisabled = enabled
-        if enabled {
-            nightlightDuration = settings.nightlightLength().seconds
-            nightlightElapsedSecs = 0
-            nightlightBrightness = 1.0
-            startNightlightTimer()
-        } else {
-            stopNightlightTimer()
-            nightlightBrightness = 0.0
-        }
-    }
-
-    private func startNightlightTimer() {
-        stopNightlightTimer()
-        nightlightTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            self?.nightlightTick()
-        }
-    }
-
-    private func stopNightlightTimer() {
-        nightlightTimer?.invalidate()
-        nightlightTimer = nil
-    }
-
-    private func nightlightTick() {
-        nightlightElapsedSecs += 1
-        if settings.nightlightStyle() == .fadeOut {
-            nightlightBrightness = max(0.0, 1.0 - Double(nightlightElapsedSecs) / Double(nightlightDuration))
-        }
-        if nightlightElapsedSecs == nightlightDuration { setNightlight(false) }
     }
 
     func setTimerPreset(_ preset: TimerPreset?) {
@@ -263,7 +228,6 @@ final class MainViewModel {
             timerText = ""
             timerDisplayed = false
             timerActive = false
-            selectedTimerPreset = nil
             pause()
         }
     }

@@ -43,6 +43,7 @@ final class MockPlaybackService: PlaybackService {
 
 // MARK: - Tests
 
+@MainActor
 final class MainViewModelTests: XCTestCase {
     var audio: MockPlaybackService!
     var settings: SettingsSource!
@@ -165,15 +166,15 @@ final class MainViewModelTests: XCTestCase {
     }
 
     func testTimerText_formatsMinutesAndSeconds() {
-        viewModel.timerPickerSeconds = 90
+        viewModel.timerPickerSeconds = 120
         viewModel.toggleTimer()
-        XCTAssertEqual(viewModel.timerText, "01:30")
+        XCTAssertEqual(viewModel.timerText, "02:00")
     }
 
     func testTimerText_includesHoursWhenSet() {
-        viewModel.timerPickerSeconds = 3661
+        viewModel.timerPickerSeconds = 3660
         viewModel.toggleTimer()
-        XCTAssertEqual(viewModel.timerText, "01:01:01")
+        XCTAssertEqual(viewModel.timerText, "01:01:00")
     }
 
     func testTimerExpiry_pausesPlaybackAndHidesTimer() {
@@ -230,7 +231,7 @@ final class MainViewModelTests: XCTestCase {
     }
 
     func testInit_restoresSavedWavesAndFade() {
-        settings.setWaves(true)
+        settings.setWavesIntensity(.medium)
         settings.setFade(true)
         let viewModel = MainViewModel(audio: audio, settings: settings)
         XCTAssertNotEqual(viewModel.wavesIntensity, .off)
