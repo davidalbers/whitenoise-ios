@@ -14,5 +14,13 @@ There is a nearly identical Android version [here](https://github.com/davidalber
 
 ---
 
-<img src="/main_screenshot.png" width="250">
-<img src="/widget_screenshot.png" width="250">
+---
+
+## Documentation
+
+Markdown files attempt to explain design decisions in this app:
+
+- [architecture.md](architecture.md) — MVVM architecture and how the widgets interact with the main app
+- [theme.md](theme.md) — How the six themes work
+- [snapshot-testing.md](snapshot-testing.md) — Snapshot tests using swift-snapshot-testing
+- [code-quality.md](code-quality.md) — How to keep the code consistent with lint and formatting
