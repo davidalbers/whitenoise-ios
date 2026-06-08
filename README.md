@@ -14,6 +14,9 @@ There is a nearly identical Android version [here](https://github.com/davidalber
 
 ---
 
+<img src="White NoiseTests/__Snapshots__/MainViewSnapshotTests/testMainView_playing_withTimer_themes.auto.png" width="250"> <img src="White NoiseTests/__Snapshots__/SettingsViewSnapshotTests/testSettingsView.1.png" width="250">
+
+
 ---
 
 ## Documentation
